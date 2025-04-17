@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterData : ScriptableObject
 {
     public Sprite icon;
+    public string className;
     public string charactername;
     public GameObject prefab;
 
@@ -14,6 +15,7 @@ public class CharacterData : ScriptableObject
     public int baseHealth;
     public int defense;
     public int dex;
+    public int level;
     [Header("Shop Info")]
     public int price;
 }
