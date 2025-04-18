@@ -6,19 +6,11 @@ public class InventoryUI : MonoBehaviour
 {
     public Transform gridContainer;
     public GameObject slotPrefab;
-    void OnEnable()
-    {
-        Populate();
-    }
-
 
     public void Populate()
     {
         // Clear Old ones
-        foreach (Transform child in gridContainer)
-        {
-            Destroy(child.gameObject);
-        }
+        Clear();
         List<CharacterInstance> ownedCharacters = GameManager.Instance.PlayerManager.playerData.ownedCharacters;
         // Add one card per character
         foreach (var instance in ownedCharacters)
@@ -29,15 +21,16 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public void RefreshUI()
+    public void Clear()
     {
         foreach (Transform child in gridContainer)
-            Destroy(child.gameObject);
-
-        foreach (var instance in CharacterInventory.Instance.ownedCharacters)
         {
-            GameObject go = Instantiate(slotPrefab, gridContainer);
-            go.GetComponent<InventorySlotUI>().Setup(instance);
+            Destroy(child.gameObject);
         }
+    }
+
+    public void RefreshUI()
+    {
+        Populate();
     }
 }

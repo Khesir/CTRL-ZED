@@ -8,11 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public InventoryManager InventoryManager { get; private set; }
     public CharacterManager CharacterManager { get; private set; }
     public PlayerManager PlayerManager { get; private set; }
     [Header("Manager Prefabs / References")]
-    // [SerializeField] private InventoryManager inventoryManager;
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;
     public bool isGameActive;

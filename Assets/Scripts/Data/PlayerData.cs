@@ -7,5 +7,4 @@ public class PlayerData : ScriptableObject
 {
     public int coins = 0;
     public List<CharacterInstance> ownedCharacters = new();
-
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   className: Hacker
-  charactername: Lorie
+  charactername: 
   prefab: {fileID: 0}
   baseAttack: 8
   baseHealth: 3

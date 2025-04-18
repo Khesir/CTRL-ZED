@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    public CharacterData[] characterTemplates;
+    public List<CharacterData> characterTemplates;
 
     public async UniTask Initialize()
     {

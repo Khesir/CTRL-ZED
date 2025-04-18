@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
-  m_Name: Analyst
+  m_Name: Defender
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  className: Analyst
+  className: Defender
   charactername: 
   prefab: {fileID: 0}
-  baseAttack: 8
-  baseHealth: 3
-  defense: 2
-  dex: 7
+  baseAttack: 3
+  baseHealth: 9
+  defense: 10
+  dex: 4
   level: 0
-  price: 1200
+  price: 800

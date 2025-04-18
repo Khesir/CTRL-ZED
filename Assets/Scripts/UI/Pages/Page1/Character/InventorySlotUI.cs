@@ -15,6 +15,7 @@ public class InventorySlotUI : MonoBehaviour
     public TMP_Text statstext;
     public TMP_Text level;
     public Button actionButton;
+    public DetailsController detailsController;
     public CharacterInstance instance;
 
     public void Setup(CharacterInstance character)
@@ -22,7 +23,7 @@ public class InventorySlotUI : MonoBehaviour
         instance = character;
         className.text = character.template.className;
         icon.sprite = character.template.icon;
-        nameText.text = character.template.charactername;
+        nameText.text = character.name;
         level.text = character.level.ToString();
 
         actionButton.onClick.RemoveAllListeners();
@@ -32,6 +33,7 @@ public class InventorySlotUI : MonoBehaviour
 
     private void OnActionButtonClicked()
     {
-        Debug.Log("Clicked: " + instance.template.charactername);
+        detailsController.Intialize(instance);
+        Debug.Log("Clicked: " + instance.template.className);
     }
 }
