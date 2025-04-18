@@ -12,7 +12,7 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private EventSystem _eventSystem;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Env _environment;
-    [SerializeField] private CharacterManager _characterManager;
+    [SerializeField] private GameManager _gameManager;
     enum Env
     {
         Dev,
@@ -20,27 +20,35 @@ public class GameInitiator : MonoBehaviour
     }
     async void Start()
     {
+        Debug.Log("Binding Objects");
         BindObjects();
         // Loading Screen
+
+        Debug.Log("Initializing and Creating Game Objects");
         await IntializeObjects();
         await CreateObjects();
+
+        Debug.Log("Preparing Game");
         Preparegame();
         BeginGame();
     }
 
     private void BindObjects()
     {
+        // Need a reference, requires to add manually
         if (_environment != Env.Dev)
         {
 
             _mainCamera = Instantiate(_mainCamera);
             _eventSystem = Instantiate(_eventSystem);
             _canvas = Instantiate(_canvas);
+            _gameManager = Instantiate(_gameManager);
         }
     }
     private async UniTask IntializeObjects()
     {
-        // Handles Services that uses in the game
+        // Intiaalizing Game Data and other services 
+        await GameManager.Instance.Initialize();
     }
     private async UniTask CreateObjects()
     {
@@ -54,6 +62,7 @@ public class GameInitiator : MonoBehaviour
     }
     private void BeginGame()
     {
+        Debug.Log("Game Started");
         // Game logic -- actual trigger of the game or so
     }
 }

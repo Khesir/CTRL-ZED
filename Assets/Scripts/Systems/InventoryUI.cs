@@ -6,28 +6,11 @@ public class InventoryUI : MonoBehaviour
 {
     public Transform gridContainer;
     public GameObject slotPrefab;
-    // Temporary
-    public CharacterData[] characterTemplates;
-    List<CharacterInstance> ownedCharacters = new();
     void OnEnable()
     {
-        Debug.Log("Generating");
-        GenerateCharacterData();
-        Debug.Log("Populating");
         Populate();
-
     }
 
-    void GenerateCharacterData()
-    {
-        foreach (var template in characterTemplates)
-        {
-            ownedCharacters.Add(new CharacterInstance(template));
-
-            Debug.Log("Generated Character: " + template.charactername);
-
-        }
-    }
 
     public void Populate()
     {
@@ -36,6 +19,7 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        List<CharacterInstance> ownedCharacters = GameManager.Instance.PlayerManager.playerData.ownedCharacters;
         // Add one card per character
         foreach (var instance in ownedCharacters)
         {

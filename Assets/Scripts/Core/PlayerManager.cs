@@ -9,7 +9,10 @@ public class PlayerManager : MonoBehaviour
 
     public async UniTask Initialize()
     {
-        // Handles data initialization
+        if (playerData == null)
+        {
+            playerData = ScriptableObject.CreateInstance<PlayerData>();
+        }
         await UniTask.CompletedTask;
     }
     public void AddCharacter(CharacterData character)

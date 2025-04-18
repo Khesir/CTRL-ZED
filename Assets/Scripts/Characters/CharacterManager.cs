@@ -18,21 +18,6 @@ public class CharacterManager : MonoBehaviour
         }
         await UniTask.CompletedTask;
     }
-    // void GenerateCharacterData()
-    // {
-    //     foreach (var template in characterTemplates)
-    //     {
-    //         if (GameManager.Instance != null && GameManager.Instance.playerData != null)
-    //         {
-
-    //             GameManager.Instance.playerData.AddCharacter(template);
-
-    //             Debug.Log("Generated Character: " + template.charactername);
-    //         }
-    //     }
-    // }
-
-    // I can later create a gameobject to generate it as gameObject
 }
 
 
