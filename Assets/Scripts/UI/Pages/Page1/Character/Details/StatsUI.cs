@@ -11,11 +11,19 @@ public class StatsUI : MonoBehaviour
     public TMP_Text characterName;
     public void Populate(CharacterInstance data)
     {
-        Clear();
         characterName.text = data.name;
         className.text = data.template.className;
 
+        Clear();
+        var statsMap = data.GetStatMap();
+        foreach (var instance in statsMap)
+        {
+            var statCard = Instantiate(prefab, content);
+            var card = statCard.GetComponent<StatSlotUI>();
+            card.Setup(instance);
+        }
     }
+
     public void Clear()
     {
         foreach (Transform child in content)
@@ -26,9 +34,5 @@ public class StatsUI : MonoBehaviour
     // public void RefreshUI()
     // {
     //     Populate();
-    // }
-    public void Setup(PlayerData data, int level)
-    {
-
-    }
+    // 
 }

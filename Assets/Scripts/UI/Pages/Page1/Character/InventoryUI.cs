@@ -6,6 +6,7 @@ public class InventoryUI : MonoBehaviour
 {
     public Transform gridContainer;
     public GameObject slotPrefab;
+    public DetailsController detailsController;
 
     public void Populate()
     {
@@ -17,6 +18,7 @@ public class InventoryUI : MonoBehaviour
         {
             var cardGO = Instantiate(slotPrefab, gridContainer);
             var card = cardGO.GetComponent<InventorySlotUI>();
+            card.detailsController = detailsController;
             card.Setup(instance);
         }
     }

@@ -19,6 +19,31 @@ public class CharacterInstance
     }
     public int GetAttack()
     {
-        return template.baseAttack + level; // Example scaling
+        return template.baseAttack + (level * 2);
+    }
+
+    public int GetDefense()
+    {
+        return template.defense + Mathf.FloorToInt(level * 1.5f);
+    }
+
+    public int GetSpeed()
+    {
+        return template.dex;
+    }
+
+    public int GetMaxHealth()
+    {
+        return template.baseHealth + (level * 10);
+    }
+    public Dictionary<string, int> GetStatMap()
+    {
+        return new Dictionary<string, int>
+        {
+            { "ATK", GetAttack() },
+            { "DEF", GetDefense() },
+            { "DEX", GetSpeed() },
+            { "HP", GetMaxHealth() }
+        };
     }
 }

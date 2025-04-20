@@ -785,7 +785,7 @@ MonoBehaviour:
   statstext: {fileID: 0}
   level: {fileID: 670215633682477341}
   actionButton: {fileID: 1668785185379068196}
-  instance: {fileID: 0}
+  detailsController: {fileID: 0}
 --- !u!1 &8679257193398400261
 GameObject:
   m_ObjectHideFlags: 0
