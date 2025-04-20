@@ -4,13 +4,40 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class TeamInventorySlot : MonoBehaviour, IDropHandler
 {
+    public GameObject draggableItemPrefab;
+    public int teamId;
+    public int slotIndex;
     public void OnDrop(PointerEventData eventData)
     {
-        if (transform.childCount == 0)
+        if (transform.childCount > 0) return;
+
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem originalDraggable = dropped.GetComponent<DraggableItem>();
+        CharacterData transferredCharacter = originalDraggable.instance;
+
+        var manager = GameManager.Instance.TeamManager;
+        if (originalDraggable.isExternal)
         {
-            GameObject dropped = eventData.pointerDrag;
-            DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
-            draggableItem.parentAfterDrag = transform;
+            // Validate if character is not duplicate
+            if (!manager.isCharacterInTeam(teamId, transferredCharacter).IsSuccess) return;
+
+            manager.AssignedCharacterToSlot(teamId, slotIndex, transferredCharacter);
+
+            GameObject newDraggableGO = Instantiate(draggableItemPrefab, transform);
+            DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
+            newDraggable.Setup(transferredCharacter);
+
+            Debug.Log("Transferred: " + transferredCharacter.name);
+
+        }
+        else
+        {
+            TeamInventorySlot originalSlot = originalDraggable.parentAfterDrag.GetComponent<TeamInventorySlot>();
+            if (teamId != originalSlot.teamId) return;
+            manager.AssignedCharacterToSlot(teamId, slotIndex, transferredCharacter);
+            manager.RemoveCharacterFromSlot(originalSlot.teamId, originalSlot.slotIndex);
+
+            originalDraggable.parentAfterDrag = transform;
         }
     }
 }

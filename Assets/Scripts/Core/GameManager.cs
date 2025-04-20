@@ -9,10 +9,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public CharacterManager CharacterManager { get; private set; }
+    public PlayerDataManager PlayerDataManager { get; private set; }
     public PlayerManager PlayerManager { get; private set; }
+    public TeamManager TeamManager { get; private set; }
+
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private TeamManager teamManager;
+    [SerializeField] private PlayerDataManager playerDataManager;
     public bool isGameActive;
     public bool _isInitialized = false;
 
@@ -42,10 +47,17 @@ public class GameManager : MonoBehaviour
     public async UniTask InitializeManagerAsync()
     {
         // InventoryManager = Instantiate(inventoryManager);
+        PlayerDataManager = playerDataManager;
+        PlayerData saveData = await PlayerDataManager.Initialize();
+
         PlayerManager = playerManager;
-        await PlayerManager.Initialize();
+        await PlayerManager.Initialize(saveData);
 
         CharacterManager = characterManager;
-        await CharacterManager.Initialize();
+        await CharacterManager.Initialize(PlayerManager);
+
+        TeamManager = teamManager;
+        await TeamManager.Initialize(saveData);
+        Debug.Log(TeamManager.GetTeams().Count);
     }
 }

@@ -9,6 +9,12 @@ public class CharacterService : MonoBehaviour
     {
         return _instance;
     }
+    public Response<CharacterData> CreateCharacter(CharacterConfig template)
+    {
+        _instance = new CharacterData(template);
+        return Response<CharacterData>.Success("Created Character", _instance);
+    }
+    // Stats 
     public int GetLevel()
     {
         return _instance.level;
@@ -41,5 +47,29 @@ public class CharacterService : MonoBehaviour
             { "DEX", GetSpeed() },
             { "HP", GetMaxHealth() }
         };
+    }
+    // Assigned Team
+    public Response<object> AssigntoTeam(int teamIndex)
+    {
+        if (!_instance.assignedTeam.Contains(teamIndex))
+        {
+            _instance.assignedTeam.Add(teamIndex);
+            return Response.Success("Character assigned successfully.");
+        }
+        else
+        {
+            return Response.Fail("Character already in this team.");
+
+        }
+    }
+
+    public Response<object> RemoveFromTeam(int teamIndex)
+    {
+        _instance.assignedTeam.Remove(teamIndex);
+        return Response.Success($"Successfully Removed {teamIndex}");
+    }
+    public bool isInTeam(int teamIndex)
+    {
+        return _instance.assignedTeam.Contains(teamIndex);
     }
 }

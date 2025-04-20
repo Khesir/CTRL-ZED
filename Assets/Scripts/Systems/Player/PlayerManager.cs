@@ -7,24 +7,14 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [HideInInspector] private PlayerData playerData;
     [HideInInspector] private PlayerService playerService;
 
     public event Action onCoinsChanged;
     public event Action onInventoryChange;
-    public async UniTask Initialize()
+    public async UniTask Initialize(PlayerData playerData)
     {
-        // Try to load from file
-        // playerData = ServiceContainer.LoadPlayerData();
-        if (playerData != null)
-        {
-            playerService = new PlayerService(playerData);
-        }
-        else
-        {
-            playerData = new PlayerData();
-            playerService = new PlayerService(playerData);
-        }
+        playerService = new PlayerService(playerData);
+
         await UniTask.CompletedTask;
     }
     public List<CharacterData> GetOwnedCharacters()

@@ -16,9 +16,4 @@ public class PlayerData
 
         currentMaxTeam = 2;
     }
-
-    public static implicit operator PlayerData(PlayerService v)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -15,9 +15,9 @@ public class InventorySlotUI : MonoBehaviour
     public TMP_Text statstext;
     public TMP_Text level;
     public Button actionButton;
-    public DetailsController detailsController;
     public CharacterData instance;
-
+    public DraggableItem draggableItem;
+    [HideInInspector] public DetailsController detailsController;
     public void Setup(CharacterData character)
     {
         instance = character;
@@ -25,15 +25,13 @@ public class InventorySlotUI : MonoBehaviour
         icon.sprite = character.baseData.icon;
         nameText.text = character.name;
         level.text = character.level.ToString();
-
+        draggableItem.Setup(character, true);
         actionButton.onClick.RemoveAllListeners();
         actionButton.onClick.AddListener(OnActionButtonClicked);
-        Debug.Log("Generated InvenetoryDaata");
     }
 
     private void OnActionButtonClicked()
     {
         detailsController.Intialize(instance);
-        Debug.Log("Clicked: " + instance.baseData.className);
     }
 }
