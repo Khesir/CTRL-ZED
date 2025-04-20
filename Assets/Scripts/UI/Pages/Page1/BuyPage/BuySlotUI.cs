@@ -9,8 +9,8 @@ public class BuySlotUI : MonoBehaviour
   public TMP_Text className;
   public Image icon;
   public Button actionButton;
-  private CharacterData instance;
-  public void Setup(CharacterData character)
+  private CharacterConfig instance;
+  public void Setup(CharacterConfig character)
   {
     instance = character;
     className.text = character.className;
@@ -24,7 +24,7 @@ public class BuySlotUI : MonoBehaviour
 
   private void OnActionButtonClicked()
   {
-    var result = GameManager.Instance.PlayerManager.TryPurchase(instance);
+    var result = GameManager.Instance.PlayerManager.PurchaseCharacter(instance);
 
     if (result.Success)
     {

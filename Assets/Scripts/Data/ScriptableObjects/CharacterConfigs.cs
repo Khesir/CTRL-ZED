@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewCharacter", menuName = "Characters/Character")]
-public class CharacterData : ScriptableObject
+public class CharacterConfig : ScriptableObject
 {
     public Sprite icon;
     public string className;

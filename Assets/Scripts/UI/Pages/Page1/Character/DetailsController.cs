@@ -7,7 +7,7 @@ public class DetailsController : MonoBehaviour
     [Header("References")]
     [SerializeField] private StatsUI statsUI;
 
-    public void Intialize(CharacterInstance data)
+    public void Intialize(CharacterData data)
     {
         gameObject.SetActive(true);
         statsUI.Populate(data);

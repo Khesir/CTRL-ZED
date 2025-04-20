@@ -8,7 +8,7 @@ public class BuyInventoryUI : MonoBehaviour
   public Transform content;
   public GameObject slotPrefab;
 
-  public void Populate(List<CharacterData> characterData)
+  public void Populate(List<CharacterConfig> characterData)
   {
     // Clear Old Ones
     Clear();

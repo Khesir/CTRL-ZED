@@ -12,7 +12,7 @@ public class InventoryUI : MonoBehaviour
     {
         // Clear Old ones
         Clear();
-        List<CharacterInstance> ownedCharacters = GameManager.Instance.PlayerManager.playerData.ownedCharacters;
+        List<CharacterData> ownedCharacters = GameManager.Instance.PlayerManager.GetOwnedCharacters();
         // Add one card per character
         foreach (var instance in ownedCharacters)
         {

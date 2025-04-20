@@ -5,19 +5,20 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    public List<CharacterData> characterTemplates;
+    public List<CharacterConfig> characterTemplates;
 
     public async UniTask Initialize()
     {
         foreach (var template in characterTemplates)
         {
-
-            GameManager.Instance.PlayerManager.AddCharacter(template);
+            // Only for testing
+            GameManager.Instance.PlayerManager.AddCharacter(new CharacterData(template));
 
             Debug.Log("Generated Character: " + template.charactername);
         }
         await UniTask.CompletedTask;
     }
+    // Management of characters
 }
 
 

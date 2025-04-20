@@ -13,7 +13,7 @@ public class Page1Controller : MonoBehaviour
         var manager = GameManager.Instance.PlayerManager;
 
         inventoryUI.Populate();
-        characterCounter.Setup(manager.playerData.ownedCharacters.Count);
+        characterCounter.Setup(manager.GetOwnedCharacters().Count);
 
         GameManager.Instance.PlayerManager.onInventoryChange += characterCounter.UpdateCounter;
         GameManager.Instance.PlayerManager.onInventoryChange += inventoryUI.RefreshUI;

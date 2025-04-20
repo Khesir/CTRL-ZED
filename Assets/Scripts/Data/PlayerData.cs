@@ -1,10 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "PlayerData", menuName = "Game/PlayerData", order = 1)]
-public class PlayerData : ScriptableObject
+[System.Serializable]
+public class PlayerData
 {
-    public int coins = 0;
-    public List<CharacterInstance> ownedCharacters = new();
+    public int coins;
+    public List<CharacterData> ownedCharacters;
+    public int currentMaxTeam;
+    public List<Team> teams = new();
+    public PlayerData()
+    {
+        coins = 1000;
+        ownedCharacters = new List<CharacterData>();
+
+        currentMaxTeam = 2;
+    }
+
+    public static implicit operator PlayerData(PlayerService v)
+    {
+        throw new NotImplementedException();
+    }
 }

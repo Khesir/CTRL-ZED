@@ -9,10 +9,10 @@ public class StatsUI : MonoBehaviour
     public GameObject prefab;
     public TMP_Text className;
     public TMP_Text characterName;
-    public void Populate(CharacterInstance data)
+    public void Populate(CharacterData data)
     {
         characterName.text = data.name;
-        className.text = data.template.className;
+        className.text = data.baseData.className;
 
         Clear();
         var statsMap = data.GetStatMap();
