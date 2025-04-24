@@ -11,7 +11,7 @@ public class TabButtons : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
 {
     public TabGroup tabGroup;
     public Image background;
-
+    public bool isDefault;
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
     public void OnPointerClick(PointerEventData eventData)

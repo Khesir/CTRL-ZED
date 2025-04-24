@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using TMPro;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -11,20 +12,17 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public CharacterData instance;
     public bool isExternal;
+
+    public TMP_Text characterName;
+    public TMP_Text className;
+    public TMP_Text level;
     public void Setup(CharacterData data, bool external = false)
     {
         instance = data;
         isExternal = external;
-        if (data == null)
-        {
-            image.color = new Color(1, 1, 1, 0);
-            image.sprite = null;
-        }
-        else
-        {
-            image.sprite = null;
-            image.color = external ? Color.white : new Color(1, 1, 1, 0.5f); // full white or semi-transparent
-        }
+        image.sprite = data.baseData.icon;
+        if (!external)
+            setDetails(data);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -43,5 +41,11 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
+    }
+    private void setDetails(CharacterData data)
+    {
+        characterName.text = data.name;
+        className.text = data.baseData.className;
+        level.text = $"Lvl. {data.level}";
     }
 }

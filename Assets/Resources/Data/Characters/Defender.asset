@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
   m_Name: Defender
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7cec2ca696d182a4b8ac962d1fb3f597, type: 3}
   className: Defender
   charactername: 
   prefab: {fileID: 0}

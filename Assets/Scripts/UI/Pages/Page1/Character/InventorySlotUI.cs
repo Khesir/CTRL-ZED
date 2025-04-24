@@ -22,9 +22,8 @@ public class InventorySlotUI : MonoBehaviour
     {
         instance = character;
         className.text = character.baseData.className;
-        icon.sprite = character.baseData.icon;
         nameText.text = character.name;
-        level.text = character.level.ToString();
+        level.text = $"Lvl. {character.level}";
         draggableItem.Setup(character, true);
         actionButton.onClick.RemoveAllListeners();
         actionButton.onClick.AddListener(OnActionButtonClicked);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public class TeamInventorySlot : MonoBehaviour, IDropHandler
@@ -14,7 +15,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
         GameObject dropped = eventData.pointerDrag;
         DraggableItem originalDraggable = dropped.GetComponent<DraggableItem>();
         CharacterData transferredCharacter = originalDraggable.instance;
-
         var manager = GameManager.Instance.TeamManager;
         if (originalDraggable.isExternal)
         {

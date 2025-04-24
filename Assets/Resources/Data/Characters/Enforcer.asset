@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
   m_Name: Enforcer
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  className: Enforcer
+  icon: {fileID: 21300000, guid: 6b7306209bd285141ac3171adebc6daf, type: 3}
+  className: Enforcer Warrior
   charactername: 
   prefab: {fileID: 0}
   baseAttack: 7

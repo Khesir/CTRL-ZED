@@ -11,6 +11,7 @@ public class TeamContainer : MonoBehaviour
     public GameObject teamDraggrable;
     public List<GameObject> teamSlot;
     public Team instance;
+
     public void Setup(Team team, int index)
     {
         instance = team;

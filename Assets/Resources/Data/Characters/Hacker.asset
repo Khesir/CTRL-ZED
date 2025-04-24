@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
   m_Name: Hacker
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9d04cbcc2439b174c964b03007336e26, type: 3}
   className: Hacker
   charactername: 
   prefab: {fileID: 0}
