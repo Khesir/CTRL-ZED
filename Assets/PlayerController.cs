@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public weapon weapon;
-
     Vector2 moveDirection;
     Vector2 mousePosition;
 
+    [Header("Dash Control")]
+    public float dashSpeed = 12f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 1f;
+    private bool isDashing = false;
+    private float dashTime;
+    private float lastDashTime;
     // Update is called once per frame
     void Update()
     {
@@ -22,16 +29,45 @@ public class PlayerController : MonoBehaviour
             weapon.Fire();
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastDashTime + dashCooldown)
+        {
+            StartDash();
+        }
+
         moveDirection = new Vector2(moveX, moveY).normalized;
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+        if (isDashing)
+        {
+            rb.velocity = moveDirection * dashSpeed;
+            dashTime -= Time.fixedDeltaTime;
+
+            if (dashTime <= 0f)
+            {
+                EndDash();
+            }
+        }
+        else
+        {
+            rb.velocity = moveDirection * moveSpeed;
+        }
 
         Vector2 aimDirection = mousePosition - rb.position;
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = aimAngle;
+    }
+    private void StartDash()
+    {
+        isDashing = true;
+        dashTime = dashDuration;
+        lastDashTime = Time.time;
+    }
+
+    private void EndDash()
+    {
+        isDashing = false;
     }
 }

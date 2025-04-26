@@ -5,6 +5,23 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public LayerMask ignoreLayer;
+    public Rigidbody2D rb;
+    public float lifetime = 5f;
+    public float speed = 5;
+    private Vector2 moveDirection;
+    private void Awake()
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+    }
+
+    private void Start()
+    {
+        Destroy(gameObject, lifetime); // Still destroy after a few seconds
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the collided object is in the ignore layer
