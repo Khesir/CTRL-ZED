@@ -14,6 +14,7 @@ TagManager:
   - 
   - Follower
   - Enemy
+  - Projectiles
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Boundries
   m_SortingLayers:
   - name: Default
     uniqueID: 0

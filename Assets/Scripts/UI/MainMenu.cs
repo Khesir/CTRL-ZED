@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
                 break;
 
             case "gameplay":
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                 break;
         }
     }
