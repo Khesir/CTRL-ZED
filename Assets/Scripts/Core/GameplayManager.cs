@@ -1,14 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GameplayManager : MonoBehaviour
 {
     public static GameplayManager Instance { get; private set; }
     public List<Follower> followers = new List<Follower>();
-    private int currentFollowerIndex = 0;
-    public Transform player;
-    // Update is called once per frame
+    [SerializeField] private int currentFollowerIndex = 0;
+    public Transform globalTargetPlayer;
+    public event Action switchUser;
+    public CinemachineVirtualCamera virtualCamera;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,17 +51,18 @@ public class GameplayManager : MonoBehaviour
             {
                 if (i == newIndex)
                 {
-                    // This is the newly controlled follower
-                    followers[i].SetTarget(followers[i].transform);
+                    followers[i].SetTarget();
                 }
                 else
                 {
-                    // These are the followers, they should follow the new leader
-                    followers[i].Refresh(newLeader.transform);
+                    followers[i].Refresh();
                 }
             }
 
             currentFollowerIndex = newIndex;
+            globalTargetPlayer = newLeader.transform;
+            virtualCamera.Follow = newLeader.transform;
+            switchUser.Invoke();
 
             Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
         }

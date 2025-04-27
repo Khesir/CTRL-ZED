@@ -30,48 +30,37 @@ public class Follower : MonoBehaviour
     public bool isControlledPlayer = false;
 
     private PlayerController controller;
-    private Collider2D collider2d;
+    public LayerMask ignoreLayer;
     private void Start()
     {
-        if (controller == null) controller = GetComponent<PlayerController>();
-        if (collider2d == null) collider2d = GetComponent<Collider2D>();
-
-        if (!isControlledPlayer)
-        {
-            collider2d.enabled = false;
-            controller.enabled = false;
-            var defaultTarget = GameplayManager.Instance.player;
-            target = defaultTarget;
-            targetRb = defaultTarget.GetComponent<Rigidbody2D>();
-        }
+        GameplayManager.Instance.switchUser += ResetTarget;
     }
-
-    public void SetTarget(Transform newTarget)
+    public void SetTarget()
     {
-        target = newTarget;
-        targetRb = newTarget.GetComponent<Rigidbody2D>();
-
         if (controller == null) controller = GetComponent<PlayerController>();
-        if (collider2d == null) collider2d = GetComponent<Collider2D>();
 
         isControlledPlayer = true;
-        collider2d.enabled = true;
         controller.enabled = true;
     }
-    public void Refresh(Transform newTarget)
+    public void Refresh()
     {
         if (controller == null) controller = GetComponent<PlayerController>();
-        if (collider2d == null) collider2d = GetComponent<Collider2D>();
         if (isControlledPlayer)
         {
-            collider2d.enabled = false;
             isControlledPlayer = false;
             controller.enabled = false;
         }
-        target = newTarget;
-        targetRb = newTarget.GetComponent<Rigidbody2D>();
     }
 
+    public void ResetTarget()
+    {
+        if (!isControlledPlayer)
+        {
+            var globalTarget = GameplayManager.Instance.globalTargetPlayer;
+            target = globalTarget;
+            targetRb = globalTarget.GetComponent<Rigidbody2D>();
+        }
+    }
     void FixedUpdate()
     {
         if (!isControlledPlayer)
@@ -203,5 +192,12 @@ public class Follower : MonoBehaviour
             rb.rotation = Mathf.LerpAngle(rb.rotation, angle, Time.deltaTime * m_RotationSpeed);
         }
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & ignoreLayer) != 0)
+        {
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+            return;
+        }
+    }
 }

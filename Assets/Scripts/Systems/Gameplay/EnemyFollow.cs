@@ -7,7 +7,7 @@ public class EnemyFollow : MonoBehaviour
 {
     [SerializeField] private float m_Speed = 4f;
     [SerializeField] private float m_RotationSpeed = 8f;
-    [SerializeField] private float m_StopDistance = 1.5f;
+    [SerializeField] private float m_StopDistance = 3f;
     [Header("Boids")]
     [SerializeField] private float m_DetectionDistance = 1f;
     [SerializeField] private float m_SeparationWeight = 1f;
@@ -23,6 +23,16 @@ public class EnemyFollow : MonoBehaviour
     public float followRange = 5f;       // Distance to start following
     public bool alwaysFollow = false;
     private Vector2 m_SeparationFore = Vector2.zero;
+    public LayerMask ignoreLayer;
+
+    private void Start()
+    {
+        GameplayManager.Instance.switchUser += Refresh;
+    }
+    private void Refresh()
+    {
+        target = GameplayManager.Instance.globalTargetPlayer;
+    }
 
     private void Update()
     {
@@ -105,7 +115,7 @@ public class EnemyFollow : MonoBehaviour
 
     private Collider2D[] GetNeighbours()
     {
-        var followerMask = LayerMask.GetMask("Follower");
+        var followerMask = LayerMask.GetMask("Enemy");
         return Physics2D.OverlapCircleAll(transform.position, m_DetectionDistance, followerMask);
     }
 
@@ -132,6 +142,14 @@ public class EnemyFollow : MonoBehaviour
         {
             float angle = Mathf.Atan2(m_direction.y, m_direction.x) * Mathf.Rad2Deg - 90f;
             rb.rotation = Mathf.LerpAngle(rb.rotation, angle, Time.deltaTime * m_RotationSpeed);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & ignoreLayer) != 0)
+        {
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+            return;
         }
     }
 }

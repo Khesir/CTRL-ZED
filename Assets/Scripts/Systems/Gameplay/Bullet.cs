@@ -27,7 +27,8 @@ public class Bullet : MonoBehaviour
         // Check if the collided object is in the ignore layer
         if (((1 << collision.gameObject.layer) & ignoreLayer) != 0)
         {
-            // Do nothing – ignore collision
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+
             return;
         }
 
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour
 
         // Optionally, damage enemy here if tagged or has enemy component
         // Example:
-        // var enemy = collision.gameObject.GetComponent<Enemy>();
-        // if (enemy != null) enemy.TakeDamage(damage);
+        var enemy = collision.gameObject.GetComponent<Enemy>();
+        if (enemy != null) enemy.TakeDamage();
     }
 }
