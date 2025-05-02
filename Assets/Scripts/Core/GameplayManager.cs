@@ -6,6 +6,7 @@ using Cinemachine;
 
 public class GameplayManager : MonoBehaviour
 {
+    public GameManager Menu_istance;
     public static GameplayManager Instance { get; private set; }
     public List<Follower> followers = new List<Follower>();
     [SerializeField] private int currentFollowerIndex = 0;
@@ -25,6 +26,7 @@ public class GameplayManager : MonoBehaviour
     }
     private void Start()
     {
+        Menu_istance = GameManager.Instance;
         SwitchControlledFollower(currentFollowerIndex);
     }
 
