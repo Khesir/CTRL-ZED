@@ -176,7 +176,7 @@ MonoBehaviour:
   m_RotationSpeed: 8
   m_StopDistance: 5
   m_DetectionDistance: 1
-  m_SeparationWeight: 3
+  m_SeparationWeight: 1
   m_AlignmentWeight: 1
   m_CohesionWeight: 1
   target: {fileID: 0}
@@ -185,7 +185,7 @@ MonoBehaviour:
   alwaysFollow: 0
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 2147483904
 --- !u!114 &5609318363593385550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 2347741762400089613, guid: 6271160c99ccae74dad792ddd7fce5fb, type: 3}
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 0

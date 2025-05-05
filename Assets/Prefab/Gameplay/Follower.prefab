@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4388295539255147988}
   m_Layer: 7
   m_Name: Follower
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   moveSpeed: 5
   rb: {fileID: 6872028420862429024}
   weapon: {fileID: 8689695285108899337}
+  playerhealth: 0
   dashSpeed: 12
   dashDuration: 0.2
   dashCooldown: 1
@@ -132,7 +133,7 @@ MonoBehaviour:
   isControlledPlayer: 0
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 896
+    m_Bits: 768
 --- !u!50 &6872028420862429024
 Rigidbody2D:
   serializedVersion: 4

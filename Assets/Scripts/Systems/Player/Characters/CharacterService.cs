@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,25 @@ using UnityEngine;
 public class CharacterService
 {
     private CharacterData _instance;
+    public event Action onDamage;
+    public float currentHealth;
     public CharacterService(CharacterData character)
     {
         _instance = character;
+        currentHealth = GetMaxHealth();
+    }
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        onDamage?.Invoke();
+    }
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
     }
     public CharacterData GetInstance()
     {

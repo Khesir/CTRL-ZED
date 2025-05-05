@@ -5,6 +5,7 @@ using UnityEngine;
 using Cinemachine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UnityEngine.AI;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -12,11 +13,11 @@ public class GameplayManager : MonoBehaviour
     public static GameplayManager Instance { get; private set; }
     public GameObject followerPrefab;
     public Transform Spawnpoint;
+    public GameplayUIController gameplayUI;
     [SerializeField] public List<Follower> followers = new List<Follower>();
 
     [SerializeField] private int currentFollowerIndex = 0;
     public Transform globalTargetPlayer;
-
     public CinemachineVirtualCamera virtualCamera;
     public FollowerSpawn spawn;
     public event Action switchUser;
@@ -42,7 +43,7 @@ public class GameplayManager : MonoBehaviour
         // Set Initial game state
         isGameActive = false;
 
-        Debug.Log("[GameManage] Game Manager Initialized");
+        Debug.Log("[GameplayManage] Gameplay Manager Initialized");
         _isInitialized = true;
     }
     public async UniTask Setup()
@@ -59,12 +60,18 @@ public class GameplayManager : MonoBehaviour
     }
     void Update()
     {
+        Instance.gameplayUI.TriggerTimer(); // Attack Timer
         for (int i = 0; i < followers.Count; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
                 if (i != currentFollowerIndex)
                 {
+                    var character = followers[i].GetComponent<PlayerController>().playerData;
+                    if (character.IsDead())
+                    {
+                        return;
+                    }
                     SwitchControlledFollower(i);
                     switchUser.Invoke();
                 }
@@ -81,13 +88,14 @@ public class GameplayManager : MonoBehaviour
             globalTargetPlayer = newLeader.transform;
             virtualCamera.Follow = newLeader.transform;
 
-
+            // Handles UI
+            var characterService = newLeader.GetComponent<PlayerController>().playerData;
+            Instance.gameplayUI.characterListUI.hotbar1.GetComponent<CharacterDetails>().Initialize(characterService);
             for (int i = 0; i < followers.Count; i++)
             {
                 if (i == newIndex)
                 {
                     followers[i].SetTarget();
-
                 }
                 else
                 {
@@ -101,5 +109,9 @@ public class GameplayManager : MonoBehaviour
     public void AddFollower(Follower data)
     {
         followers.Add(data);
+    }
+    private void SetupUI()
+    {
+        TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
     }
 }

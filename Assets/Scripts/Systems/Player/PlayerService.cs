@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerService
 {
     private PlayerData data;
+    public float currentHealth;
     public PlayerService(PlayerData data)
     {
         this.data = data;
+        currentHealth = this.data.osHealth;
     }
     // public PlayerData GetData()
     // {
@@ -30,6 +32,18 @@ public class PlayerService
         {
             return false;
         }
+    }
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+    }
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public bool isDead()
+    {
+        return currentHealth <= 0;
     }
 }
 

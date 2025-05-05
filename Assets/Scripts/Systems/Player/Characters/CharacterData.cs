@@ -9,7 +9,7 @@ public class CharacterData
     public string id;
     public CharacterConfig baseData;
 
-    public float currentHealth;
+    public float maxHealth;
     public string name;
     public int level = 1;
     public List<int> assignedTeam = new();
@@ -19,8 +19,8 @@ public class CharacterData
         id = Guid.NewGuid().ToString();
         baseData = templateData;
         name = NameGenerator.GetRandomName();
-        currentHealth = baseData.baseHealth;
         level = 1;
+        maxHealth = baseData.baseHealth * level;
     }
     // This is optional and situational, currently being used on StatsUI
     public Dictionary<string, int> GetStatMap()

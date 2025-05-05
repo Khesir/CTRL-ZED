@@ -185,7 +185,7 @@ MonoBehaviour:
   alwaysFollow: 0
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 2147483904
 --- !u!114 &8770913376673084614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 2347741762400089613, guid: 6271160c99ccae74dad792ddd7fce5fb, type: 3}
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 0

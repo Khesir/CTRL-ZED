@@ -63,15 +63,18 @@ public class GameInitiator : MonoBehaviour
     }
     private async UniTask CreateObjects()
     {
-        // Creation of game objects e.g. UI, player background, spawinning of enemies
+        // Creation of game objects e.g. UI, player background, spawinning of enemies4
+        GenerateTestData();
+
         await UniTask.CompletedTask;
 
     }
     private async UniTask Preparegame()
     {
+
         // Preparation -- Setting up, states of characters and more
-        GenerateTestData();
         await GameplayManager.Instance.Setup();
+        await GameplayManager.Instance.gameplayUI.Initialize();
         await UniTask.CompletedTask;
     }
     private void BeginGame()

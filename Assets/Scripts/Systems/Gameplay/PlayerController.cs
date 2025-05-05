@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public weapon weapon;
-    public CharacterData activePlayer;
+    public CharacterService playerData;
     Vector2 moveDirection;
     Vector2 mousePosition;
 
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private float dashTime;
     private float lastDashTime;
+
     // Update is called once per frame
     void Update()
     {
@@ -73,10 +74,6 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        activePlayer.currentHealth -= damage;
-    }
-    public void SetActiveCharacter(CharacterData characterData)
-    {
-        activePlayer = characterData;
+        playerData.TakeDamage(damage);
     }
 }

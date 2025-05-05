@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FollowerSpawn : MonoBehaviour
 {
@@ -16,11 +17,17 @@ public class FollowerSpawn : MonoBehaviour
             Vector3 spawnPosition = new Vector3(
                 spawnArea.position.x + randomCircle.x,
                 spawnArea.position.y,
-                spawnArea.position.z + randomCircle.y
+                0f
             );
 
-            var go = Instantiate(followerPrefab, spawnPosition, Quaternion.identity);
-            GameplayManager.Instance.AddFollower(go.GetComponent<Follower>());
+            var go = Instantiate(followerPrefab, spawnPosition, transform.rotation);
+            var follower = go.GetComponent<Follower>();
+            var playerController = go.GetComponent<PlayerController>();
+            var img = go.GetComponent<SpriteRenderer>();
+            img.sprite = characterService.GetInstance().baseData.ship;
+            follower.characterData = characterService;
+            playerController.playerData = characterService;
+            GameplayManager.Instance.AddFollower(follower);
         }
     }
 

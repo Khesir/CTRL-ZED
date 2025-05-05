@@ -9,6 +9,7 @@ public class Follower : MonoBehaviour
     private Rigidbody2D targetRb;
     public Rigidbody2D rb;
     public CharacterService characterData;
+    public event Action onChangeSupplier;
 
     [Header("Wandering Settings")]
     public float normalFollowDistance = 2f;
@@ -52,6 +53,14 @@ public class Follower : MonoBehaviour
         var globalTarget = GameplayManager.Instance.globalTargetPlayer;
         target = globalTarget;
         targetRb = globalTarget.GetComponent<Rigidbody2D>();
+    }
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 
     void FixedUpdate()
