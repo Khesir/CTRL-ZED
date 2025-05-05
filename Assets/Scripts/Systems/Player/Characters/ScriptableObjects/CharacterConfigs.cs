@@ -8,7 +8,7 @@ public class CharacterConfig : ScriptableObject
     public Sprite icon;
     public string className;
     public string charactername;
-    public GameObject prefab;
+    public Sprite ship;
 
     [Header("Stats")]
     public int baseAttack = 1;

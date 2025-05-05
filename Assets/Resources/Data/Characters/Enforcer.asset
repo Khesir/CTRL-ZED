@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 6b7306209bd285141ac3171adebc6daf, type: 3}
   className: Enforcer Warrior
   charactername: 
-  prefab: {fileID: 0}
+  ship: {fileID: 21300000, guid: a60099fd5c271a546a6d84d5c2871cc2, type: 3}
   baseAttack: 7
   baseHealth: 5
   defense: 4

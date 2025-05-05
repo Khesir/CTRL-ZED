@@ -36,6 +36,18 @@ public class TeamManager : MonoBehaviour
     {
         return activeTeam;
     }
+    public void SetActiveTeam(int index)
+    {
+        if (index >= 0 && index < teams.Count)
+        {
+            activeTeam = teams[index];
+            Debug.Log($"{index} Team set as active team");
+        }
+        else
+        {
+            Debug.Log("Index out of scope");
+        }
+    }
     public List<TeamService> GetTeams()
     {
         return teams;

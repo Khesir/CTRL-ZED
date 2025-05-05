@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 9d04cbcc2439b174c964b03007336e26, type: 3}
   className: Hacker
   charactername: 
-  prefab: {fileID: 0}
+  ship: {fileID: 21300000, guid: 7e792124a2d7c62479cc28cfcacc0c4f, type: 3}
   baseAttack: 8
   baseHealth: 3
   defense: 2

@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 81fd8112e80646848ba76e3ef93ad8f2, type: 3}
   className: Analyst Ranger
   charactername: 
-  prefab: {fileID: 0}
+  ship: {fileID: 21300000, guid: d583d8cdaac53ca4f9b24f77e5d198f0, type: 3}
   baseAttack: 8
   baseHealth: 3
   defense: 2
