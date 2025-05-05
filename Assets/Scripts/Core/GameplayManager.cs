@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System.Linq;
 
 public class GameplayManager : MonoBehaviour
 {
     public GameManager Menu_istance;
     public static GameplayManager Instance { get; private set; }
-    public List<Follower> followers = new List<Follower>();
+    public GameObject followerPrefab;
+    public Transform Spawnpoint;
+    [SerializeField] private List<Follower> followers = new List<Follower>();
+
     [SerializeField] private int currentFollowerIndex = 0;
     public Transform globalTargetPlayer;
     public event Action switchUser;
@@ -27,6 +31,16 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         Menu_istance = GameManager.Instance;
+        if (followers.Count == 0)
+        {
+            TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
+            List<CharacterService> members = team.GetMembers();
+            foreach (CharacterService character in members)
+            {
+                GameObject follower = Instantiate(followerPrefab, Spawnpoint.position, Quaternion.identity);
+                follower.GetComponent<Follower>().characterData = character;
+            }
+        }
         SwitchControlledFollower(currentFollowerIndex);
     }
 
@@ -54,6 +68,7 @@ public class GameplayManager : MonoBehaviour
                 if (i == newIndex)
                 {
                     followers[i].SetTarget();
+
                 }
                 else
                 {

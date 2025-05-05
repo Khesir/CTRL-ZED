@@ -2,19 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterService : MonoBehaviour
+public class CharacterService
 {
     private CharacterData _instance;
+    public CharacterService(CharacterData character)
+    {
+        _instance = character;
+    }
     public CharacterData GetInstance()
     {
         return _instance;
     }
-    public Response<CharacterData> CreateCharacter(CharacterConfig template)
+    public void CreateCharacter(CharacterConfig template)
     {
         _instance = new CharacterData(template);
-        return Response<CharacterData>.Success("Created Character", _instance);
     }
     // Stats 
+    public string GetName()
+    {
+        return _instance.name;
+    }
     public int GetLevel()
     {
         return _instance.level;

@@ -10,7 +10,19 @@ public class TeamBuildingController : MonoBehaviour
     [SerializeField] private Transform parentLayout;
     private void OnEnable()
     {
-        List<Team> teamData = GameManager.Instance.TeamManager.GetTeams();
+        Populate();
+        GameManager.Instance.CharacterManager.onInventoryChange += inventoryUI.RefreshUI;
+        GameManager.Instance.TeamManager.onTeamChange += RefreshUI;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.CharacterManager.onInventoryChange -= inventoryUI.RefreshUI;
+        GameManager.Instance.TeamManager.onTeamChange -= RefreshUI;
+    }
+    private void Populate()
+    {
+        List<TeamService> teamData = GameManager.Instance.TeamManager.GetTeams();
+
         Clear();
         for (int i = 0; i < teamData.Count; i++)
         {
@@ -20,18 +32,17 @@ public class TeamBuildingController : MonoBehaviour
             teamContainer.Setup(instance, i);
         }
         Instantiate(createTeamPrefab, parentLayout);
-        GameManager.Instance.PlayerManager.onInventoryChange += inventoryUI.RefreshUI;
     }
-    private void OnDisable()
-    {
 
-        GameManager.Instance.PlayerManager.onInventoryChange -= inventoryUI.RefreshUI;
-    }
     public void Clear()
     {
         foreach (Transform child in parentLayout)
         {
             Destroy(child.gameObject);
         }
+    }
+    public void RefreshUI()
+    {
+        Populate();
     }
 }

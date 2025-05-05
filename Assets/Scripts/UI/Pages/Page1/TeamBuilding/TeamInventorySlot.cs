@@ -6,15 +6,16 @@ using UnityEngine.EventSystems;
 public class TeamInventorySlot : MonoBehaviour, IDropHandler
 {
     public GameObject draggableItemPrefab;
-    public int teamId;
     public int slotIndex;
+    public int teamId;
+    public TeamService teamService;
     public void OnDrop(PointerEventData eventData)
     {
         if (transform.childCount > 0) return;
 
         GameObject dropped = eventData.pointerDrag;
         DraggableItem originalDraggable = dropped.GetComponent<DraggableItem>();
-        CharacterData transferredCharacter = originalDraggable.instance;
+        CharacterService transferredCharacter = originalDraggable.instance;
         var manager = GameManager.Instance.TeamManager;
         if (originalDraggable.isExternal)
         {
@@ -27,7 +28,7 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
             DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
             newDraggable.Setup(transferredCharacter);
 
-            Debug.Log("Transferred: " + transferredCharacter.name);
+            Debug.Log("Transferred: " + transferredCharacter.GetName());
 
         }
         else

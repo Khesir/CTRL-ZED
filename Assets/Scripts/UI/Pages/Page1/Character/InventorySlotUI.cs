@@ -15,16 +15,17 @@ public class InventorySlotUI : MonoBehaviour
     public TMP_Text statstext;
     public TMP_Text level;
     public Button actionButton;
-    public CharacterData instance;
+    public CharacterService instance;
     public DraggableItem draggableItem;
     [HideInInspector] public DetailsController detailsController;
-    public void Setup(CharacterData character)
+    public void Setup(CharacterService data)
     {
-        instance = character;
+        var character = data.GetInstance();
+        instance = data;
         className.text = character.baseData.className;
         nameText.text = character.name;
         level.text = $"Lvl. {character.level}";
-        draggableItem.Setup(character, true);
+        draggableItem.Setup(data, true);
         actionButton.onClick.RemoveAllListeners();
         actionButton.onClick.AddListener(OnActionButtonClicked);
     }

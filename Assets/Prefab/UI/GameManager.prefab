@@ -44,9 +44,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9074abe5928f22d4e8162efe69d178aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterTemplates:
-  - {fileID: 11400000, guid: d449bea064b5e1b4a8f733bd593e3b74, type: 2}
-  - {fileID: 11400000, guid: 85889ed8606208b44a5e99c67948cbea, type: 2}
+--- !u!1 &855849977772135484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2366266103365999645}
+  - component: {fileID: 7564472058501488085}
+  m_Layer: 0
+  m_Name: TeamManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2366266103365999645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855849977772135484}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5291838021709045631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7564472058501488085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855849977772135484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285844c396b8cf449ba568f1378d6767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6722084064084295959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7887136532442768237}
+  - component: {fileID: 9189210527630295831}
+  m_Layer: 0
+  m_Name: PlayerDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7887136532442768237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722084064084295959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5291838021709045631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9189210527630295831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722084064084295959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73bd766963e62d04da1788b55a77d025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filePath: /save/player
 --- !u!1 &7123315364406313703
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +165,8 @@ Transform:
   m_Children:
   - {fileID: 4215886758860550852}
   - {fileID: 1761778734134651018}
+  - {fileID: 2366266103365999645}
+  - {fileID: 7887136532442768237}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1076975765166544515
@@ -93,8 +181,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f15968111cd2a46a5b38d196c725d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 0}
-  playerManager: {fileID: 0}
+  characterTemplates:
+  - {fileID: 11400000, guid: d449bea064b5e1b4a8f733bd593e3b74, type: 2}
+  - {fileID: 11400000, guid: 7552680d80bab2741b688d15ab3a8e9a, type: 2}
+  - {fileID: 11400000, guid: c738731cbd346824692884f168c2f935, type: 2}
+  - {fileID: 11400000, guid: 85889ed8606208b44a5e99c67948cbea, type: 2}
+  characterManager: {fileID: 2862626110375337898}
+  playerManager: {fileID: 7302844849306975880}
+  teamManager: {fileID: 7564472058501488085}
+  playerDataManager: {fileID: 9189210527630295831}
   isGameActive: 0
   _isInitialized: 0
 --- !u!1 &7815078952498348954

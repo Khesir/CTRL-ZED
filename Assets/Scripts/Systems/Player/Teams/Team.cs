@@ -7,7 +7,7 @@ using UnityEngine;
 public class Team
 {
   public string teamName;
-  public List<CharacterData> characters = new();
+  public List<CharacterService> characters = new();
   public int maxSize = 4;
   public Team(string name)
   {

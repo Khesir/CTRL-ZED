@@ -4,42 +4,32 @@ using UnityEngine;
 
 public class PlayerService
 {
-    private PlayerData _data;
-
+    private PlayerData data;
     public PlayerService(PlayerData data)
     {
-        _data = data;
+        this.data = data;
     }
-    public PlayerData GetData()
-    {
-        return _data;
-    }
-    public bool HasCharacter(CharacterData instance) =>
-        _data.ownedCharacters.Contains(instance);
+    // public PlayerData GetData()
+    // {
+    //     return _data;
+    // }
+    // public bool HasCharacter(CharacterData instance) =>
+    //     _data.ownedCharacters.Contains(instance);
     public int GetPlayerCoins()
     {
-        return _data.coins;
+        return data.coins;
     }
-    public void AddCharacter(CharacterData character)
+    public bool SpendCoins(int amount)
     {
-        _data.ownedCharacters.Add(character);
-    }
-    public List<CharacterData> GetOwnedCharacters()
-    {
-        return _data.ownedCharacters;
-    }
-    public PurchaseResult PurchaseCharacter(CharacterConfig character)
-    {
-
-        if (_data.coins < character.price)
+        if (amount <= data.coins)
         {
-            return new PurchaseResult(false, "Not enough coins");
+            data.coins -= amount;
+            return true;
         }
-
-        _data.coins -= character.price;
-        _data.ownedCharacters.Add(new CharacterData(character));
-
-        return new PurchaseResult(true, "Purchase succesfull");
+        else
+        {
+            return false;
+        }
     }
 }
 

@@ -9,11 +9,8 @@ public class BuyPageController : MonoBehaviour
     [SerializeField] private CoinCounter coinCounter;
     private void OnEnable()
     {
-        var playerManager = GameManager.Instance.PlayerManager;
-        var characterManager = GameManager.Instance.CharacterManager;
-
-        buyInventoryUI.Populate(characterManager.characterTemplates);
-        coinCounter.Setup(playerManager.GetPlayerCoins());
+        buyInventoryUI.Populate(GameManager.Instance.characterTemplates);
+        coinCounter.Setup(GameManager.Instance.PlayerManager.GetPlayerCoins());
 
         GameManager.Instance.PlayerManager.onCoinsChanged += coinCounter.UpdateCoins;
     }

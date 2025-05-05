@@ -10,36 +10,20 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] private PlayerService playerService;
 
     public event Action onCoinsChanged;
-    public event Action onInventoryChange;
-    public async UniTask Initialize(PlayerData playerData)
+    public async UniTask Initialize(PlayerData data)
     {
-        playerService = new PlayerService(playerData);
+        playerService = new PlayerService(data);
 
         await UniTask.CompletedTask;
-    }
-    public List<CharacterData> GetOwnedCharacters()
-    {
-        return playerService.GetOwnedCharacters();
     }
     public int GetPlayerCoins()
     {
         return playerService.GetPlayerCoins();
     }
-    public void AddCharacter(CharacterData characterData)
+    public bool SpendCoins(int amount)
     {
-        playerService.AddCharacter(characterData);
-    }
-    public PurchaseResult PurchaseCharacter(CharacterConfig character)
-    {
-        PurchaseResult res = playerService.PurchaseCharacter(character);
-
-        if (res.Success)
-        {
-            onCoinsChanged?.Invoke();
-            onInventoryChange?.Invoke();
-        }
-
-        return res;
+        var status = playerService.SpendCoins(amount);
+        onCoinsChanged?.Invoke();
+        return status;
     }
 }
-

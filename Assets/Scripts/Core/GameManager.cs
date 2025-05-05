@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,12 +8,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
-    public CharacterManager CharacterManager { get; private set; }
     public PlayerDataManager PlayerDataManager { get; private set; }
     public PlayerManager PlayerManager { get; private set; }
     public TeamManager TeamManager { get; private set; }
-
+    public CharacterManager CharacterManager { get; private set; }
+    public List<CharacterConfig> characterTemplates;
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerDataManager playerDataManager;
     public bool isGameActive;
     public bool _isInitialized = false;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,16 +47,14 @@ public class GameManager : MonoBehaviour
     {
         // InventoryManager = Instantiate(inventoryManager);
         PlayerDataManager = playerDataManager;
-        PlayerData saveData = await PlayerDataManager.Initialize();
+        SaveData saveData = await PlayerDataManager.Initialize();
+
+        await playerManager.Initialize(saveData.playerData);
+        await teamManager.Initialize(saveData.teams);
+        await characterManager.Initialize(saveData.ownedCharacters);
 
         PlayerManager = playerManager;
-        await PlayerManager.Initialize(saveData);
-
         CharacterManager = characterManager;
-        await CharacterManager.Initialize(PlayerManager);
-
         TeamManager = teamManager;
-        await TeamManager.Initialize(saveData);
-        Debug.Log(TeamManager.GetTeams().Count);
     }
 }

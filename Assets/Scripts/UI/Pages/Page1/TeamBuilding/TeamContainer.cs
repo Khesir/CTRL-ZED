@@ -10,19 +10,20 @@ public class TeamContainer : MonoBehaviour
     public GameObject teamSlotPrefab;
     public GameObject teamDraggrable;
     public List<GameObject> teamSlot;
-    public Team instance;
-
-    public void Setup(Team team, int index)
+    public TeamService instance;
+    public int index;
+    public void Setup(TeamService team, int index)
     {
         instance = team;
-        teamName.text = team.teamName;
-        for (int i = 0; i < team.characters.Count; i++)
+        teamName.text = team.GetTeamName();
+        var members = team.GetMembers();
+        for (int i = 0; i < team.GetMembers().Count; i++)
         {
-            Debug.Log(team.characters.Count);
-            var slot = instance.characters[i];
-
+            var slot = members[i];
+            this.index = index;
             var cardGO = Instantiate(teamSlotPrefab, content);
             var slotData = cardGO.GetComponent<TeamInventorySlot>();
+            slotData.teamService = instance;
             slotData.teamId = index;
             slotData.slotIndex = i;
             teamSlot.Add(cardGO);

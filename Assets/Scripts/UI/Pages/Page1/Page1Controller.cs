@@ -10,18 +10,16 @@ public class Page1Controller : MonoBehaviour
 
     private void OnEnable()
     {
-        var manager = GameManager.Instance.PlayerManager;
-
         inventoryUI.Populate();
-        characterCounter.Setup(manager.GetOwnedCharacters().Count);
+        characterCounter.Setup(GameManager.Instance.CharacterManager.GetCharacters().Count);
 
-        GameManager.Instance.PlayerManager.onInventoryChange += characterCounter.UpdateCounter;
-        GameManager.Instance.PlayerManager.onInventoryChange += inventoryUI.RefreshUI;
+        GameManager.Instance.CharacterManager.onInventoryChange += characterCounter.UpdateCounter;
+        GameManager.Instance.CharacterManager.onInventoryChange += inventoryUI.RefreshUI;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.PlayerManager.onInventoryChange -= characterCounter.UpdateCounter;
-        GameManager.Instance.PlayerManager.onInventoryChange -= inventoryUI.RefreshUI;
+        GameManager.Instance.CharacterManager.onInventoryChange -= characterCounter.UpdateCounter;
+        GameManager.Instance.CharacterManager.onInventoryChange -= inventoryUI.RefreshUI;
     }
 }

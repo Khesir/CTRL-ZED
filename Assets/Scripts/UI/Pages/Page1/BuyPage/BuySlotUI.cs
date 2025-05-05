@@ -24,15 +24,16 @@ public class BuySlotUI : MonoBehaviour
 
   private void OnActionButtonClicked()
   {
-    var result = GameManager.Instance.PlayerManager.PurchaseCharacter(instance);
+    var result = GameManager.Instance.PlayerManager.SpendCoins(instance.price);
 
-    if (result.Success)
+    if (result)
     {
+      GameManager.Instance.CharacterManager.CreateCharacter(instance);
       Debug.Log("Purchase successfull");
     }
     else
     {
-      Debug.LogWarning(result.Message);
+      Debug.LogWarning("Not enough coins");
     }
   }
 }

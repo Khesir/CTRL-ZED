@@ -8,6 +8,8 @@ public class Follower : MonoBehaviour
     public Transform target;
     private Rigidbody2D targetRb;
     public Rigidbody2D rb;
+    public CharacterService characterData;
+
     [Header("Wandering Settings")]
     public float normalFollowDistance = 2f;
     public float maxWanderRadius = 3f;
@@ -77,26 +79,22 @@ public class Follower : MonoBehaviour
         bool isPlayerMoving = targetRb.velocity.magnitude > 0.1f;
         if (isPlayerMoving)
         {
-            // Reset idle timer if player is moving
             playerIdleTime = 0f;
             isIdle = false;
         }
         else
         {
-            // If player is idle, accumulate idle time
             playerIdleTime += Time.fixedDeltaTime;
 
             if (playerIdleTime >= maxIdleTime)
             {
-                // Player has been idle long enough, follower should move
                 if (isIdle)
                 {
-                    // Stop idling immediately
                     isIdle = false;
                     idleTimer = 0f;
                 }
                 MoveTowardsPlayer();
-                return; // Important: skip wandering when moving toward player
+                return;
             }
         }
 
@@ -115,7 +113,6 @@ public class Follower : MonoBehaviour
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
         if (distanceToTarget > normalFollowDistance)
         {
-            // Calculate dynamic speed
             float minSpeed = returnSpeed * 0.5f;
             float maxSpeed = returnSpeed;
             float maxFollowDistance = tooFarDistance * 2f;
@@ -137,13 +134,11 @@ public class Follower : MonoBehaviour
             idleTimer -= Time.fixedDeltaTime;
             if (idleTimer <= 0f)
             {
-                // Done idling, start moving again
                 PickNewWanderPosition();
                 isIdle = false;
             }
             else
             {
-                // While idling, stay still
                 rb.velocity = Vector2.zero;
             }
         }
@@ -152,8 +147,7 @@ public class Follower : MonoBehaviour
             changeDirectionTimer -= Time.fixedDeltaTime;
             if (changeDirectionTimer <= 0)
             {
-                // Instead of always picking new move, sometimes start idling
-                if (UnityEngine.Random.value < 0.5f) // 50% chance to idle
+                if (UnityEngine.Random.value < 0.5f)
                 {
                     StartIdling();
                 }

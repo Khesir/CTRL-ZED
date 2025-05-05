@@ -9,13 +9,14 @@ public class StatsUI : MonoBehaviour
     public GameObject prefab;
     public TMP_Text className;
     public TMP_Text characterName;
-    public void Populate(CharacterData data)
+    public void Populate(CharacterService data)
     {
-        characterName.text = data.name;
-        className.text = data.baseData.className;
+        var character = data.GetInstance();
+        characterName.text = character.name;
+        className.text = character.baseData.className;
 
         Clear();
-        var statsMap = data.GetStatMap();
+        var statsMap = character.GetStatMap();
         foreach (var instance in statsMap)
         {
             var statCard = Instantiate(prefab, content);

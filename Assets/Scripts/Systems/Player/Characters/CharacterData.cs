@@ -9,7 +9,7 @@ public class CharacterData
     public string id;
     public CharacterConfig baseData;
 
-    public int currentHealth;
+    public float currentHealth;
     public string name;
     public int level = 1;
     public List<int> assignedTeam = new();

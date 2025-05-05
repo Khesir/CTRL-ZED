@@ -10,19 +10,20 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
-    [HideInInspector] public CharacterData instance;
+    [HideInInspector] public CharacterService instance;
     public bool isExternal;
 
     public TMP_Text characterName;
     public TMP_Text className;
     public TMP_Text level;
-    public void Setup(CharacterData data, bool external = false)
+    public void Setup(CharacterService data, bool external = false)
     {
         instance = data;
+        var character = data.GetInstance();
         isExternal = external;
-        image.sprite = data.baseData.icon;
+        image.sprite = character.baseData.icon;
         if (!external)
-            setDetails(data);
+            setDetails(character);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

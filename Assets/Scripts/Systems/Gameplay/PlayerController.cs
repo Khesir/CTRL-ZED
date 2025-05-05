@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public weapon weapon;
+    public CharacterData activePlayer;
     Vector2 moveDirection;
     Vector2 mousePosition;
 
@@ -69,5 +70,13 @@ public class PlayerController : MonoBehaviour
     private void EndDash()
     {
         isDashing = false;
+    }
+    public void TakeDamage(float damage)
+    {
+        activePlayer.currentHealth -= damage;
+    }
+    public void SetActiveCharacter(CharacterData characterData)
+    {
+        activePlayer = characterData;
     }
 }

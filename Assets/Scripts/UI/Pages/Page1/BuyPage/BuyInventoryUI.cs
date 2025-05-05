@@ -16,7 +16,6 @@ public class BuyInventoryUI : MonoBehaviour
     foreach (var instance in characterData)
     {
       var card = Instantiate(slotPrefab, content);
-      Debug.Log("Card instantiated: " + card.name);
 
       var cardUI = card.GetComponent<BuySlotUI>();
       if (cardUI == null)
