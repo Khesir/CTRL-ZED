@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterListUI : MonoBehaviour
 {
   public Transform content;
+  public GameObject CharacterIcons;
   public GameObject CharacterPrefab;
 
   public void Setup(List<CharacterData> characters)
@@ -23,5 +24,9 @@ public class CharacterListUI : MonoBehaviour
     {
       Destroy(child.gameObject);
     }
+  }
+  public void OnClose()
+  {
+    CharacterIcons.SetActive(true);
   }
 }

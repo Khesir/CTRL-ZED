@@ -71,20 +71,22 @@ public class TeamManager : MonoBehaviour
     }
     public void AssignedCharacterToSlot(int teamIndex, int slotIndex, CharacterService character)
     {
-        if (character == null || GameManager.Instance.CharacterManager.GetCharacters().Contains(character))
+        if (character == null || !GameManager.Instance.CharacterManager.GetCharacters().Contains(character))
         {
             Debug.LogError("You don't own the character");
+            return;
         }
         var team = GetTeam(teamIndex);
         if (team != null && slotIndex < team.GetMembers().Count)
         {
             team.GetMembers()[slotIndex] = character;
             Debug.Log($"Assigned Character to Team {teamIndex} Slot {slotIndex}");
+            return;
         }
         else
         {
-
             Debug.Log("Position Exceeded");
+            return;
         }
     }
     public Response<object> RemoveCharacterFromSlot(int teamIndex, int slotIndex)

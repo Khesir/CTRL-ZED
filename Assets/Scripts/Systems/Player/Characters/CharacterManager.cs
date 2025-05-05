@@ -23,9 +23,9 @@ public class CharacterManager : MonoBehaviour
     }
     public void CreateCharacter(CharacterConfig instance)
     {
-
         var newCharacter = new CharacterData(instance);
         characters.Add(new CharacterService(newCharacter));
         onInventoryChange?.Invoke();
+        Debug.Log("Created Character Services");
     }
 }

@@ -33,10 +33,7 @@ public class Follower : MonoBehaviour
 
     private PlayerController controller;
     public LayerMask ignoreLayer;
-    private void Start()
-    {
-        GameplayManager.Instance.switchUser += ResetTarget;
-    }
+
     public void SetTarget()
     {
         if (controller == null) controller = GetComponent<PlayerController>();
@@ -52,17 +49,11 @@ public class Follower : MonoBehaviour
             isControlledPlayer = false;
             controller.enabled = false;
         }
+        var globalTarget = GameplayManager.Instance.globalTargetPlayer;
+        target = globalTarget;
+        targetRb = globalTarget.GetComponent<Rigidbody2D>();
     }
 
-    public void ResetTarget()
-    {
-        if (!isControlledPlayer)
-        {
-            var globalTarget = GameplayManager.Instance.globalTargetPlayer;
-            target = globalTarget;
-            targetRb = globalTarget.GetComponent<Rigidbody2D>();
-        }
-    }
     void FixedUpdate()
     {
         if (!isControlledPlayer)

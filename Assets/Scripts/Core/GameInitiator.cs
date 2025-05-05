@@ -13,6 +13,7 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Env _environment;
     [SerializeField] private GameManager _gameManager;
+    [SerializeField] private GameplayManager _gameplayManager;
     enum Env
     {
         Dev,
@@ -42,11 +43,13 @@ public class GameInitiator : MonoBehaviour
             _eventSystem = Instantiate(_eventSystem);
             _canvas = Instantiate(_canvas);
             _gameManager = Instantiate(_gameManager);
+            _gameplayManager = Instantiate(_gameplayManager);
         }
         else
         {
             // For Dev: Try to auto-locate scene objects
             if (_gameManager == null) _gameManager = FindObjectOfType<GameManager>();
+            if (_gameplayManager == null) _gameplayManager = FindObjectOfType<GameplayManager>();
             if (_mainCamera == null) _mainCamera = Camera.main;
             if (_eventSystem == null) _eventSystem = FindObjectOfType<EventSystem>();
             if (_canvas == null) _canvas = FindObjectOfType<Canvas>();
@@ -55,7 +58,8 @@ public class GameInitiator : MonoBehaviour
     private async UniTask IntializeObjects()
     {
         // Intiaalizing Game Data and other services 
-        await GameManager.Instance.Initialize();
+        if (_gameManager != null) await GameManager.Instance.Initialize();
+        if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
     }
     private async UniTask CreateObjects()
     {
@@ -67,6 +71,7 @@ public class GameInitiator : MonoBehaviour
     {
         // Preparation -- Setting up, states of characters and more
         GenerateTestData();
+        await GameplayManager.Instance.Setup();
         await UniTask.CompletedTask;
     }
     private void BeginGame()

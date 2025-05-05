@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class GameplayManager : MonoBehaviour
     public static GameplayManager Instance { get; private set; }
     public GameObject followerPrefab;
     public Transform Spawnpoint;
-    [SerializeField] private List<Follower> followers = new List<Follower>();
+    [SerializeField] public List<Follower> followers = new List<Follower>();
 
     [SerializeField] private int currentFollowerIndex = 0;
     public Transform globalTargetPlayer;
-    public event Action switchUser;
+
     public CinemachineVirtualCamera virtualCamera;
+    public FollowerSpawn spawn;
+    public event Action switchUser;
+    public bool isGameActive;
+    public bool _isInitialized = false;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,22 +33,30 @@ public class GameplayManager : MonoBehaviour
             Instance = this;
         }
     }
-    private void Start()
+    public async UniTask Initialize()
+    {
+        if (_isInitialized) return;
+
+        // Initialize the Managers and game systems
+        await UniTask.Yield();
+        // Set Initial game state
+        isGameActive = false;
+
+        Debug.Log("[GameManage] Game Manager Initialized");
+        _isInitialized = true;
+    }
+    public async UniTask Setup()
     {
         Menu_istance = GameManager.Instance;
         if (followers.Count == 0)
         {
             TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
             List<CharacterService> members = team.GetMembers();
-            foreach (CharacterService character in members)
-            {
-                GameObject follower = Instantiate(followerPrefab, Spawnpoint.position, Quaternion.identity);
-                follower.GetComponent<Follower>().characterData = character;
-            }
+            spawn.Setup(members);
         }
         SwitchControlledFollower(currentFollowerIndex);
+        await UniTask.CompletedTask;
     }
-
     void Update()
     {
         for (int i = 0; i < followers.Count; i++)
@@ -53,6 +66,7 @@ public class GameplayManager : MonoBehaviour
                 if (i != currentFollowerIndex)
                 {
                     SwitchControlledFollower(i);
+                    switchUser.Invoke();
                 }
             }
         }
@@ -61,7 +75,12 @@ public class GameplayManager : MonoBehaviour
     {
         if (newIndex >= 0 && newIndex < followers.Count)
         {
+
             var newLeader = followers[newIndex];
+            currentFollowerIndex = newIndex;
+            globalTargetPlayer = newLeader.transform;
+            virtualCamera.Follow = newLeader.transform;
+
 
             for (int i = 0; i < followers.Count; i++)
             {
@@ -76,12 +95,11 @@ public class GameplayManager : MonoBehaviour
                 }
             }
 
-            currentFollowerIndex = newIndex;
-            globalTargetPlayer = newLeader.transform;
-            virtualCamera.Follow = newLeader.transform;
-            switchUser.Invoke();
-
             Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
         }
+    }
+    public void AddFollower(Follower data)
+    {
+        followers.Add(data);
     }
 }

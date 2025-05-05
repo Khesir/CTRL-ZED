@@ -2554,8 +2554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50d003a774a700b488f669cce6cbf319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teams: []
-  characterIcon: {fileID: 962793387}
 --- !u!1 &1418764993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2565,6 +2563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1418764994}
+  - component: {fileID: 1418764995}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -2587,6 +2586,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1418764995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418764993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf41ff568418ccc438bf612fec7b242d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnArea: {fileID: 1418764994}
+  followerPrefab: {fileID: 1556851498346534052, guid: bfdeb6136bddc4944851357d6e24a373, type: 3}
+  spawnRadius: 3
 --- !u!1 &1428088405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2871,7 +2885,7 @@ GameObject:
   - component: {fileID: 1611873360}
   - component: {fileID: 1611873359}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameplayManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2896,6 +2910,7 @@ MonoBehaviour:
   currentFollowerIndex: 0
   globalTargetPlayer: {fileID: 0}
   virtualCamera: {fileID: 1144828850}
+  spawn: {fileID: 1418764995}
 --- !u!4 &1611873360
 Transform:
   m_ObjectHideFlags: 0
