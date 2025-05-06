@@ -11,14 +11,20 @@ public class GameplayUIController : MonoBehaviour
     public OSHPUI baseOSHP;
     private PlayerService playerService;
     public AttackTimer timer;
+    public WaveUIController waveUI;
     public async UniTask Initialize()
     {
         playerService = GameManager.Instance.PlayerManager.GetPlayerService();
         CharacterListInitialize();
         CharacterListIconInitialize();
         InitializeOSHP();
+        InitializeWaveUI();
         InitializeAttackTimer();
         await UniTask.CompletedTask;
+    }
+    private void InitializeWaveUI()
+    {
+        waveUI.Setup(playerService);
     }
     private void InitializeAttackTimer()
     {

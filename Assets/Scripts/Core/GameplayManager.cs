@@ -11,18 +11,20 @@ public class GameplayManager : MonoBehaviour
 {
     public GameManager Menu_istance;
     public static GameplayManager Instance { get; private set; }
+    [Header("Follower System")]
     public GameObject followerPrefab;
     public Transform Spawnpoint;
-    public GameplayUIController gameplayUI;
     [SerializeField] public List<Follower> followers = new List<Follower>();
-
     [SerializeField] private int currentFollowerIndex = 0;
     public Transform globalTargetPlayer;
     public CinemachineVirtualCamera virtualCamera;
-    public FollowerSpawn spawn;
     public event Action switchUser;
     public bool isGameActive;
     public bool _isInitialized = false;
+    [Header("Gameplay References")]
+    public FollowerSpawn spawn;
+    public GameplayUIController gameplayUI;
+    public EnemySpawner spawner;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -60,7 +62,6 @@ public class GameplayManager : MonoBehaviour
     }
     void Update()
     {
-        Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
         for (int i = 0; i < followers.Count; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))

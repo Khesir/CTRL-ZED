@@ -1,0 +1,154 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class EnemySpawner : MonoBehaviour
+{
+    [System.Serializable]
+    public class Wave
+    {
+        public List<GameObject> enemyPrefabs;
+        public float spawntTimer;
+        public float spawnInterval;
+        public float attackTimer;
+        public float minAttackTimerDamage;
+        public float maxAttackTimerDamage;
+    }
+    public List<Wave> waves;
+    public int waveNumber;
+    public Transform minPos;
+    public Transform maxPos;
+
+    public int playerKillCount;
+    public int killsToNextWave;
+    public int waveLevel = 1;
+    public bool startWave = false;
+    // Update is called once per frame
+    public event Action ReportedKill;
+    void Start()
+    {
+        playerKillCount = 0;
+        killsToNextWave = 20;
+    }
+    void Update()
+    {
+        if (startWave)
+        {
+            GameplayManager.Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
+            // Progress to next wave when enough kills are made
+            if (playerKillCount >= killsToNextWave)
+            {
+                ProgressToNextWave();
+            }
+
+            // Handle enemy spawning
+            waves[waveNumber].spawntTimer += Time.deltaTime;
+            if (waves[waveNumber].spawntTimer >= waves[waveNumber].spawnInterval)
+            {
+                waves[waveNumber].spawntTimer = 0;
+                SpawnEnemy();
+            }
+            // if (waves[waveNumber].spawnedEnemyCount >= waves[waveNumber].enemiesPerwave)
+            // {
+            //     waves[waveNumber].spawnedEnemyCount = 0;
+            //     if (waves[waveNumber].spawnInterval > 0.3f)
+            //     {
+            //         waves[waveNumber].spawnInterval *= 0.9f;
+            //     }
+            //     waveNumber++;
+            // }
+            // ENd of the wave flag
+            // if (waveNumber >= waves.Count)
+            // {
+            //     waveNumber = 0;
+            // }
+        }
+    }
+    private void ProgressToNextWave()
+    {
+        Debug.Log("Wave Clear");
+        KillRemainingEnemies();
+        startWave = false;
+        waveLevel++;
+        playerKillCount = 0;
+        killsToNextWave = 20 * waveLevel;
+        // Increase wave number or loop back
+        waveNumber++;
+        // if (waveNumber >= waves.Count)
+        // {
+        //     waveNumber = 0;
+        // }
+        // Increase difficulty
+        if (waves[waveNumber].spawnInterval > 0.3f)
+        {
+            waves[waveNumber].spawnInterval *= 0.9f;
+        }
+        GameplayManager.Instance.gameplayUI.timer.SetupTimer(waves[waveNumber].attackTimer);
+    }
+    private void SpawnEnemy()
+    {
+        var wave = waves[waveNumber];
+        var randomEnemyPrefab = wave.enemyPrefabs[Random.Range(0, wave.enemyPrefabs.Count)];
+        var go = Instantiate(randomEnemyPrefab, RandomSpawnPoint(), transform.rotation);
+        var enemyFollowTarget = go.GetComponent<EnemyFollow>();
+        enemyFollowTarget.target = GameplayManager.Instance.globalTargetPlayer;
+    }
+
+    private Vector2 RandomSpawnPoint()
+    {
+        Vector2 spawnPoint;
+        if (Random.Range(0, 1f) > 0.5)
+        {
+            spawnPoint.x = Random.Range(minPos.position.x, maxPos.position.x);
+            if (Random.Range(0f, 1f) > 0.5)
+            {
+                spawnPoint.y = minPos.position.y;
+
+            }
+            else
+            {
+                spawnPoint.y = maxPos.position.y;
+
+            }
+        }
+        else
+        {
+            spawnPoint.y = Random.Range(minPos.position.y, maxPos.position.y);
+            if (Random.Range(0f, 1f) > 0.5)
+            {
+                spawnPoint.x = minPos.position.x;
+
+            }
+            else
+            {
+                spawnPoint.x = maxPos.position.x;
+            }
+        }
+
+        return spawnPoint;
+    }
+    public void StartWave()
+    {
+        //Change Timer Settings
+        GameplayManager.Instance.gameplayUI.timer.SetupTimer(waves[waveNumber].attackTimer);
+        GameplayManager.Instance.gameplayUI.timer.SetupAttackTimerDmaage(waves[waveNumber].minAttackTimerDamage, waves[waveNumber].maxAttackTimerDamage);
+
+        startWave = true;
+        Debug.Log($"Start Wave {waveLevel}");
+    }
+    public void ReportKill(int count)
+    {
+        playerKillCount += count;
+        ReportedKill?.Invoke();
+    }
+    private void KillRemainingEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(notPlayer: true);
+        }
+    }
+}

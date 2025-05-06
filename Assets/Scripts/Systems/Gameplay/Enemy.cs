@@ -6,10 +6,12 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private GameObject destroyEffect;
     public LayerMask ignoreLayer;
-    public void TakeDamage()
+    public void TakeDamage(bool notPlayer = false)
     {
         Destroy(gameObject);
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
+        if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
+
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,7 +22,6 @@ public class Enemy : MonoBehaviour
         var player = collision.gameObject.GetComponent<PlayerController>();
         if (player != null && player.isActiveAndEnabled)
         {
-            Debug.Log($"Hit player: {player.gameObject.name}, Enabled: {player.isActiveAndEnabled}, Data: {player.playerData != null}");
             player.TakeDamage(1);
             Destroy(gameObject);
             Instantiate(destroyEffect, transform.position, Quaternion.identity);
