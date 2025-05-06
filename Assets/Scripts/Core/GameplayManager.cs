@@ -60,7 +60,7 @@ public class GameplayManager : MonoBehaviour
     }
     void Update()
     {
-        Instance.gameplayUI.TriggerTimer(); // Attack Timer
+        Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
         for (int i = 0; i < followers.Count; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))

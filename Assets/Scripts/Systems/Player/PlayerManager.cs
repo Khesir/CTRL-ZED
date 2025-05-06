@@ -16,6 +16,10 @@ public class PlayerManager : MonoBehaviour
 
         await UniTask.CompletedTask;
     }
+    public PlayerService GetPlayerService()
+    {
+        return playerService;
+    }
     public int GetPlayerCoins()
     {
         return playerService.GetPlayerCoins();

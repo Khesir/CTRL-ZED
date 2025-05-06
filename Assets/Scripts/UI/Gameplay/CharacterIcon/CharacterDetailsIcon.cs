@@ -14,7 +14,7 @@ public class CharacterDetailsIcon : MonoBehaviour
     public void Initialize(CharacterService data, int index)
     {
         instance = data;
-        indexText.text = index.ToString();
+        indexText.text = (index + 1).ToString();
         image.sprite = data.GetInstance().baseData.ship;
 
         data.onDamage += UpdateHealth;

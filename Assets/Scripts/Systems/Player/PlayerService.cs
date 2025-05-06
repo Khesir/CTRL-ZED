@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class PlayerService
 {
     private PlayerData data;
     public float currentHealth;
+    public event Action onDamage;
     public PlayerService(PlayerData data)
     {
         this.data = data;
@@ -33,9 +35,14 @@ public class PlayerService
             return false;
         }
     }
+    public float GetMaxHealth()
+    {
+        return data.osHealth;
+    }
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        onDamage?.Invoke();
     }
     public float GetCurrentHealth()
     {

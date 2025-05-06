@@ -8,39 +8,25 @@ public class GameplayUIController : MonoBehaviour
 {
     public CharacterListUI characterListUI;
     public CharacterListIconUI characterIcons;
-    public TMP_Text timerText;
-    public float timeLimit = 5f;
-    private float timer;
+    public OSHPUI baseOSHP;
+    private PlayerService playerService;
+    public AttackTimer timer;
     public async UniTask Initialize()
     {
+        playerService = GameManager.Instance.PlayerManager.GetPlayerService();
         CharacterListInitialize();
         CharacterListIconInitialize();
-        SetupAttackTimer();
+        InitializeOSHP();
+        InitializeAttackTimer();
         await UniTask.CompletedTask;
     }
-    private void SetupAttackTimer()
+    private void InitializeAttackTimer()
     {
-        timer = timeLimit;
+        timer.Setup(playerService);
     }
-    public void TriggerTimer()
+    private void InitializeOSHP()
     {
-        timer -= Time.deltaTime;
-
-        if (timer <= 0f)
-        {
-            Debug.Log("Attack Player OS");
-            timer = timeLimit;
-        }
-
-        UpdateAttackTimer(timer);
-    }
-    private void UpdateAttackTimer(float time)
-    {
-        int minutes = Mathf.FloorToInt(time / 60f);
-        int seconds = Mathf.FloorToInt(time % 60f);
-        int milliseconds = Mathf.FloorToInt((time * 1000f) % 1000f / 10f);
-
-        timerText.text = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+        baseOSHP.Setup(playerService);
     }
     private void CharacterListIconInitialize()
     {
