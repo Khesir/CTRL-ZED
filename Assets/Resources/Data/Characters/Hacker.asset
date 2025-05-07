@@ -20,5 +20,5 @@ MonoBehaviour:
   baseHealth: 3
   defense: 2
   dex: 7
-  level: 0
+  level: 1
   price: 1500

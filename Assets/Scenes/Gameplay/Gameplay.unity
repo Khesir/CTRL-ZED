@@ -1910,7 +1910,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 336014209}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c235e3589150545acee4497edba111, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a8df8c8823ca6446a56b42d4f6cd81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textLabel: {fileID: 2034892794}
@@ -2488,6 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textLabel: {fileID: 747523919}
+  title: {fileID: 1283956713}
   progressSlider: {fileID: 311068974}
 --- !u!1 &697294538
 GameObject:
@@ -3476,6 +3477,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837956511}
   m_CullTransparentMesh: 1
+--- !u!1 &840516033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 840516035}
+  - component: {fileID: 840516034}
+  m_Layer: 0
+  m_Name: SquadLevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &840516034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840516033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905ecffd6b4d24f479149090e454e6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLevel: 0
+  currentLevel: 0
+  experience: 0
+  playerLevels: 
+--- !u!4 &840516035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840516033}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1700613536}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853151308
 GameObject:
   m_ObjectHideFlags: 0
@@ -5934,14 +5983,26 @@ MonoBehaviour:
     attackTimer: 0
     minAttackTimerDamage: 5
     maxAttackTimerDamage: 10
+    waveRewards:
+      food: 100
+      technology: 100
+      energy: 100
+      intelligence: 100
+      coins: 100
   - enemyPrefabs:
     - {fileID: 5854188709080172386, guid: db29792e125ad72438410f130ea2917b, type: 3}
     - {fileID: 4766893749039834836, guid: c8b016def0b0c044aba3a106cc7f9dca, type: 3}
     spawntTimer: 0
     spawnInterval: 0.5
     attackTimer: 0
-    minAttackTimerDamage: 20
-    maxAttackTimerDamage: 50
+    minAttackTimerDamage: 5
+    maxAttackTimerDamage: 10
+    waveRewards:
+      food: 200
+      technology: 200
+      energy: 200
+      intelligence: 200
+      coins: 200
   - enemyPrefabs:
     - {fileID: 5027452726756111778, guid: 2e2de2a7c27cd2c4697ec802452730e7, type: 3}
     spawntTimer: 0
@@ -5949,6 +6010,12 @@ MonoBehaviour:
     attackTimer: 0
     minAttackTimerDamage: 50
     maxAttackTimerDamage: 100
+    waveRewards:
+      food: 300
+      technology: 300
+      energy: 300
+      intelligence: 300
+      coins: 300
   waveNumber: 0
   minPos: {fileID: 972969318}
   maxPos: {fileID: 853622806}
@@ -6974,6 +7041,7 @@ GameObject:
   - component: {fileID: 1778164757}
   - component: {fileID: 1778164756}
   - component: {fileID: 1778164755}
+  - component: {fileID: 1778164758}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -7045,16 +7113,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1778164758}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: PlayGame
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: menu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1778164756
@@ -7095,6 +7163,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778164753}
   m_CullTransparentMesh: 1
+--- !u!114 &1778164758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778164753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2830acd41af24874281784918cf1ce72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1815396075
 GameObject:
   m_ObjectHideFlags: 0
@@ -7450,6 +7530,7 @@ MonoBehaviour:
   waveUI: {fileID: 693072727}
   announcementUI: {fileID: 780925688}
   completeScreenUI: {fileID: 38987693}
+  squadLevelUI: {fileID: 336014211}
   starWaveButton: {fileID: 1227931354}
 --- !u!4 &1853280071
 Transform:
@@ -8003,9 +8084,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '50
-
-'
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df1f7b9ea7c2bfd4e9a94aea3bb038e5, type: 2}
   m_sharedMaterial: {fileID: -3466180328488113656, guid: df1f7b9ea7c2bfd4e9a94aea3bb038e5, type: 2}
@@ -9612,9 +9691,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1853280070}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: SquadMaxLevel
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: virtualCamera
       value: 
       objectReference: {fileID: 1144828850}
+    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: squadLevelManager
+      value: 
+      objectReference: {fileID: 840516034}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9624,6 +9711,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3007050461895703854, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 244168876}
+    - targetCorrespondingSourceObject: {fileID: 3007050461895703854, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 840516035}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
 --- !u!1660057539 &9223372036854775807
