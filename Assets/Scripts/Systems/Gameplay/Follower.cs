@@ -30,8 +30,8 @@ public class Follower : MonoBehaviour
 
     private float playerIdleTime = 0f;
     public float maxIdleTime = 1f;
+    [Header("Important Header")]
     public bool isControlledPlayer = false;
-
     private PlayerController controller;
     public LayerMask ignoreLayer;
 

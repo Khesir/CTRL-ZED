@@ -12,6 +12,7 @@ public class GameplayUIController : MonoBehaviour
     private PlayerService playerService;
     public AttackTimer timer;
     public WaveUIController waveUI;
+    public AnnouncementUI announcementUI;
     public async UniTask Initialize()
     {
         playerService = GameManager.Instance.PlayerManager.GetPlayerService();
@@ -102,5 +103,9 @@ public class GameplayUIController : MonoBehaviour
                 hotbar.SetActive(false); // Hide or optionally show "empty" UI
             }
         }
+    }
+    public void PushMessage(string message)
+    {
+        announcementUI.PushMessage(message);
     }
 }

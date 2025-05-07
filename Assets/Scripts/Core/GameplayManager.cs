@@ -68,18 +68,14 @@ public class GameplayManager : MonoBehaviour
             {
                 if (i != currentFollowerIndex)
                 {
-                    var character = followers[i].GetComponent<PlayerController>().playerData;
-                    if (character.IsDead())
-                    {
-                        return;
-                    }
+                    IsDead(i);
                     SwitchControlledFollower(i);
                     switchUser.Invoke();
                 }
             }
         }
     }
-    private void SwitchControlledFollower(int newIndex)
+    public void SwitchControlledFollower(int newIndex)
     {
         if (newIndex >= 0 && newIndex < followers.Count)
         {
@@ -111,8 +107,29 @@ public class GameplayManager : MonoBehaviour
     {
         followers.Add(data);
     }
-    private void SetupUI()
+    private void IsDead(int index)
     {
-        TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
+        var character = followers[index].GetComponent<PlayerController>().playerData;
+        if (character.IsDead())
+        {
+            return;
+        }
+    }
+    public int IsAvailable()
+    {
+        for (int i = 0; i < followers.Count; i++)
+        {
+            var controller = followers[i].GetComponent<PlayerController>().playerData;
+
+            if (!controller.IsDead())
+            {
+                return i;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        return -1;
     }
 }

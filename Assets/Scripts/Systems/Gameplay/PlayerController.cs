@@ -75,5 +75,24 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         playerData.TakeDamage(damage);
+        if (playerData.IsDead())
+        {
+            gameObject.SetActive(false);
+            var follower = gameObject.GetComponent<Follower>();
+            if (follower != null)
+            {
+                follower.enabled = false;
+            }
+
+            var index = GameplayManager.Instance.IsAvailable();
+            if (index != -1)
+            {
+                GameplayManager.Instance.SwitchControlledFollower(index);
+            }
+            else
+            {
+                Debug.Log("Game Over");
+            }
+        }
     }
 }

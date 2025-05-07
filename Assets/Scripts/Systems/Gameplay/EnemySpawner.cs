@@ -41,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
             if (playerKillCount >= killsToNextWave)
             {
                 ProgressToNextWave();
+                return;
             }
 
             // Handle enemy spawning
@@ -68,14 +69,19 @@ public class EnemySpawner : MonoBehaviour
     }
     private void ProgressToNextWave()
     {
-        Debug.Log("Wave Clear");
+        WaveAnnouncement("Wave Clear");
         KillRemainingEnemies();
+        waveNumber++;
         startWave = false;
+        if (waveNumber >= waves.Count)
+        {
+            WaveAnnouncement("Wave Complete!");
+            return;
+        }
         waveLevel++;
         playerKillCount = 0;
         killsToNextWave = 20 * waveLevel;
         // Increase wave number or loop back
-        waveNumber++;
         // if (waveNumber >= waves.Count)
         // {
         //     waveNumber = 0;
@@ -136,7 +142,8 @@ public class EnemySpawner : MonoBehaviour
         GameplayManager.Instance.gameplayUI.timer.SetupAttackTimerDmaage(waves[waveNumber].minAttackTimerDamage, waves[waveNumber].maxAttackTimerDamage);
 
         startWave = true;
-        Debug.Log($"Start Wave {waveLevel}");
+        WaveAnnouncement($"Start Wave {waveLevel}");
+        ReportedKill?.Invoke();
     }
     public void ReportKill(int count)
     {
@@ -150,5 +157,9 @@ public class EnemySpawner : MonoBehaviour
         {
             enemy.GetComponent<Enemy>().TakeDamage(notPlayer: true);
         }
+    }
+    private void WaveAnnouncement(string announcemet)
+    {
+        GameplayManager.Instance.gameplayUI.PushMessage(announcemet);
     }
 }
