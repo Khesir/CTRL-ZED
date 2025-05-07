@@ -10,11 +10,17 @@ public class MainMenu : MonoBehaviour
         switch (scene)
         {
             case "menu":
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneManager.LoadScene("MainMenu");
                 break;
 
             case "gameplay":
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneManager.LoadScene("Gameplay");
+                break;
+            case "start":
+                SceneManager.LoadScene("StartMenu");
+                break;
+            default:
+                Debug.LogWarning($"Scene '{scene}' not recognized.");
                 break;
         }
     }

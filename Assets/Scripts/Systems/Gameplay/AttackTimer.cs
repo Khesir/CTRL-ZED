@@ -10,10 +10,10 @@ public class AttackTimer : MonoBehaviour
     private float timer;
     public float minAttackTimerDamage = 1;
     public float maxAttackTimerDamage = 10;
-    private PlayerService instance;
-    public void Setup(PlayerService instance)
+    private PlayerService playerInstance;
+    public void Setup(PlayerService playerInstance)
     {
-        this.instance = instance;
+        this.playerInstance = playerInstance;
         timer = timeLimit;
     }
     public void TriggerTimer()
@@ -23,9 +23,15 @@ public class AttackTimer : MonoBehaviour
         if (timer <= 0f)
         {
             var damage = Random.Range(minAttackTimerDamage, maxAttackTimerDamage);
-            instance.TakeDamage(damage);
+            playerInstance.TakeDamage(damage);
+            if (playerInstance.isDead())
+            {
+                Debug.Log("Game Over");
+                GameplayManager.Instance.SetTarget();
+                GameplayManager.Instance.gameplayUI.Complete("os", false);
+
+            }
             timer = timeLimit;
-            Debug.Log($"OS Taken heavy Damage {damage}");
         }
 
         UpdateAttackTimer(timer);

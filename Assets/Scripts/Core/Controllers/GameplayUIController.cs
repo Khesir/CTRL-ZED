@@ -13,6 +13,10 @@ public class GameplayUIController : MonoBehaviour
     public AttackTimer timer;
     public WaveUIController waveUI;
     public AnnouncementUI announcementUI;
+    public CompleteScreenUI completeScreenUI;
+    public SquadLevelUI squadLevelUI;
+    [Header("GameObject Controls")]
+    public GameObject starWaveButton;
     public async UniTask Initialize()
     {
         playerService = GameManager.Instance.PlayerManager.GetPlayerService();
@@ -21,7 +25,12 @@ public class GameplayUIController : MonoBehaviour
         InitializeOSHP();
         InitializeWaveUI();
         InitializeAttackTimer();
+        InitializeSquanLevelUI();
         await UniTask.CompletedTask;
+    }
+    private void InitializeSquanLevelUI()
+    {
+        squadLevelUI.Setup();
     }
     private void InitializeWaveUI()
     {
@@ -107,5 +116,9 @@ public class GameplayUIController : MonoBehaviour
     public void PushMessage(string message)
     {
         announcementUI.PushMessage(message);
+    }
+    public void Complete(string type, bool complete, string team = "")
+    {
+        completeScreenUI.Complete(type, complete, team);
     }
 }

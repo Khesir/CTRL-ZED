@@ -15,7 +15,18 @@ public class EnemySpawner : MonoBehaviour
         public float attackTimer;
         public float minAttackTimerDamage;
         public float maxAttackTimerDamage;
+        public Loots waveRewards;
     }
+    [System.Serializable]
+    public class Loots
+    {
+        public int food;
+        public int technology;
+        public int energy;
+        public int intelligence;
+        public int coins;
+    }
+
     public List<Wave> waves;
     public int waveNumber;
     public Transform minPos;
@@ -34,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
-        if (startWave)
+        if (startWave && GameplayManager.Instance.globalTargetPlayer != null)
         {
             GameplayManager.Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
             // Progress to next wave when enough kills are made
@@ -69,15 +80,16 @@ public class EnemySpawner : MonoBehaviour
     }
     private void ProgressToNextWave()
     {
-        WaveAnnouncement("Wave Clear");
         KillRemainingEnemies();
         waveNumber++;
         startWave = false;
         if (waveNumber >= waves.Count)
         {
-            WaveAnnouncement("Wave Complete!");
+            var team = GameManager.Instance.TeamManager.GetActiveTeam();
+            GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName());
             return;
         }
+        WaveAnnouncement("Wave Clear");
         waveLevel++;
         playerKillCount = 0;
         killsToNextWave = 20 * waveLevel;
@@ -92,6 +104,7 @@ public class EnemySpawner : MonoBehaviour
             waves[waveNumber].spawnInterval *= 0.9f;
         }
         GameplayManager.Instance.gameplayUI.timer.SetupTimer(waves[waveNumber].attackTimer);
+        GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(true);
     }
     private void SpawnEnemy()
     {
@@ -143,6 +156,7 @@ public class EnemySpawner : MonoBehaviour
 
         startWave = true;
         WaveAnnouncement($"Start Wave {waveLevel}");
+        GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(false);
         ReportedKill?.Invoke();
     }
     public void ReportKill(int count)

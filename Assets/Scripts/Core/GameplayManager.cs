@@ -25,6 +25,8 @@ public class GameplayManager : MonoBehaviour
     public FollowerSpawn spawn;
     public GameplayUIController gameplayUI;
     public EnemySpawner spawner;
+    public SquadLevelManager squadLevelManager;
+    public int SquadMaxLevel;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,12 +43,13 @@ public class GameplayManager : MonoBehaviour
         if (_isInitialized) return;
 
         // Initialize the Managers and game systems
-        await UniTask.Yield();
+        squadLevelManager.Setup(SquadMaxLevel);
         // Set Initial game state
         isGameActive = false;
 
-        Debug.Log("[GameplayManage] Gameplay Manager Initialized");
+        Debug.Log("[GameplayManager] Gameplay Manager Initialized");
         _isInitialized = true;
+        await UniTask.CompletedTask;
     }
     public async UniTask Setup()
     {
@@ -70,7 +73,6 @@ public class GameplayManager : MonoBehaviour
                 {
                     IsDead(i);
                     SwitchControlledFollower(i);
-                    switchUser.Invoke();
                 }
             }
         }
@@ -99,7 +101,7 @@ public class GameplayManager : MonoBehaviour
                     followers[i].Refresh();
                 }
             }
-
+            switchUser?.Invoke();
             Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
         }
     }
@@ -131,5 +133,11 @@ public class GameplayManager : MonoBehaviour
             }
         }
         return -1;
+    }
+    public void SetTarget()
+    {
+        currentFollowerIndex = -1;
+        globalTargetPlayer = null;
+        switchUser?.Invoke();
     }
 }

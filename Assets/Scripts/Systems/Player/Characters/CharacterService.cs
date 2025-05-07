@@ -13,6 +13,15 @@ public class CharacterService
         _instance = character;
         currentHealth = GetMaxHealth();
     }
+    public void GetExperience(int experienceToGet)
+    {
+        _instance.experience += experienceToGet;
+        if (_instance.experience >= _instance.playerLevels[_instance.currentLevel])
+        {
+            _instance.currentLevel++;
+            _instance.experience = 0;
+        }
+    }
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;

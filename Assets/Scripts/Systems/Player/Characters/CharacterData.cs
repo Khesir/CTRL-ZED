@@ -11,7 +11,13 @@ public class CharacterData
 
     public float maxHealth;
     public string name;
-    public int level = 1;
+    public int level;
+
+
+    public int maxLevel;
+    public int currentLevel;
+    public int experience;
+    public List<int> playerLevels = new();
     public List<int> assignedTeam = new();
 
     public CharacterData(CharacterConfig templateData)
@@ -19,8 +25,22 @@ public class CharacterData
         id = Guid.NewGuid().ToString();
         baseData = templateData;
         name = NameGenerator.GetRandomName();
-        level = 1;
+        level = templateData.level;
         maxHealth = baseData.baseHealth * level;
+        maxLevel = 90;
+        GenerateLevel();
+    }
+    public void GenerateLevel()
+    {
+
+        int baseXP = 50;
+        playerLevels.Add(baseXP);
+
+        for (int i = 1; i < maxLevel; i++)
+        {
+            int nextXP = Mathf.CeilToInt(playerLevels[i - 1] * 1.1f);
+            playerLevels.Add(nextXP);
+        }
     }
     // This is optional and situational, currently being used on StatsUI
     public Dictionary<string, int> GetStatMap()

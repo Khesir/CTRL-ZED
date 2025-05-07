@@ -91,8 +91,14 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Game Over");
+                GameplayManager.Instance.SetTarget();
+                var team = GameManager.Instance.TeamManager.GetActiveTeam();
+                GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName());
             }
         }
+    }
+    public void GetExperience(int experienceToGet)
+    {
+        GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGet);
     }
 }

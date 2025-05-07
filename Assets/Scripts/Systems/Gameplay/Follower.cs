@@ -9,7 +9,6 @@ public class Follower : MonoBehaviour
     private Rigidbody2D targetRb;
     public Rigidbody2D rb;
     public CharacterService characterData;
-    public event Action onChangeSupplier;
 
     [Header("Wandering Settings")]
     public float normalFollowDistance = 2f;

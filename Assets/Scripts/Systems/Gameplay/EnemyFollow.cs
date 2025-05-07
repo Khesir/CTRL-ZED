@@ -14,7 +14,6 @@ public class EnemyFollow : MonoBehaviour
     [SerializeField] private float m_AlignmentWeight = 1f;
     [SerializeField] private float m_CohesionWeight = 1f;
 
-
     private Vector2 m_direction = Vector2.zero;
     private float m_MovementSpeedBlend;
 
