@@ -1,0 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ResourceData
+{
+
+    public int food;
+    public int technology;
+    public int energy;
+    public int intelligence;
+    public int coins;
+    public ResourceData(int food = 1000, int technology = 1000, int energy = 1000, int intelligence = 1000, int coins = 1000)
+    {
+        this.food = food;
+        this.technology = technology;
+        this.energy = energy;
+        this.intelligence = intelligence;
+        this.coins = coins;
+    }
+}
+

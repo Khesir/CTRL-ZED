@@ -19,8 +19,9 @@ public class WaveUIController : MonoBehaviour
     }
     public void UpdateSlider()
     {
-        int currentKills = GameplayManager.Instance.spawner.playerKillCount;
-        int requiredKills = GameplayManager.Instance.spawner.killsToNextWave;
+        var spawner = GameplayManager.Instance.spawner;
+        int currentKills = spawner.playerKillCount;
+        int requiredKills = spawner.waves[spawner.waveNumber].requiredKills;
 
         progressSlider.maxValue = requiredKills;
         progressSlider.value = currentKills;

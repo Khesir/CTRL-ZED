@@ -12,14 +12,19 @@ public class GameManager : MonoBehaviour
     public PlayerManager PlayerManager { get; private set; }
     public TeamManager TeamManager { get; private set; }
     public CharacterManager CharacterManager { get; private set; }
+    public ResourceManager ResourceManager { get; private set; }
     public List<CharacterConfig> characterTemplates;
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private TeamManager teamManager;
     [SerializeField] private PlayerDataManager playerDataManager;
+    [SerializeField] private ResourceManager resourceManager;
     public bool isGameActive;
     public bool _isInitialized = false;
+    [Header("Do not Change Anything")]
+    [SerializeField] private SaveData saveData;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -52,9 +57,11 @@ public class GameManager : MonoBehaviour
         await playerManager.Initialize(saveData.playerData);
         await teamManager.Initialize(saveData.teams);
         await characterManager.Initialize(saveData.ownedCharacters);
+        await resourceManager.Initialize(saveData.resourceData);
 
         PlayerManager = playerManager;
         CharacterManager = characterManager;
         TeamManager = teamManager;
+        ResourceManager = resourceManager;
     }
 }

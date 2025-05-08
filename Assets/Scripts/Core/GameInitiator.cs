@@ -14,6 +14,8 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private Env _environment;
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private GameplayManager _gameplayManager;
+    [SerializeField] private MenuManager _menuManager;
+    [SerializeField] private bool isGenerated;
     enum Env
     {
         Dev,
@@ -60,12 +62,12 @@ public class GameInitiator : MonoBehaviour
         // Intiaalizing Game Data and other services 
         if (_gameManager != null) await GameManager.Instance.Initialize();
         if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
+        if (_menuManager != null) await MenuManager.Instance.Initialize();
     }
     private async UniTask CreateObjects()
     {
         // Creation of game objects e.g. UI, player background, spawinning of enemies4
-        GenerateTestData();
-
+        if (!isGenerated) GenerateTestData();
         await UniTask.CompletedTask;
 
     }
@@ -73,8 +75,12 @@ public class GameInitiator : MonoBehaviour
     {
 
         // Preparation -- Setting up, states of characters and more
-        await GameplayManager.Instance.Setup();
-        await GameplayManager.Instance.gameplayUI.Initialize();
+        if (_gameplayManager != null)
+        {
+            await GameplayManager.Instance.Setup();
+            await GameplayManager.Instance.gameplayUI.Initialize();
+        }
+        if (_menuManager != null) await MenuManager.Instance.menuUIController.Initialize();
         await UniTask.CompletedTask;
     }
     private void BeginGame()
@@ -105,5 +111,6 @@ public class GameInitiator : MonoBehaviour
 
         // Set the active team (0 here represents the first team)
         GameManager.Instance.TeamManager.SetActiveTeam(0);
+        isGenerated = true;
     }
 }

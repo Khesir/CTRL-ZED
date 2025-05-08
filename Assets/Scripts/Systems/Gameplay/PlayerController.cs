@@ -20,7 +20,16 @@ public class PlayerController : MonoBehaviour
     private float dashTime;
     private float lastDashTime;
 
+    [Header("Player Properties")]
+    [SerializeField] private bool isImmune;
+    [SerializeField] private float immunityDuration;
+    [SerializeField] private float immunityTimer;
+
     // Update is called once per frame
+    void Start()
+    {
+        immunityDuration = 1f;
+    }
     void Update()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -38,6 +47,14 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector2(moveX, moveY).normalized;
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (immunityTimer > 0)
+        {
+            immunityTimer -= Time.deltaTime;
+        }
+        else
+        {
+            isImmune = false;
+        }
     }
 
     private void FixedUpdate()
@@ -74,7 +91,10 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        if (isImmune) return;
         playerData.TakeDamage(damage);
+        isImmune = true;
+        immunityTimer = immunityDuration;
         if (playerData.IsDead())
         {
             gameObject.SetActive(false);
@@ -92,8 +112,10 @@ public class PlayerController : MonoBehaviour
             else
             {
                 GameplayManager.Instance.SetTarget();
+                var spawner = GameplayManager.Instance.spawner;
                 var team = GameManager.Instance.TeamManager.GetActiveTeam();
-                GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName());
+                var loots = spawner.waves[spawner.waveNumber].waveRewards;
+                GameplayManager.Instance.gameplayUI.Complete("character", false, team.GetTeamName(), loots);
             }
         }
     }

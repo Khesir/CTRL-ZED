@@ -19,22 +19,6 @@ public class PlayerService
     // }
     // public bool HasCharacter(CharacterData instance) =>
     //     _data.ownedCharacters.Contains(instance);
-    public int GetPlayerCoins()
-    {
-        return data.coins;
-    }
-    public bool SpendCoins(int amount)
-    {
-        if (amount <= data.coins)
-        {
-            data.coins -= amount;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
     public float GetMaxHealth()
     {
         return data.osHealth;

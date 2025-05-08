@@ -5,12 +5,14 @@ using UnityEngine;
 public class SaveData
 {
     public PlayerData playerData;
+    public ResourceData resourceData;
     public List<CharacterData> ownedCharacters;
     public List<Team> teams;
     public SaveData()
     {
-        playerData = new PlayerData(coins: 100000, maxTeam: 3);
+        playerData = new PlayerData(maxTeam: 3);
         ownedCharacters = new List<CharacterData>();
         teams = new List<Team>();
+        resourceData = new ResourceData(coins: 100000);
     }
 }

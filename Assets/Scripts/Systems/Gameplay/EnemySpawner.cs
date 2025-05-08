@@ -6,26 +6,6 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [System.Serializable]
-    public class Wave
-    {
-        public List<GameObject> enemyPrefabs;
-        public float spawntTimer;
-        public float spawnInterval;
-        public float attackTimer;
-        public float minAttackTimerDamage;
-        public float maxAttackTimerDamage;
-        public Loots waveRewards;
-    }
-    [System.Serializable]
-    public class Loots
-    {
-        public int food;
-        public int technology;
-        public int energy;
-        public int intelligence;
-        public int coins;
-    }
 
     public List<Wave> waves;
     public int waveNumber;
@@ -33,7 +13,6 @@ public class EnemySpawner : MonoBehaviour
     public Transform maxPos;
 
     public int playerKillCount;
-    public int killsToNextWave;
     public int waveLevel = 1;
     public bool startWave = false;
     // Update is called once per frame
@@ -41,7 +20,6 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         playerKillCount = 0;
-        killsToNextWave = 20;
     }
     void Update()
     {
@@ -49,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
         {
             GameplayManager.Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
             // Progress to next wave when enough kills are made
-            if (playerKillCount >= killsToNextWave)
+            if (playerKillCount >= waves[waveNumber].requiredKills)
             {
                 ProgressToNextWave();
                 return;
@@ -86,23 +64,23 @@ public class EnemySpawner : MonoBehaviour
         if (waveNumber >= waves.Count)
         {
             var team = GameManager.Instance.TeamManager.GetActiveTeam();
-            GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName());
+            var loots = waves[waveNumber - 1].waveRewards;
+            GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName(), loots);
             return;
         }
         WaveAnnouncement("Wave Clear");
         waveLevel++;
         playerKillCount = 0;
-        killsToNextWave = 20 * waveLevel;
         // Increase wave number or loop back
         // if (waveNumber >= waves.Count)
         // {
         //     waveNumber = 0;
         // }
         // Increase difficulty
-        if (waves[waveNumber].spawnInterval > 0.3f)
-        {
-            waves[waveNumber].spawnInterval *= 0.9f;
-        }
+        // if (waves[waveNumber].spawnInterval > 0.3f)
+        // {
+        //     waves[waveNumber].spawnInterval *= 0.9f;
+        // }
         GameplayManager.Instance.gameplayUI.timer.SetupTimer(waves[waveNumber].attackTimer);
         GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(true);
     }

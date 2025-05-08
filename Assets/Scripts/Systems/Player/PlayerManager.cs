@@ -20,14 +20,4 @@ public class PlayerManager : MonoBehaviour
     {
         return playerService;
     }
-    public int GetPlayerCoins()
-    {
-        return playerService.GetPlayerCoins();
-    }
-    public bool SpendCoins(int amount)
-    {
-        var status = playerService.SpendCoins(amount);
-        onCoinsChanged?.Invoke();
-        return status;
-    }
 }

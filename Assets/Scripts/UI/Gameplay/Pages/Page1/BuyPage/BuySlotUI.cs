@@ -24,7 +24,7 @@ public class BuySlotUI : MonoBehaviour
 
   private void OnActionButtonClicked()
   {
-    var result = GameManager.Instance.PlayerManager.SpendCoins(instance.price);
+    var result = GameManager.Instance.ResourceManager.SpendCoins(instance.price);
 
     if (result)
     {
