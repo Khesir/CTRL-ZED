@@ -6,35 +6,72 @@ using UnityEngine;
 public class PlayerService
 {
     private PlayerData data;
-    public float currentHealth;
     public event Action onDamage;
+    public event Action onGainExp;
     public PlayerService(PlayerData data)
     {
         this.data = data;
-        currentHealth = this.data.osHealth;
     }
-    // public PlayerData GetData()
-    // {
-    //     return _data;
-    // }
-    // public bool HasCharacter(CharacterData instance) =>
-    //     _data.ownedCharacters.Contains(instance);
+    public void Heal()
+    {
+        data.currentHealth = data.osLevel[data.level].osHealth;
+        onDamage?.Invoke();
+    }
+    public float GetHealthPerCoin()
+    {
+        return data.healthPerCoin;
+    }
     public float GetMaxHealth()
     {
-        return data.osHealth;
+        return data.osLevel[data.level].osHealth;
+    }
+    public int GetMaxExp()
+    {
+        return data.osLevel[data.level].requiredExp;
+    }
+    public float GetCoinsPerExpRate()
+    {
+        return data.coinsPerExp;
     }
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        data.currentHealth -= damage;
         onDamage?.Invoke();
-    }
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
     }
     public bool isDead()
     {
-        return currentHealth <= 0;
+        return data.currentHealth <= 0;
+    }
+    public float GetCurrentHealth()
+    {
+        return data.currentHealth;
+    }
+    public int GetCurrentExp()
+    {
+        return data.currentExp;
+    }
+    public int GetLevel()
+    {
+        return data.level;
+    }
+    public int GetMaxLevel()
+    {
+        return data.maxLevel;
+    }
+    public int GetRequiredCoinsToLevelup()
+    {
+        return data.osLevel[data.level].requiredCoins;
+    }
+    public void GainExp(int currentExp)
+    {
+        data.currentExp += currentExp;
+        if (data.currentExp >= data.osLevel[data.level].requiredExp)
+        {
+            data.level++;
+            data.currentExp = 0;
+            data.currentHealth = data.osLevel[data.level].osHealth;
+        }
+        onGainExp?.Invoke();
     }
 }
 

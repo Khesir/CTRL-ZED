@@ -38,6 +38,6 @@ public class Bullet : MonoBehaviour
         // Optionally, damage enemy here if tagged or has enemy component
         // Example:
         var enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy != null) enemy.TakeDamage();
+        if (enemy != null) enemy.TakeDamage(1);
     }
 }

@@ -26,6 +26,7 @@ public class GameplayManager : MonoBehaviour
     public GameplayUIController gameplayUI;
     public EnemySpawner spawner;
     public SquadLevelManager squadLevelManager;
+    public DamageNumberController damageNumberController;
     public int SquadMaxLevel;
     private void Awake()
     {

@@ -203,6 +203,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   experienceToGive: 1
-  maxHp: 0
+  maxHp: 5
   hp: 0
   damage: 0

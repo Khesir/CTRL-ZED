@@ -8,6 +8,7 @@ public class EnemyFollow : MonoBehaviour
     [SerializeField] private float m_Speed = 4f;
     [SerializeField] private float m_RotationSpeed = 8f;
     [SerializeField] private float m_StopDistance = 3f;
+    [SerializeField] private float m_SlowMultiplier = 1f;
     [Header("Boids")]
     [SerializeField] private float m_DetectionDistance = 1f;
     [SerializeField] private float m_SeparationWeight = 1f;
@@ -120,6 +121,8 @@ public class EnemyFollow : MonoBehaviour
 
     private void MoveTowardsTarget()
     {
+        float effectiveSpeed = m_Speed * m_SlowMultiplier;
+
         m_direction = m_direction.normalized;
         var combinedDirection = (m_direction + m_SeparationFore).normalized;
         Vector2 movement = combinedDirection * m_Speed * Time.deltaTime;
@@ -150,5 +153,13 @@ public class EnemyFollow : MonoBehaviour
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
             return;
         }
+    }
+    public void ApplySlow(float slowMultiplier)
+    {
+        m_SlowMultiplier = Mathf.Clamp(slowMultiplier, 0f, 1f);
+    }
+    public void ClearSlow()
+    {
+        m_SlowMultiplier = 1f;
     }
 }

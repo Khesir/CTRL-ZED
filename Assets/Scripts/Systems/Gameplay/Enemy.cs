@@ -15,17 +15,25 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         // Precaution
-        if (hp == 0) hp = 10;
+        if (maxHp == 0) maxHp = 50;
         if (experienceToGive == 0) experienceToGive = 10;
         if (damage == 0) damage = 10;
+
+        hp = maxHp;
     }
-    public void TakeDamage(bool notPlayer = false)
+    public void TakeDamage(float damage = -1, bool notPlayer = false)
     {
         // Add damage logic
-        Destroy(gameObject);
-        GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGive);
-        Instantiate(destroyEffect, transform.position, Quaternion.identity);
-        if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
+        hp -= damage;
+        if (damage != -1) GameplayManager.Instance.damageNumberController.CreateNumber(damage, transform.position);
+
+        if (hp <= 0 || damage == -1)
+        {
+            Destroy(gameObject);
+            GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGive);
+            Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
+        }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {

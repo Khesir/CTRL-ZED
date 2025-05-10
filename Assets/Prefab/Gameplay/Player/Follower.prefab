@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4146988760417529622}
+  - {fileID: 441668799606863712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2419154857625993188
@@ -104,10 +104,12 @@ MonoBehaviour:
   moveSpeed: 5
   rb: {fileID: 6872028420862429024}
   weapon: {fileID: 8689695285108899337}
-  playerhealth: 0
   dashSpeed: 12
   dashDuration: 0.2
   dashCooldown: 1
+  isImmune: 0
+  immunityDuration: 0
+  immunityTimer: 0
 --- !u!114 &3010239176076292617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +198,92 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.44
+--- !u!1 &2208862743814490002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 441668799606863712}
+  m_Layer: 7
+  m_Name: Weapons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &441668799606863712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2208862743814490002}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4146988760417529622}
+  - {fileID: 4188185531524405952}
+  m_Father: {fileID: 8401609645208497086}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3212082461506559417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4188185531524405952}
+  - component: {fileID: 8701330055859814581}
+  m_Layer: 7
+  m_Name: AreaWeapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4188185531524405952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212082461506559417}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 441668799606863712}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8701330055859814581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212082461506559417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30f3d2f0b41816b4bbcb8b05b6f55bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponLevel: 0
+  stats:
+  - cooldown: 10
+    duration: 5
+    damage: 10
+    range: 1
+    speed: 0.5
+    slowRate: 0.6
+  prefab: {fileID: 1308245119214122716, guid: 86d3eda1933c14e4f8adcd5a4f946858, type: 3}
 --- !u!1 &6542489575986398309
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +296,7 @@ GameObject:
   - component: {fileID: 6217322389123466693}
   - component: {fileID: 8689695285108899337}
   m_Layer: 7
-  m_Name: Weapon
+  m_Name: Shooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,12 +311,12 @@ Transform:
   m_GameObject: {fileID: 6542489575986398309}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.00045360488, w: 0.99999994}
-  m_LocalPosition: {x: 0.02, y: 0.88, z: 0}
-  m_LocalScale: {x: 0.3154, y: 0.5702, z: 1}
+  m_LocalPosition: {x: 0.01999998, y: 0.88, z: 0}
+  m_LocalScale: {x: 0.31540003, y: 0.5702, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6184552407996194848}
-  m_Father: {fileID: 8401609645208497086}
+  m_Father: {fileID: 441668799606863712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.052}
 --- !u!212 &6217322389123466693
 SpriteRenderer:
