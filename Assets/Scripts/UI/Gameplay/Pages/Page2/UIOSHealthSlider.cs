@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OSHealthSlider : MonoBehaviour
+public class UIOSHealthSlider : MonoBehaviour
 {
     public TMP_Text textlabel;
     public Slider hpslider;

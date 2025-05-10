@@ -9,16 +9,22 @@ public class TeamManager : MonoBehaviour
     [SerializeField] private List<TeamService> teams = new();
     [SerializeField] private TeamService activeTeam;
     [SerializeField] private int maxSize;
+    public int increaseSizePrice;
     public event Action onTeamChange;
 
-    public async UniTask Initialize(List<Team> teams, int maxSize = 1)
+    public async UniTask Initialize(List<Team> teams, int maxSize = 1, int increaseSizePrice = 10000)
     {
         this.maxSize = maxSize;
+        this.increaseSizePrice = increaseSizePrice;
         foreach (var team in teams)
         {
             this.teams.Add(new TeamService(team));
         }
         await UniTask.CompletedTask;
+    }
+    public bool IsTeamActiveByIndex(int index)
+    {
+        return teams[index].isActive;
     }
     public void CreateTeam()
     {
@@ -32,6 +38,10 @@ public class TeamManager : MonoBehaviour
             Debug.LogError("Max size met");
         }
     }
+    public void IncreaseMaxTeam()
+    {
+        maxSize++;
+    }
     public TeamService GetActiveTeam()
     {
         return activeTeam;
@@ -40,7 +50,12 @@ public class TeamManager : MonoBehaviour
     {
         if (index >= 0 && index < teams.Count)
         {
+            if (activeTeam != null)
+            {
+                activeTeam.isActive = false;
+            }
             activeTeam = teams[index];
+            activeTeam.isActive = true;
             Debug.Log($"{index} Team set as active team");
         }
         else
@@ -108,5 +123,24 @@ public class TeamManager : MonoBehaviour
         {
             return Response.Fail("Something went wrong clearly");
         }
+    }
+    public bool RemoveCharacterFromTeamByReference(int teamIndex, CharacterService character)
+    {
+        var team = GetTeam(teamIndex);
+        if (team == null)
+        {
+            return false;
+        }
+
+        var members = team.GetMembers();
+        int index = members.IndexOf(character);
+        if (index != -1)
+        {
+            members[index] = null;
+            onTeamChange?.Invoke();
+            return true;
+        }
+
+        return false;
     }
 }

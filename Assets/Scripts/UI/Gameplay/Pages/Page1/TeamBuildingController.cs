@@ -8,6 +8,7 @@ public class TeamBuildingController : MonoBehaviour
     [SerializeField] private GameObject createTeamPrefab;
     [SerializeField] private GameObject teamPrefab;
     [SerializeField] private Transform parentLayout;
+    [SerializeField] private GameObject TeamDetails;
     private void OnEnable()
     {
         Populate();
@@ -29,9 +30,10 @@ public class TeamBuildingController : MonoBehaviour
             var instance = teamData[i];
             var cardGO = Instantiate(teamPrefab, parentLayout);
             var teamContainer = cardGO.GetComponent<TeamContainer>();
-            teamContainer.Setup(instance, i);
+            teamContainer.Setup(instance, i, TeamDetails);
         }
-        Instantiate(createTeamPrefab, parentLayout);
+        var go = Instantiate(createTeamPrefab, parentLayout);
+        go.GetComponent<CreateTeam>().Initialize();
     }
 
     public void Clear()

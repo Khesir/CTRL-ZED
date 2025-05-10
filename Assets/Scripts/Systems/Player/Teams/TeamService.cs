@@ -6,6 +6,7 @@ public class TeamService
 {
     private Team data;
     private int maxSize = 4;
+    public bool isActive;
     public TeamService(Team data = null)
     {
         if (data != null)
@@ -57,6 +58,19 @@ public class TeamService
                 this.data.characters[slotIndex] = data;
                 this.data.characters[currentIndex] = temp;
             }
+        }
+    }
+    public void RemoveCharacter(CharacterService character)
+    {
+        int index = data.characters.IndexOf(character);
+        if (index != -1)
+        {
+            data.characters[index] = null;
+            Debug.Log($"Removed character from slot {index}");
+        }
+        else
+        {
+            Debug.LogWarning("Character not found in team.");
         }
     }
     public bool isCharacterInTeam(CharacterService data)

@@ -22,3 +22,7 @@ MonoBehaviour:
   dex: 4
   level: 1
   price: 800
+  food: 100
+  technology: 100
+  energy: 100
+  intelligence: 100

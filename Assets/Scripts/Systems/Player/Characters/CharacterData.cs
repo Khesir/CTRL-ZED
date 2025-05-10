@@ -53,4 +53,14 @@ public class CharacterData
             { "HP", baseData.baseHealth + (level * 10) }
         };
     }
+    public Dictionary<string, float> GetDeploymentCost()
+    {
+        float multiplier = Mathf.Pow(1.2f, level - 1);
+        return new Dictionary<string, float>{
+            {"Food", baseData.food * multiplier },
+            {"Technology", baseData.technology * multiplier},
+            {"Energy", baseData.energy * multiplier},
+            {"Intelligence", baseData.intelligence* multiplier}
+        };
+    }
 }

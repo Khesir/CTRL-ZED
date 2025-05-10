@@ -18,4 +18,9 @@ public class CharacterConfig : ScriptableObject
     public int level;
     [Header("Shop Info")]
     public int price;
+    [Header("Deployment Cost")]
+    public float food;
+    public float technology;
+    public float energy;
+    public float intelligence;
 }

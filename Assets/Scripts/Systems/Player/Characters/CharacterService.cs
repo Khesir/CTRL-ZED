@@ -105,4 +105,8 @@ public class CharacterService
     {
         return _instance.assignedTeam.Contains(teamIndex);
     }
+    public Dictionary<string, float> GetDeploymentCost()
+    {
+        return _instance.GetDeploymentCost();
+    }
 }

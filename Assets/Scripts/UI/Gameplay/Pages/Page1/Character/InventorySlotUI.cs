@@ -17,7 +17,7 @@ public class InventorySlotUI : MonoBehaviour
     public Button actionButton;
     public CharacterService instance;
     public DraggableItem draggableItem;
-    [HideInInspector] public DetailsController detailsController;
+    public DetailsController detailsController;
     public void Setup(CharacterService data)
     {
         var character = data.GetInstance();

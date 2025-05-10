@@ -10,7 +10,7 @@ public class OSPageController : MonoBehaviour
     public Button levelUpButton;
     public Button repairButton;
     public OSExpSlider oSExpSlider;
-    public OSHealthSlider oSHealthSlider;
+    public UIOSHealthSlider oSHealthSlider;
     public TMP_Text level;
     public PlayerService service;
 

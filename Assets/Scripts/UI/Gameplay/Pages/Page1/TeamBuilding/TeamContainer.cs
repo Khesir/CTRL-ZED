@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TeamContainer : MonoBehaviour
 {
@@ -11,9 +12,24 @@ public class TeamContainer : MonoBehaviour
     public GameObject teamDraggrable;
     public List<GameObject> teamSlot;
     public TeamService instance;
+    public Button viewTeam;
     public int index;
-    public void Setup(TeamService team, int index)
+    [Header("Icons")]
+    public GameObject normalIcon;
+    public GameObject activeAction;
+
+    private GameObject teamDetails;
+    public void Setup(TeamService team, int index, GameObject teamDetails)
     {
+        if (team.isActive)
+        {
+            activeAction.SetActive(true);
+        }
+        else
+        {
+            activeAction.SetActive(false);
+        }
+        this.teamDetails = teamDetails;
         instance = team;
         teamName.text = team.GetTeamName();
         var members = team.GetMembers();
@@ -35,5 +51,12 @@ public class TeamContainer : MonoBehaviour
                 draggable.Setup(slot);
             }
         }
+        viewTeam.onClick.RemoveAllListeners();
+        viewTeam.onClick.AddListener(ShowTeam);
+    }
+    public void ShowTeam()
+    {
+        teamDetails.SetActive(true);
+        teamDetails.GetComponent<TeamDetails>().Initialize(instance, index);
     }
 }
