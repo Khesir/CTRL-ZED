@@ -8,10 +8,24 @@ public class ResourceManager : MonoBehaviour
 {
     public ResourceService service;
     public event Action onCoinsChange;
+    public event Action onSpendBioChip;
     public async UniTask Initialize(ResourceData data)
     {
         service = new ResourceService(data);
         await UniTask.CompletedTask;
+    }
+    public int GetRemainingCharge()
+    {
+        return service.bioChipsRemainingCharges;
+    }
+    public int GetBioChips()
+    {
+        return service.GetBioChips();
+    }
+    public void SpendBioChips()
+    {
+        service.SpendBioChips();
+        onSpendBioChip?.Invoke();
     }
     public int GetFood()
     {

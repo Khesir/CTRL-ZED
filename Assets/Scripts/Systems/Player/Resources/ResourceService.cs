@@ -6,7 +6,7 @@ using UnityEngine;
 public class ResourceService
 {
     private ResourceData _data;
-
+    public int bioChipsRemainingCharges;
     public ResourceService(ResourceData data)
     {
         if (data != null)
@@ -16,6 +16,19 @@ public class ResourceService
         else
         {
             _data = new ResourceData();
+        }
+        bioChipsRemainingCharges = 0;
+    }
+    public int GetBioChips()
+    {
+        return _data.bioChips;
+    }
+    public void SpendBioChips()
+    {
+        if (_data.bioChips > 0)
+        {
+            _data.bioChips--;
+            bioChipsRemainingCharges += _data.maxBioChipCharges;
         }
     }
     public int GetFood()
