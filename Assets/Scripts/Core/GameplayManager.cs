@@ -9,7 +9,7 @@ using UnityEngine.AI;
 
 public class GameplayManager : MonoBehaviour
 {
-    public GameManager Menu_istance;
+    public GameManager gameManager;
     public static GameplayManager Instance { get; private set; }
     [Header("Follower System")]
     public GameObject followerPrefab;
@@ -22,6 +22,7 @@ public class GameplayManager : MonoBehaviour
     public bool isGameActive;
     public bool _isInitialized = false;
     [Header("Gameplay References")]
+    public ParallaxBackground parallaxBackground;
     public FollowerSpawn spawn;
     public GameplayUIController gameplayUI;
     public EnemySpawner spawner;
@@ -43,7 +44,7 @@ public class GameplayManager : MonoBehaviour
     {
         if (_isInitialized) return;
 
-        // Initialize the Managers and game systems
+        await parallaxBackground.Initialize();
         squadLevelManager.Setup(SquadMaxLevel);
         // Set Initial game state
         isGameActive = false;
@@ -54,7 +55,7 @@ public class GameplayManager : MonoBehaviour
     }
     public async UniTask Setup()
     {
-        Menu_istance = GameManager.Instance;
+        gameManager = GameManager.Instance;
         if (followers.Count == 0)
         {
             TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
@@ -62,6 +63,8 @@ public class GameplayManager : MonoBehaviour
             spawn.Setup(members);
         }
         SwitchControlledFollower(currentFollowerIndex);
+        await spawner.Initialize(gameManager.LevelManager.levels[gameManager.LevelManager.activeLevel].waves);
+        parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.levels[gameManager.LevelManager.activeLevel].sprites);
         await UniTask.CompletedTask;
     }
     void Update()

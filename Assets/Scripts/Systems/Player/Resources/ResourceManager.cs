@@ -18,6 +18,19 @@ public class ResourceManager : MonoBehaviour
     {
         return service.bioChipsRemainingCharges;
     }
+    public bool UseRemainingCharge()
+    {
+        if (service.bioChipsRemainingCharges > 0)
+        {
+            service.bioChipsRemainingCharges--;
+            onSpendBioChip?.Invoke();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public int GetBioChips()
     {
         return service.GetBioChips();

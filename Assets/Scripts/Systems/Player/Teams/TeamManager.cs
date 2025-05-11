@@ -56,6 +56,7 @@ public class TeamManager : MonoBehaviour
             }
             activeTeam = teams[index];
             activeTeam.isActive = true;
+            onTeamChange?.Invoke();
             Debug.Log($"{index} Team set as active team");
         }
         else

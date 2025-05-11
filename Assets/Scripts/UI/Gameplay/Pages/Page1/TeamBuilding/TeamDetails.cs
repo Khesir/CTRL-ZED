@@ -13,7 +13,6 @@ public class TeamDetails : MonoBehaviour
     public int index;
     public void Initialize(TeamService instance, int index)
     {
-        Debug.Log("Initialize Team");
         this.instance = instance;
         this.index = index;
         var team = instance.GetMembers();
@@ -63,13 +62,11 @@ public class TeamDetails : MonoBehaviour
     }
     public void ActionButton()
     {
-        Debug.Log(index);
-        // GameManager.Instance.TeamManager.SetActiveTeam(index);
-        // SetButton();
+        GameManager.Instance.TeamManager.SetActiveTeam(index);
+        SetButton();
     }
     public void SetButton()
     {
-        Debug.Log($"isActive Team: {instance.isActive}");
         setActive.interactable = !instance.isActive;
     }
 }

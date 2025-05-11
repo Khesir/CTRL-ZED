@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     public TeamManager TeamManager { get; private set; }
     public CharacterManager CharacterManager { get; private set; }
     public ResourceManager ResourceManager { get; private set; }
+    public AntiVirusManager AntiVirusManager { get; private set; }
+    public LevelManager LevelManager { get; private set; }
+    public MainMenu MainMenu { get; private set; }
     public List<CharacterConfig> characterTemplates;
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
@@ -20,6 +23,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TeamManager teamManager;
     [SerializeField] private PlayerDataManager playerDataManager;
     [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private AntiVirusManager antiVirusManager;
+    [SerializeField] private LevelManager levelManager;
+    [SerializeField] private MainMenu mainMenu;
     public bool isGameActive;
     public bool _isInitialized = false;
     [Header("Do not Change Anything")]
@@ -58,10 +64,14 @@ public class GameManager : MonoBehaviour
         await teamManager.Initialize(saveData.teams);
         await characterManager.Initialize(saveData.ownedCharacters);
         await resourceManager.Initialize(saveData.resourceData);
+        await antiVirusManager.Initialize(saveData.antiVirusLevel);
 
         PlayerManager = playerManager;
         CharacterManager = characterManager;
         TeamManager = teamManager;
         ResourceManager = resourceManager;
+        AntiVirusManager = antiVirusManager;
+        LevelManager = levelManager;
+        MainMenu = mainMenu;
     }
 }

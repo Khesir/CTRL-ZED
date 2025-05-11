@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,9 +18,13 @@ public class EnemySpawner : MonoBehaviour
     public bool startWave = false;
     // Update is called once per frame
     public event Action ReportedKill;
-    void Start()
+    public async UniTask Initialize(List<Wave> waves = null)
     {
         playerKillCount = 0;
+        waveNumber = 0;
+        waveLevel = 1;
+        this.waves = waves;
+        await UniTask.CompletedTask;
     }
     void Update()
     {
@@ -40,20 +45,6 @@ public class EnemySpawner : MonoBehaviour
                 waves[waveNumber].spawntTimer = 0;
                 SpawnEnemy();
             }
-            // if (waves[waveNumber].spawnedEnemyCount >= waves[waveNumber].enemiesPerwave)
-            // {
-            //     waves[waveNumber].spawnedEnemyCount = 0;
-            //     if (waves[waveNumber].spawnInterval > 0.3f)
-            //     {
-            //         waves[waveNumber].spawnInterval *= 0.9f;
-            //     }
-            //     waveNumber++;
-            // }
-            // ENd of the wave flag
-            // if (waveNumber >= waves.Count)
-            // {
-            //     waveNumber = 0;
-            // }
         }
     }
     private void ProgressToNextWave()

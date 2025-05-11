@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ParallaxBackground : MonoBehaviour
 {
     public ParallaxCamera parallaxCamera;
-    List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
+    public List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
 
-    void Start()
+    public async UniTask Initialize()
     {
         if (parallaxCamera == null)
             parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
@@ -16,6 +18,7 @@ public class ParallaxBackground : MonoBehaviour
             parallaxCamera.onCameraTranslate += Move;
 
         SetLayers();
+        await UniTask.CompletedTask;
     }
 
     void SetLayers()
@@ -29,6 +32,7 @@ public class ParallaxBackground : MonoBehaviour
             if (layer != null)
             {
                 layer.name = "Layer-" + i;
+                layer.customRenderer = layer.gameObject.GetComponent<Renderer>();
                 parallaxLayers.Add(layer);
             }
         }
@@ -39,6 +43,24 @@ public class ParallaxBackground : MonoBehaviour
         foreach (ParallaxLayer layer in parallaxLayers)
         {
             layer.Move(delta);
+        }
+    }
+    public void SetupParallaxLayerMaterial(List<Material> sprites)
+    {
+        int layerCount = parallaxLayers.Count;
+
+        for (int i = 0; i < layerCount; i++)
+        {
+
+            if (i < sprites.Count && sprites[i] != null)
+            {
+                parallaxLayers[i].gameObject.SetActive(true);
+                parallaxLayers[i].customRenderer.material = new Material(sprites[i]);
+            }
+            else
+            {
+                parallaxLayers[i].gameObject.SetActive(false);
+            }
         }
     }
 }

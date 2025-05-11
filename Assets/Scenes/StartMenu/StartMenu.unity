@@ -567,6 +567,7 @@ GameObject:
   - component: {fileID: 1384884685}
   - component: {fileID: 1384884687}
   - component: {fileID: 1384884686}
+  - component: {fileID: 1384884688}
   m_Layer: 5
   m_Name: FloatingOrb
   m_TagString: Untagged
@@ -631,6 +632,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384884684}
   m_CullTransparentMesh: 1
+--- !u!95 &1384884688
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384884684}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 322b9658ef0588e44b651b9444009a5c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1575350531
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +796,7 @@ GameObject:
   - component: {fileID: 2099051117}
   - component: {fileID: 2099051119}
   - component: {fileID: 2099051118}
+  - component: {fileID: 2099051120}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -838,6 +861,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099051116}
   m_CullTransparentMesh: 1
+--- !u!95 &2099051120
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099051116}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2d6be5a5b53ccb94f842aee011bb31d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
