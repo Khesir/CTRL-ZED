@@ -9,13 +9,23 @@ public class LevelPrefab : MonoBehaviour
     public Image icon;
     public TMP_Text title;
     public Button gameplayButton;
-
-    public void Setup(int index, Sprite levelIcon, string title)
+    public Image disabled;
+    public void Setup(int index, Sprite levelIcon, string title, bool active)
     {
         this.title.text = title;
         icon.sprite = levelIcon;
         gameplayButton.onClick.RemoveAllListeners();
-        gameplayButton.onClick.AddListener(() => StartGameplay(index));
+        if (active)
+        {
+            disabled.gameObject.SetActive(false);
+            gameplayButton.interactable = true;
+            gameplayButton.onClick.AddListener(() => StartGameplay(index));
+        }
+        else
+        {
+            disabled.gameObject.SetActive(true);
+            gameplayButton.interactable = false;
+        }
     }
     public void StartGameplay(int index)
     {

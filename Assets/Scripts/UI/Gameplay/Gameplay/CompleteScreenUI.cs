@@ -31,6 +31,7 @@ public class CompleteScreenUI : MonoBehaviour
                 {
                     title.text = "Wave Cleared!";
                     message.text = $"{team} has succesfully! Stopped the wave";
+                    GameManager.Instance.LevelManager.currentLevelIndex++;
                 }
                 else
                 {

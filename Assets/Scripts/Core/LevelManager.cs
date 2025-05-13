@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
   public int activeLevel;
+  public int currentLevelIndex = 0;
   public List<WaveListWrapper> levels;
 }
 [System.Serializable]

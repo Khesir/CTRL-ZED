@@ -15,11 +15,14 @@ public class LevelUIManager : MonoBehaviour
     {
         var levels = GameManager.Instance.LevelManager.levels;
         Clear();
+        int currentLevelIndex = GameManager.Instance.LevelManager.currentLevelIndex; // Better naming
         for (int i = 0; i < levels.Count - 1; i++)
         {
             var go = Instantiate(LevelPrefab, content);
             var lvl = go.GetComponent<LevelPrefab>();
-            lvl.Setup(i, levels[i].icon, $"Level {i + 1}");
+            bool isLocked = i > currentLevelIndex;
+
+            lvl.Setup(i, levels[i].icon, $"Level {i + 1}", !isLocked);
         }
         Instantiate(endlessLevel, content);
         var team = Instantiate(ActiveTeamPrefab, teamContent);
