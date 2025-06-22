@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,7 @@ public class TeamContainer : MonoBehaviour
     [Header("Icons")]
     public GameObject normalIcon;
     public GameObject activeAction;
+    public GameObject deployAction;
 
     private GameObject teamDetails;
     public void Setup(TeamService team, int index, GameObject teamDetails)
@@ -24,9 +26,11 @@ public class TeamContainer : MonoBehaviour
         if (team.isActive)
         {
             activeAction.SetActive(true);
+            deployAction.SetActive(false);
         }
         else
         {
+            deployAction.SetActive(true);
             activeAction.SetActive(false);
         }
         this.teamDetails = teamDetails;
@@ -51,12 +55,24 @@ public class TeamContainer : MonoBehaviour
                 draggable.Setup(slot);
             }
         }
-        viewTeam.onClick.RemoveAllListeners();
-        viewTeam.onClick.AddListener(ShowTeam);
+        if (viewTeam != null)
+        {
+            viewTeam.onClick.RemoveAllListeners();
+            viewTeam.onClick.AddListener(ShowTeam);
+
+        }
     }
     public void ShowTeam()
     {
         teamDetails.SetActive(true);
         teamDetails.GetComponent<TeamDetails>().Initialize(instance, index);
+    }
+    public void DeployAction()
+    {
+        Console.WriteLine(index);
+    }
+    public void UnDeployAction()
+    {
+        Console.WriteLine(index);
     }
 }
