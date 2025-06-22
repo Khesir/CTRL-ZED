@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,19 +7,23 @@ public class InventoryUI : MonoBehaviour
 {
     public Transform gridContainer;
     public GameObject slotPrefab;
-    public DetailsController detailsController;
+    public GameObject noCharacterAvailablePrefab;
 
     public void Populate()
     {
         // Clear Old ones
         Clear();
         List<CharacterService> ownedCharacters = GameManager.Instance.CharacterManager.GetCharacters();
-        // Add one card per character
+        if (ownedCharacters.Count < 0)
+        {
+            Instantiate(noCharacterAvailablePrefab, gridContainer).SetActive(true);
+            return;
+        }
         foreach (var instance in ownedCharacters)
         {
             var cardGO = Instantiate(slotPrefab, gridContainer);
             var card = cardGO.GetComponent<InventorySlotUI>();
-            card.detailsController = detailsController;
+            // card.detailsController = detailsController;
             card.Setup(instance);
         }
     }
