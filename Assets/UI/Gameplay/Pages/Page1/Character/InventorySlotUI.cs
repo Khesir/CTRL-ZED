@@ -11,7 +11,10 @@ public class InventorySlotUI : MonoBehaviour
     public TMP_Text level;
     public CharacterService instance;
     public DraggableItem draggableItem;
-    // public DetailsController detailsController;
+    public Button actionButton;
+    [Header("Dont touch below, Handled automatically")]
+    public DetailsController detailsController;
+    public GameObject noCharacterDetailsSection;
     public void Setup(CharacterService data)
     {
         var character = data.GetInstance();
@@ -21,12 +24,18 @@ public class InventorySlotUI : MonoBehaviour
         level.text = $"Lvl. {character.level}";
         draggableItem.Setup(data, true);
 
-        // actionButton.onClick.RemoveAllListeners();
-        // actionButton.onClick.AddListener(OnActionButtonClicked);
+        actionButton.onClick.RemoveAllListeners();
+        actionButton.onClick.AddListener(OnActionButtonClicked);
     }
 
-    // private void OnActionButtonClicked()
-    // {
-    //     detailsController.Intialize(instance);
-    // }
+    private void OnActionButtonClicked()
+    {
+        // Just making sure that it renders the right one
+        // By default no character Details selected, as this consider if no characters
+        // Base case.
+        detailsController.gameObject.SetActive(true);
+        noCharacterDetailsSection.SetActive(false);
+
+        detailsController.Intialize(instance);
+    }
 }

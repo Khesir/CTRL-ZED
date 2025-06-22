@@ -10,7 +10,6 @@ public class Page1Controller : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Pass");
         inventoryUI.Populate();
         characterCounter.Setup(GameManager.Instance.CharacterManager.GetCharacters().Count);
 

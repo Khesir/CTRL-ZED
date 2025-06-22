@@ -8,13 +8,13 @@ public class InventoryUI : MonoBehaviour
     public Transform gridContainer;
     public GameObject slotPrefab;
     public GameObject noCharacterAvailablePrefab;
-
+    public DetailsController characterDetailsSection;
+    public GameObject noCharacterDetailsSection;
     public void Populate()
     {
-        // Clear Old ones
         Clear();
         List<CharacterService> ownedCharacters = GameManager.Instance.CharacterManager.GetCharacters();
-        if (ownedCharacters.Count < 0)
+        if (ownedCharacters.Count < 1)
         {
             Instantiate(noCharacterAvailablePrefab, gridContainer).SetActive(true);
             return;
@@ -23,7 +23,8 @@ public class InventoryUI : MonoBehaviour
         {
             var cardGO = Instantiate(slotPrefab, gridContainer);
             var card = cardGO.GetComponent<InventorySlotUI>();
-            // card.detailsController = detailsController;
+            card.detailsController = characterDetailsSection;
+            card.noCharacterDetailsSection = noCharacterDetailsSection;
             card.Setup(instance);
         }
     }
