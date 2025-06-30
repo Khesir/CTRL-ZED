@@ -58,8 +58,8 @@ public class GameplayManager : MonoBehaviour
         gameManager = GameManager.Instance;
         if (followers.Count == 0)
         {
-            TeamService team = GameManager.Instance.TeamManager.GetActiveTeam();
-            List<CharacterService> members = team.GetMembers();
+            List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
+            List<CharacterService> members = team[0].GetMembers();
             spawn.Setup(members);
         }
         SwitchControlledFollower(currentFollowerIndex);

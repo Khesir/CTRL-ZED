@@ -35,7 +35,7 @@ public class LevelPrefab : MonoBehaviour
             if (!GameManager.Instance.ResourceManager.UseRemainingCharge())
             {
 
-                var members = activeTeam.GetMembers();
+                var members = activeTeam[0].GetMembers();
                 var totalDeploymentCost = new Dictionary<string, float>();
 
                 foreach (CharacterService character in members)

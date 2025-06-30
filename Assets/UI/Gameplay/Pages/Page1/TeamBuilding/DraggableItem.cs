@@ -21,7 +21,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         instance = data;
         var character = data.GetInstance();
         isExternal = external;
-        image.sprite = character.baseData.icon;
+        image.sprite = character.baseData.ship;
         if (!external)
             setDetails(character);
     }

@@ -11,10 +11,10 @@ public class TeamDetails : MonoBehaviour
     public TMP_Text resourceCost;
     public TeamService instance;
     public int index;
-    public void Initialize(TeamService instance, int index)
+    public void Initialize(TeamService instance)
     {
         this.instance = instance;
-        this.index = index;
+        this.index = instance.teamID;
         var team = instance.GetMembers();
         SetButton();
         var totalDeploymentCost = new Dictionary<string, float>();
@@ -67,6 +67,6 @@ public class TeamDetails : MonoBehaviour
     }
     public void SetButton()
     {
-        setActive.interactable = !instance.isActive;
+        setActive.interactable = !GameManager.Instance.TeamManager.isTeamActive(instance.teamID);
     }
 }

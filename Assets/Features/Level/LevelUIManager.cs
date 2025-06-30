@@ -28,7 +28,7 @@ public class LevelUIManager : MonoBehaviour
         var team = Instantiate(ActiveTeamPrefab, teamContent);
         var teamContainer = team.GetComponent<TeamContainer>();
         var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
-        teamContainer.Setup(activeTeam, -1, teamDetails);
+        teamContainer.Setup(activeTeam[0], teamDetails);
     }
     public void Clear()
     {

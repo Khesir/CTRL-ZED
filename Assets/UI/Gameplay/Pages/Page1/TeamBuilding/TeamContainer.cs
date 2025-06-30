@@ -14,37 +14,24 @@ public class TeamContainer : MonoBehaviour
     public List<GameObject> teamSlot;
     public TeamService instance;
     public Button viewTeam;
-    public int index;
     [Header("Icons")]
     public GameObject normalIcon;
     public GameObject activeAction;
     public GameObject deployAction;
-
     private GameObject teamDetails;
-    public void Setup(TeamService team, int index, GameObject teamDetails)
+    public void Setup(TeamService team, GameObject teamDetails)
     {
-        if (team.isActive)
-        {
-            activeAction.SetActive(true);
-            deployAction.SetActive(false);
-        }
-        else
-        {
-            deployAction.SetActive(true);
-            activeAction.SetActive(false);
-        }
-        this.teamDetails = teamDetails;
         instance = team;
+        IsActive();
+        this.teamDetails = teamDetails;
         teamName.text = team.GetTeamName();
         var members = team.GetMembers();
         for (int i = 0; i < team.GetMembers().Count; i++)
         {
             var slot = members[i];
-            this.index = index;
             var cardGO = Instantiate(teamSlotPrefab, content);
             var slotData = cardGO.GetComponent<TeamInventorySlot>();
             slotData.teamService = instance;
-            slotData.teamId = index;
             slotData.slotIndex = i;
             teamSlot.Add(cardGO);
 
@@ -61,18 +48,46 @@ public class TeamContainer : MonoBehaviour
             viewTeam.onClick.AddListener(ShowTeam);
 
         }
+
+        // Attach actions
+        var deployBtn = deployAction.GetComponent<Button>();
+
+        deployBtn.onClick.RemoveAllListeners();
+        deployBtn.onClick.AddListener(DeployAction);
+
+        var activeBtn = activeAction.GetComponent<Button>();
+        activeBtn.onClick.RemoveAllListeners();
+        activeBtn.onClick.AddListener(UnDeployAction);
     }
     public void ShowTeam()
     {
         teamDetails.SetActive(true);
-        teamDetails.GetComponent<TeamDetails>().Initialize(instance, index);
+        teamDetails.GetComponent<TeamDetails>().Initialize(instance);
     }
     public void DeployAction()
     {
-        Console.WriteLine(index);
+        Debug.Log($"Deploy {instance.teamID}");
+        GameManager.Instance.TeamManager.SetActiveTeam(instance.teamID);
+        IsActive();
     }
     public void UnDeployAction()
     {
-        Console.WriteLine(index);
+        GameManager.Instance.TeamManager.RemoveActiveTeam(instance.teamID);
+        Debug.Log($"UnDeploy {instance.teamID}");
+        IsActive();
+    }
+    public void IsActive()
+    {
+        var isActive = GameManager.Instance.TeamManager.isTeamActive(instance.teamID);
+        if (isActive)
+        {
+            activeAction.SetActive(true);
+            deployAction.SetActive(false);
+        }
+        else
+        {
+            deployAction.SetActive(true);
+            activeAction.SetActive(false);
+        }
     }
 }

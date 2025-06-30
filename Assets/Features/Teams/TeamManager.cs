@@ -7,7 +7,7 @@ using UnityEngine;
 public class TeamManager : MonoBehaviour
 {
     [SerializeField] private List<TeamService> teams = new();
-    [SerializeField] private TeamService activeTeam;
+    [SerializeField] private List<TeamService> activeTeam = new();
     [SerializeField] private int maxSize;
     public int increaseSizePrice;
     public event Action onTeamChange;
@@ -22,9 +22,18 @@ public class TeamManager : MonoBehaviour
         }
         await UniTask.CompletedTask;
     }
-    public bool IsTeamActiveByIndex(int index)
+    public bool isTeamActive(int index)
     {
-        return teams[index].isActive;
+        if (activeTeam.Count < 1)
+            return false;
+        foreach (TeamService team in activeTeam)
+        {
+            if (team.teamID == index)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public void CreateTeam()
     {
@@ -42,26 +51,42 @@ public class TeamManager : MonoBehaviour
     {
         maxSize++;
     }
-    public TeamService GetActiveTeam()
+    public List<TeamService> GetActiveTeam()
     {
         return activeTeam;
     }
     public void SetActiveTeam(int index)
     {
-        if (index >= 0 && index < teams.Count)
+        var selectedTeam = GetTeam(index);
+        foreach (TeamService team in activeTeam)
         {
-            if (activeTeam != null)
+            if (team.teamID == selectedTeam.teamID)
             {
-                activeTeam.isActive = false;
+                Debug.Log("This team is already in the active list");
+                return;
             }
-            activeTeam = teams[index];
-            activeTeam.isActive = true;
-            onTeamChange?.Invoke();
-            Debug.Log($"{index} Team set as active team");
         }
-        else
+        activeTeam.Add(selectedTeam);
+        onTeamChange?.Invoke();
+        Debug.Log($"{selectedTeam.teamID} Team set as active team");
+
+    }
+    public void RemoveActiveTeam(int index)
+    {
+        var selectedTeam = GetTeam(index);
+        var exists = false;
+        foreach (TeamService team in activeTeam)
         {
-            Debug.Log("Index out of scope");
+            if (team.teamID == selectedTeam.teamID)
+            {
+                exists = true;
+            }
+        }
+        if (exists)
+        {
+            activeTeam.Remove(selectedTeam);
+            onTeamChange?.Invoke();
+            Debug.Log($"{selectedTeam.teamID} Team set as active team");
         }
     }
     public List<TeamService> GetTeams()
@@ -70,9 +95,12 @@ public class TeamManager : MonoBehaviour
     }
     public TeamService GetTeam(int index)
     {
-        if (index >= 0 && index < teams.Count)
+        foreach (TeamService team in teams)
         {
-            return teams[index];
+            if (team.teamID == index)
+            {
+                return team;
+            }
         }
         return null;
     }

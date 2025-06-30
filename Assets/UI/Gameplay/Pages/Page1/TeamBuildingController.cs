@@ -23,14 +23,13 @@ public class TeamBuildingController : MonoBehaviour
     private void Populate()
     {
         List<TeamService> teamData = GameManager.Instance.TeamManager.GetTeams();
-
         Clear();
         for (int i = 0; i < teamData.Count; i++)
         {
-            var instance = teamData[i];
+            TeamService instance = teamData[i];
             var cardGO = Instantiate(teamPrefab, parentLayout);
             var teamContainer = cardGO.GetComponent<TeamContainer>();
-            teamContainer.Setup(instance, i, TeamDetails);
+            teamContainer.Setup(instance, TeamDetails);
         }
         var go = Instantiate(createTeamPrefab, parentLayout);
         go.GetComponent<CreateTeam>().Initialize();

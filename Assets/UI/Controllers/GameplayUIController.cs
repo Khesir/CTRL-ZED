@@ -47,7 +47,7 @@ public class GameplayUIController : MonoBehaviour
     private void CharacterListIconInitialize()
     {
         var team = GameManager.Instance.TeamManager.GetActiveTeam();
-        var characters = team.GetMembers();
+        var characters = team[0].GetMembers();
         var compactCharacters = new List<CharacterService>();
         foreach (var c in characters)
         {
@@ -79,7 +79,7 @@ public class GameplayUIController : MonoBehaviour
     private void CharacterListInitialize()
     {
         var team = GameManager.Instance.TeamManager.GetActiveTeam();
-        var characters = team.GetMembers();
+        var characters = team[0].GetMembers();
         var compactCharacters = new List<CharacterService>();
         foreach (var c in characters)
         {

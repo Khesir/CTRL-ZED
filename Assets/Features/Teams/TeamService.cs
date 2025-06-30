@@ -6,7 +6,7 @@ public class TeamService
 {
     private Team data;
     private int maxSize = 4;
-    public bool isActive;
+    public int teamID;
     public TeamService(Team data = null)
     {
         if (data != null)

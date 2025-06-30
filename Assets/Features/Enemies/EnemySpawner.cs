@@ -56,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
         {
             var team = GameManager.Instance.TeamManager.GetActiveTeam();
             var loots = waves[waveNumber - 1].waveRewards;
-            GameplayManager.Instance.gameplayUI.Complete("character", true, team.GetTeamName(), loots);
+            GameplayManager.Instance.gameplayUI.Complete("character", true, team[0].GetTeamName(), loots);
             return;
         }
         WaveAnnouncement("Wave Clear");

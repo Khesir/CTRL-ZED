@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
                 var spawner = GameplayManager.Instance.spawner;
                 var team = GameManager.Instance.TeamManager.GetActiveTeam();
                 var loots = spawner.waves[spawner.waveNumber].waveRewards;
-                GameplayManager.Instance.gameplayUI.Complete("character", false, team.GetTeamName(), loots);
+                GameplayManager.Instance.gameplayUI.Complete("character", false, team[0].GetTeamName(), loots);
             }
         }
     }
