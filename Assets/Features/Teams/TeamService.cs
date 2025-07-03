@@ -6,9 +6,10 @@ public class TeamService
 {
     private Team data;
     private int maxSize = 4;
-    public int teamID;
+    public string teamID;
     public TeamService(Team data = null)
     {
+        teamID = TeamUtils.GenerateTeamID();
         if (data != null)
         {
             this.data = data;

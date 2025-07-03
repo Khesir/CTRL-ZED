@@ -42,6 +42,7 @@ public class TeamBuildingController : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
+
     public void RefreshUI()
     {
         Populate();

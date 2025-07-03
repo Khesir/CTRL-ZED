@@ -22,13 +22,13 @@ public class TeamManager : MonoBehaviour
         }
         await UniTask.CompletedTask;
     }
-    public bool isTeamActive(int index)
+    public bool isTeamActive(string teadID)
     {
         if (activeTeam.Count < 1)
             return false;
         foreach (TeamService team in activeTeam)
         {
-            if (team.teamID == index)
+            if (team.teamID == teadID)
             {
                 return true;
             }
@@ -46,6 +46,7 @@ public class TeamManager : MonoBehaviour
         {
             Debug.LogError("Max size met");
         }
+        Debug.Log(teams.Count);
     }
     public void IncreaseMaxTeam()
     {
@@ -53,11 +54,15 @@ public class TeamManager : MonoBehaviour
     }
     public List<TeamService> GetActiveTeam()
     {
+        foreach (var team in activeTeam)
+        {
+            Debug.Log($"Active Team: {team.teamID}");
+        }
         return activeTeam;
     }
-    public void SetActiveTeam(int index)
+    public void SetActiveTeam(string teadID)
     {
-        var selectedTeam = GetTeam(index);
+        var selectedTeam = GetTeam(teadID);
         foreach (TeamService team in activeTeam)
         {
             if (team.teamID == selectedTeam.teamID)
@@ -69,11 +74,10 @@ public class TeamManager : MonoBehaviour
         activeTeam.Add(selectedTeam);
         onTeamChange?.Invoke();
         Debug.Log($"{selectedTeam.teamID} Team set as active team");
-
     }
-    public void RemoveActiveTeam(int index)
+    public void RemoveActiveTeam(string teamId)
     {
-        var selectedTeam = GetTeam(index);
+        var selectedTeam = GetTeam(teamId);
         var exists = false;
         foreach (TeamService team in activeTeam)
         {
@@ -93,7 +97,7 @@ public class TeamManager : MonoBehaviour
     {
         return teams;
     }
-    public TeamService GetTeam(int index)
+    public TeamService GetTeam(string index)
     {
         foreach (TeamService team in teams)
         {
@@ -104,27 +108,27 @@ public class TeamManager : MonoBehaviour
         }
         return null;
     }
-    public Response<object> isCharacterInTeam(int teamIndex, CharacterService character)
+    public Response<object> isCharacterInTeam(string teamId, CharacterService character)
     {
-        var team = GetTeam(teamIndex);
+        var team = GetTeam(teamId);
         if (team.GetMembers().Contains(character))
         {
             return Response.Fail("Character is team");
         }
         return Response.Success("Character Available");
     }
-    public void AssignedCharacterToSlot(int teamIndex, int slotIndex, CharacterService character)
+    public void AssignedCharacterToSlot(string teamId, int slotIndex, CharacterService character)
     {
         if (character == null || !GameManager.Instance.CharacterManager.GetCharacters().Contains(character))
         {
             Debug.LogError("You don't own the character");
             return;
         }
-        var team = GetTeam(teamIndex);
+        var team = GetTeam(teamId);
         if (team != null && slotIndex < team.GetMembers().Count)
         {
             team.GetMembers()[slotIndex] = character;
-            Debug.Log($"Assigned Character to Team {teamIndex} Slot {slotIndex}");
+            Debug.Log($"Assigned Character to Team {teamId} Slot {slotIndex}");
             return;
         }
         else
@@ -133,15 +137,15 @@ public class TeamManager : MonoBehaviour
             return;
         }
     }
-    public Response<object> RemoveCharacterFromSlot(int teamIndex, int slotIndex)
+    public Response<object> RemoveCharacterFromSlot(string teamId, int slotIndex)
     {
-        var team = GetTeam(teamIndex);
+        var team = GetTeam(teamId);
         if (team != null && slotIndex < team.GetMembers().Count)
         {
             if (team.GetMembers()[slotIndex] != null)
             {
                 team.GetMembers()[slotIndex] = null;
-                return Response.Success($"Removed character from Team {teamIndex} Slot {slotIndex}");
+                return Response.Success($"Removed character from Team {teamId} Slot {slotIndex}");
             }
             else
             {
@@ -153,9 +157,9 @@ public class TeamManager : MonoBehaviour
             return Response.Fail("Something went wrong clearly");
         }
     }
-    public bool RemoveCharacterFromTeamByReference(int teamIndex, CharacterService character)
+    public bool RemoveCharacterFromTeamByReference(string teamId, CharacterService character)
     {
-        var team = GetTeam(teamIndex);
+        var team = GetTeam(teamId);
         if (team == null)
         {
             return false;

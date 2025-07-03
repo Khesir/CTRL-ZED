@@ -7,7 +7,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
 {
     public GameObject draggableItemPrefab;
     public int slotIndex;
-    public int teamId;
     public TeamService teamService;
     public void OnDrop(PointerEventData eventData)
     {
@@ -20,9 +19,9 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
         if (originalDraggable.isExternal)
         {
             // Validate if character is not duplicate
-            if (!manager.isCharacterInTeam(teamId, transferredCharacter).IsSuccess) return;
+            if (!manager.isCharacterInTeam(teamService.teamID, transferredCharacter).IsSuccess) return;
 
-            manager.AssignedCharacterToSlot(teamId, slotIndex, transferredCharacter);
+            manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
 
             GameObject newDraggableGO = Instantiate(draggableItemPrefab, transform);
             DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
@@ -34,9 +33,9 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
         else
         {
             TeamInventorySlot originalSlot = originalDraggable.parentAfterDrag.GetComponent<TeamInventorySlot>();
-            if (teamId != originalSlot.teamId) return;
-            manager.AssignedCharacterToSlot(teamId, slotIndex, transferredCharacter);
-            manager.RemoveCharacterFromSlot(originalSlot.teamId, originalSlot.slotIndex);
+            if (teamService.teamID != originalSlot.teamService.teamID) return;
+            manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
+            manager.RemoveCharacterFromSlot(originalSlot.teamService.teamID, originalSlot.slotIndex);
 
             originalDraggable.parentAfterDrag = transform;
         }

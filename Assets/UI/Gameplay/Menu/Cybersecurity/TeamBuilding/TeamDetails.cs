@@ -10,11 +10,9 @@ public class TeamDetails : MonoBehaviour
     public Button setActive;
     public TMP_Text resourceCost;
     public TeamService instance;
-    public int index;
     public void Initialize(TeamService instance)
     {
         this.instance = instance;
-        this.index = instance.teamID;
         var team = instance.GetMembers();
         SetButton();
         var totalDeploymentCost = new Dictionary<string, float>();
@@ -30,7 +28,6 @@ public class TeamDetails : MonoBehaviour
             if (team[i] != null)
             {
                 go[i].Initialize(team[i]);
-                go[i].index = index;
                 var cost = team[i].GetDeploymentCost();
 
                 foreach (var kvp in cost)
@@ -62,7 +59,7 @@ public class TeamDetails : MonoBehaviour
     }
     public void ActionButton()
     {
-        GameManager.Instance.TeamManager.SetActiveTeam(index);
+        GameManager.Instance.TeamManager.SetActiveTeam(instance.teamID);
         SetButton();
     }
     public void SetButton()

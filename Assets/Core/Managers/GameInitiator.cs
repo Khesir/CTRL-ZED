@@ -89,28 +89,29 @@ public class GameInitiator : MonoBehaviour
         // Game logic -- actual trigger of the game or so
     }
 
-    private void GenerateTestData()
-    {
-        // Create a new team
-        GameManager.Instance.TeamManager.CreateTeam();
+    // No team ID provided --- disabled for now
+    // private void GenerateTestData()
+    // {
+    //     // Create a new team
+    //     GameManager.Instance.TeamManager.CreateTeam();
 
-        // Create characters based on character templates
-        foreach (var characterService in GameManager.Instance.characterTemplates)
-        {
-            GameManager.Instance.CharacterManager.CreateCharacter(characterService);
-        }
+    //     // Create characters based on character templates
+    //     foreach (var characterService in GameManager.Instance.characterTemplates)
+    //     {
+    //         GameManager.Instance.CharacterManager.CreateCharacter(characterService);
+    //     }
 
-        // Get the list of created characters
-        var characters = GameManager.Instance.CharacterManager.GetCharacters();
+    //     // Get the list of created characters
+    //     var characters = GameManager.Instance.CharacterManager.GetCharacters();
 
-        // Ensure there are characters to assign to slots
-        for (int i = 0; i < characters.Count; i++)  // Fix: use '<' to avoid out of range
-        {
-            GameManager.Instance.TeamManager.AssignedCharacterToSlot(0, i, characters[i]);
-        }
+    //     // Ensure there are characters to assign to slots
+    //     for (int i = 0; i < characters.Count; i++)  // Fix: use '<' to avoid out of range
+    //     {
+    //         GameManager.Instance.TeamManager.AssignedCharacterToSlot(0, i, characters[i]);
+    //     }
 
-        // Set the active team (0 here represents the first team)
-        GameManager.Instance.TeamManager.SetActiveTeam(0);
-        isGenerated = true;
-    }
+    //     // Set the active team (0 here represents the first team)
+    //     GameManager.Instance.TeamManager.SetActiveTeam(0);
+    //     isGenerated = true;
+    // }
 }

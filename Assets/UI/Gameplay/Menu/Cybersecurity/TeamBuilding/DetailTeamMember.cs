@@ -20,8 +20,8 @@ public class DetailTeamMember : MonoBehaviour
         UpdateData();
         actionButton.onClick.RemoveAllListeners();
         actionButton.onClick.AddListener(OnActionButtonClicked);
-        removeInstanceFromTeam.onClick.RemoveAllListeners();
-        removeInstanceFromTeam.onClick.AddListener(RemoveMember);
+        // removeInstanceFromTeam.onClick.RemoveAllListeners();
+        // removeInstanceFromTeam.onClick.AddListener(RemoveMember);
     }
     public void UpdateData()
     {
@@ -38,18 +38,18 @@ public class DetailTeamMember : MonoBehaviour
     {
         detailsController.Intialize(instance);
     }
-    private void RemoveMember()
-    {
-        var res = GameManager.Instance.TeamManager.RemoveCharacterFromTeamByReference(index, instance);
-        if (res)
-            ResetUI();
-    }
-    private void ResetUI()
-    {
-        icon.sprite = null;
-        icon.color = new Color32(255, 255, 255, 0);
-        className.text = "";
-        characterName.text = "";
-        level.text = "";
-    }
+    // private void RemoveMember()
+    // {
+    //     var res = GameManager.Instance.TeamManager.RemoveCharacterFromTeamByReference(index, instance);
+    //     if (res)
+    //         ResetUI();
+    // }
+    // private void ResetUI()
+    // {
+    //     icon.sprite = null;
+    //     icon.color = new Color32(255, 255, 255, 0);
+    //     className.text = "";
+    //     characterName.text = "";
+    //     level.text = "";
+    // }
 }
