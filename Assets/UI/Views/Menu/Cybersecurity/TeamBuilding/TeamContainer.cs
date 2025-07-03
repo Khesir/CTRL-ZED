@@ -46,7 +46,7 @@ public class TeamContainer : MonoBehaviour
         {
             viewTeam.onClick.RemoveAllListeners();
             viewTeam.onClick.AddListener(ShowTeam);
-
+            Debug.Log("Added Team Details view");
         }
 
         // Attach actions
