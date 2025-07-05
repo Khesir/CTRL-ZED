@@ -23,6 +23,15 @@ public class DetailTeamMember : MonoBehaviour
         // removeInstanceFromTeam.onClick.RemoveAllListeners();
         // removeInstanceFromTeam.onClick.AddListener(RemoveMember);
     }
+    public void SetToState(bool flag)
+    {
+        icon.gameObject.SetActive(flag);
+        className.gameObject.SetActive(flag);
+        characterName.gameObject.SetActive(flag);
+        level.gameObject.SetActive(flag);
+        actionButton.gameObject.SetActive(flag);
+        removeInstanceFromTeam.gameObject.SetActive(flag);
+    }
     public void UpdateData()
     {
         var character = instance.GetInstance();

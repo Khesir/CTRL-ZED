@@ -10,6 +10,7 @@ public class TeamDetails : MonoBehaviour
     public Button setActive;
     public TMP_Text resourceCost;
     public TeamService instance;
+    public GameObject emptyCbaracter;
     public void Initialize(TeamService instance)
     {
         this.instance = instance;
@@ -27,6 +28,7 @@ public class TeamDetails : MonoBehaviour
         {
             if (team[i] != null)
             {
+                go[i].SetToState(true); // This changes the go to true / visible
                 go[i].Initialize(team[i]);
                 var cost = team[i].GetDeploymentCost();
 
@@ -41,6 +43,10 @@ public class TeamDetails : MonoBehaviour
                         totalDeploymentCost[kvp.Key] = kvp.Value;
                     }
                 }
+            }
+            else
+            {
+                go[i].SetToState(false);
             }
 
         }
