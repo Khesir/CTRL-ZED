@@ -32,8 +32,8 @@ public class CharacterService
 
         onStatChange?.Invoke();
     }
-    public int GetMaxLevel() => LevelingSystem.GetMaxLevel();
-    public int GetRequiredExp() => LevelingSystem.GetRequiredExp(_data.currentLevel);
+    public int GetMaxLevel() => LevelingSystem.CharacterCurve.MaxLevel;
+    public int GetRequiredExp() => LevelingSystem.CharacterCurve.GetRequiredExp(_data.currentLevel);
 
     // Derived Stats
     public int GetAttack() => _data.baseData.baseAttack + (_data.currentLevel * 2);

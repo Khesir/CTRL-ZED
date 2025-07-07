@@ -25,7 +25,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
             newDraggable.Setup(transferredCharacter);
 
             Debug.Log("Transferred: " + transferredCharacter.GetName());
-
         }
         else
         {
