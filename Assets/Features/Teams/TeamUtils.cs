@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class TeamUtils : MonoBehaviour
+public class TeamUtils
 {
     public static string GenerateTeamID()
     {

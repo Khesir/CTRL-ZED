@@ -10,23 +10,23 @@ public class CharacterDetails : MonoBehaviour
     public TMP_Text level;
     public Slider healthSlider;
     public TMP_Text HealthLevel;
-    public CharacterService instance;
-    public void Initialize(CharacterService data)
+    public CharacterBattleState instance;
+    public void Initialize(CharacterBattleState data)
     {
         instance = data;
-        image.sprite = data.GetInstance().baseData.ship;
-        characterName.text = data.GetName();
-        level.text = "LVL " + data.GetLevel().ToString();
+        image.sprite = data.characterService.GetInstance().ship;
+        characterName.text = data.characterService.GetName();
+        level.text = "LVL " + data.characterService.GetLevel().ToString();
         UpdateHealth();
-        // Register characterService event -- for damage updates, etc.
-        data.onDamage += UpdateHealth;
+        // Register CharacterBattleState event -- for damage updates, etc.
+        data.characterService.onDamage += UpdateHealth;
     }
 
     private void UpdateHealth()
     {
-        healthSlider.maxValue = instance.GetMaxHealth();
-        healthSlider.value = instance.GetCurrentHealth();
-        HealthLevel.text = instance.GetCurrentHealth() + " / " + instance.GetMaxHealth();
+        healthSlider.maxValue = instance.characterService.GetMaxHealth();
+        healthSlider.value = instance.currentHealth;
+        HealthLevel.text = instance.currentHealth + " / " + instance.characterService.GetMaxHealth();
     }
 
 }

@@ -6,19 +6,19 @@ public class CharacterDetailsIcon : MonoBehaviour
 {
     public Image image;
     public TMP_Text indexText;
-    public CharacterService instance;
-    public void Initialize(CharacterService data, int index)
+    public CharacterBattleState instance;
+    public void Initialize(CharacterBattleState data, int index)
     {
         instance = data;
         indexText.text = (index + 1).ToString();
-        image.sprite = data.GetInstance().baseData.ship;
+        image.sprite = data.characterService.GetInstance().ship;
 
-        data.onDamage += UpdateHealth;
+        data.characterService.onDamage += UpdateHealth;
     }
 
     private void UpdateHealth()
     {
-        if (instance.IsDead())
+        if (instance.isDead)
         {
             image.color = Color.red;
         }

@@ -21,10 +21,14 @@ public class CharacterManager : MonoBehaviour
     {
         return characters;
     }
-    public void CreateCharacter(CharacterConfig instance)
+
+    public void CreateCharacter(CharacterConfig instance = null)
     {
-        var newCharacter = new CharacterData(instance);
-        characters.Add(new CharacterService(newCharacter));
+        if (instance == null) return;
+        var character = CharacterFactory.CreateFromShop(instance);
+
+        characters.Add(character);
+
         onInventoryChange?.Invoke();
         Debug.Log("Created Character Services");
     }

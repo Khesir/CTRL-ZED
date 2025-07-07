@@ -5,10 +5,10 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    public CharacterBattleState playerData;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public weapon weapon;
-    public CharacterService playerData;
     Vector2 moveDirection;
     Vector2 mousePosition;
 
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
         playerData.TakeDamage(damage);
         isImmune = true;
         immunityTimer = immunityDuration;
-        if (playerData.IsDead())
+        if (playerData.isDead)
         {
             gameObject.SetActive(false);
             var follower = gameObject.GetComponent<Follower>();

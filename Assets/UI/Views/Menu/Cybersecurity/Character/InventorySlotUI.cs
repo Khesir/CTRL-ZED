@@ -19,7 +19,7 @@ public class InventorySlotUI : MonoBehaviour
     {
         var character = data.GetInstance();
         instance = data;
-        className.text = character.baseData.className;
+        className.text = character.className;
         nameText.text = character.name;
         level.text = $"Lvl. {character.level}";
         draggableItem.Setup(data, true);

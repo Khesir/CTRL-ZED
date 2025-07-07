@@ -23,11 +23,11 @@ public class DetailsController : MonoBehaviour
     {
         var character = data.GetInstance();
         characterName.text = character.name;
-        className.text = $"{character.baseData.className} - Lvl {character.level}";
-        characterIcon.sprite = character.baseData.icon;
-        characterShip.sprite = character.baseData.ship;
+        className.text = $"{character.className} - Lvl {character.level}";
+        characterIcon.sprite = character.icon;
+        characterShip.sprite = character.ship;
         Clear();
-        var statsMap = character.GetDeploymentCost();
+        var statsMap = data.GetDeploymentCost();
         foreach (var instance in statsMap)
         {
             var statCard = Instantiate(prefab, content);

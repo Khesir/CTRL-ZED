@@ -36,9 +36,9 @@ public class DetailTeamMember : MonoBehaviour
     {
         var character = instance.GetInstance();
 
-        icon.sprite = character.baseData.icon;
+        icon.sprite = character.icon;
         icon.color = new Color32(255, 255, 255, 255);
-        className.text = character.baseData.className;
+        className.text = character.className;
         characterName.text = character.name;
         level.text = $"Lvl. {character.level}";
 

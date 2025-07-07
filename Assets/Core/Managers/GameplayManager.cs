@@ -9,6 +9,7 @@ using UnityEngine.AI;
 
 public class GameplayManager : MonoBehaviour
 {
+
     public GameManager gameManager;
     public static GameplayManager Instance { get; private set; }
     [Header("Follower System")]
@@ -60,7 +61,8 @@ public class GameplayManager : MonoBehaviour
         {
             List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
             List<CharacterService> members = team[0].GetMembers();
-            spawn.Setup(members);
+            var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
+            spawn.Setup(battleStates);
         }
         SwitchControlledFollower(currentFollowerIndex);
         await spawner.Initialize(gameManager.LevelManager.levels[gameManager.LevelManager.activeLevel].waves);
@@ -116,7 +118,7 @@ public class GameplayManager : MonoBehaviour
     private void IsDead(int index)
     {
         var character = followers[index].GetComponent<PlayerController>().playerData;
-        if (character.IsDead())
+        if (character.isDead)
         {
             return;
         }
@@ -127,7 +129,7 @@ public class GameplayManager : MonoBehaviour
         {
             var controller = followers[i].GetComponent<PlayerController>().playerData;
 
-            if (!controller.IsDead())
+            if (!controller.isDead)
             {
                 return i;
             }

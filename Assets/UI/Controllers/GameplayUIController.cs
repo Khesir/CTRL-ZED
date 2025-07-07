@@ -48,10 +48,10 @@ public class GameplayUIController : MonoBehaviour
     {
         var team = GameManager.Instance.TeamManager.GetActiveTeam();
         var characters = team[0].GetMembers();
-        var compactCharacters = new List<CharacterService>();
+        var compactCharacters = new List<CharacterBattleState>();
         foreach (var c in characters)
         {
-            if (c != null) compactCharacters.Add(c);
+            if (c != null) compactCharacters.Add(new CharacterBattleState(c));
         }
         while (compactCharacters.Count < 4)
         {
@@ -79,11 +79,12 @@ public class GameplayUIController : MonoBehaviour
     private void CharacterListInitialize()
     {
         var team = GameManager.Instance.TeamManager.GetActiveTeam();
+        // TODO: default team 0 is set
         var characters = team[0].GetMembers();
-        var compactCharacters = new List<CharacterService>();
+        var compactCharacters = new List<CharacterBattleState>();
         foreach (var c in characters)
         {
-            if (c != null) compactCharacters.Add(c);
+            if (c != null) compactCharacters.Add(new CharacterBattleState(c));
         }
         while (compactCharacters.Count < 4)
         {

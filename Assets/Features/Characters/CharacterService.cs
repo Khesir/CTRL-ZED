@@ -5,88 +5,69 @@ using UnityEngine;
 
 public class CharacterService
 {
-    private CharacterData _instance;
+    private readonly CharacterData _data;
     public event Action onDamage;
-    public float currentHealth;
+    public event Action onLevelUp;
+    public event Action onStatChange;
     public CharacterService(CharacterData character)
     {
-        _instance = character;
-        currentHealth = GetMaxHealth();
+        _data = character;
     }
-    public void GetExperience(int experienceToGet)
+    // Core Info
+    public string GetName() => _data.name;
+    public int GetLevel() => _data.currentLevel;
+    public string GetID() => _data.id;
+    public CharacterConfig GetInstance() => _data.baseData;
+    // Progression
+    public void GetExperience(int amount)
     {
-        _instance.experience += experienceToGet;
-        if (_instance.experience >= _instance.playerLevels[_instance.currentLevel])
+        _data.experience += amount;
+
+        while (_data.experience >= GetRequiredExp())
         {
-            _instance.currentLevel++;
-            _instance.experience = 0;
+            _data.experience -= GetRequiredExp();
+            _data.currentLevel = Mathf.Min(_data.currentLevel + 1, GetMaxLevel());
+            onLevelUp?.Invoke();
         }
-    }
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        onDamage?.Invoke();
-    }
-    public bool IsDead()
-    {
-        return currentHealth <= 0;
-    }
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-    public CharacterData GetInstance()
-    {
-        return _instance;
-    }
-    public void CreateCharacter(CharacterConfig template)
-    {
-        _instance = new CharacterData(template);
-    }
-    // Stats 
-    public string GetName()
-    {
-        return _instance.name;
-    }
-    public int GetLevel()
-    {
-        return _instance.level;
-    }
-    public int GetAttack()
-    {
-        return _instance.baseData.baseAttack + (_instance.level * 2);
-    }
 
-    public int GetDefense()
-    {
-        return _instance.baseData.defense + Mathf.FloorToInt(_instance.level * 1.5f);
+        onStatChange?.Invoke();
     }
+    public int GetMaxLevel() => LevelingSystem.GetMaxLevel();
+    public int GetRequiredExp() => LevelingSystem.GetRequiredExp(_data.currentLevel);
 
-    public int GetSpeed()
-    {
-        return _instance.baseData.dex;
-    }
+    // Derived Stats
+    public int GetAttack() => _data.baseData.baseAttack + (_data.currentLevel * 2);
+    public int GetDefense() => _data.baseData.defense + Mathf.FloorToInt(_data.currentLevel * 1.5f);
+    public int GetDexterity() => _data.baseData.dex;
+    public int GetMaxHealth() => _data.baseData.baseHealth + (_data.currentLevel * 10);
 
-    public int GetMaxHealth()
-    {
-        return _instance.baseData.baseHealth + (_instance.level * 10);
-    }
     public Dictionary<string, int> GetStatMap()
     {
-        return new Dictionary<string, int>
+        return new()
         {
             { "ATK", GetAttack() },
             { "DEF", GetDefense() },
-            { "DEX", GetSpeed() },
+            { "DEX", GetDexterity() },
             { "HP", GetMaxHealth() }
         };
     }
-    // Assigned Team
+    public Dictionary<string, float> GetDeploymentCost()
+    {
+        // Deployment cost multipler change
+        float multiplier = Mathf.Pow(1.2f, _data.currentLevel - 1);
+        return new Dictionary<string, float>{
+            {"Food", _data.baseData.food * multiplier },
+            {"Technology", _data.baseData.technology * multiplier},
+            {"Energy", _data.baseData.energy * multiplier},
+            {"Intelligence", _data.baseData.intelligence* multiplier}
+        };
+    }
+    // Team Assignment
     public Response<object> AssigntoTeam(int teamIndex)
     {
-        if (!_instance.assignedTeam.Contains(teamIndex))
+        if (!_data.assignedTeam.Contains(teamIndex))
         {
-            _instance.assignedTeam.Add(teamIndex);
+            _data.assignedTeam.Add(teamIndex);
             return Response.Success("Character assigned successfully.");
         }
         else
@@ -98,15 +79,12 @@ public class CharacterService
 
     public Response<object> RemoveFromTeam(int teamIndex)
     {
-        _instance.assignedTeam.Remove(teamIndex);
+        _data.assignedTeam.Remove(teamIndex);
         return Response.Success($"Successfully Removed {teamIndex}");
     }
     public bool isInTeam(int teamIndex)
     {
-        return _instance.assignedTeam.Contains(teamIndex);
+        return _data.assignedTeam.Contains(teamIndex);
     }
-    public Dictionary<string, float> GetDeploymentCost()
-    {
-        return _instance.GetDeploymentCost();
-    }
+
 }
