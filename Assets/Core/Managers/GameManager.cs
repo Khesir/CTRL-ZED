@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public PlayerManager PlayerManager { get; private set; }
     public TeamManager TeamManager { get; private set; }
     public CharacterManager CharacterManager { get; private set; }
-    public ResourceManager ResourceManager { get; private set; }
     public AntiVirusManager AntiVirusManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
     public MainMenu MainMenu { get; private set; }
@@ -22,7 +21,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private TeamManager teamManager;
     [SerializeField] private PlayerDataManager playerDataManager;
-    [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private AntiVirusManager antiVirusManager;
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private MainMenu mainMenu;
@@ -63,13 +61,11 @@ public class GameManager : MonoBehaviour
         await playerManager.Initialize(saveData.playerData);
         await teamManager.Initialize(saveData.teams);
         await characterManager.Initialize(saveData.ownedCharacters);
-        await resourceManager.Initialize(saveData.resourceData);
         await antiVirusManager.Initialize(saveData.antiVirusLevel);
 
         PlayerManager = playerManager;
         CharacterManager = characterManager;
         TeamManager = teamManager;
-        ResourceManager = resourceManager;
         AntiVirusManager = antiVirusManager;
         LevelManager = levelManager;
         MainMenu = mainMenu;

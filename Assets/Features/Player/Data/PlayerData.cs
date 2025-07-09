@@ -18,4 +18,10 @@ public class PlayerData
 
     // Level configuration (health/exp curve)
     // Go to LevelingSystem, find the oscurve
+    public ResourceData resources = new();
+    // Bio chips implementation
+    public int bioChipsRemainingCharges = 0;
+    public int biochips = 0;
+    // Economy
+    public int coins;
 }

@@ -3,24 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerService : IEconomyService, IExpService, IHealthService
+public class PlayerService : IResourceService, IEconomyService, IExpService, IHealthService
 {
     private PlayerData data;
 
     public ExpService expService { get; private set; }
     public HealthService healthService { get; private set; }
     public EconomyService economyService { get; private set; }
-
+    public ResourceService resourceService { get; private set; }
     public event Action OnHealthChanged;
     public event Action OnLevelUp;
     public event Action OnExpGained;
 
-    public PlayerService(PlayerData data, ExpService expService, HealthService healthService, EconomyService economyService)
+    public PlayerService(PlayerData data, ExpService expService, HealthService healthService, EconomyService economyService, ResourceService resourceService)
     {
         this.data = data;
         this.expService = expService;
         this.healthService = healthService;
         this.economyService = economyService;
+        this.resourceService = resourceService;
+
         WiredEvents();
         PlayerHandleEvents();
     }
@@ -57,5 +59,31 @@ public class PlayerService : IEconomyService, IExpService, IHealthService
     public float GetCoinsPerExp() => economyService.GetCoinsPerExp();
     public float GetHealthPerCoin() => economyService.GetHealthPerCoin();
     public int GetRequiredCoinsToLevelup() => economyService.GetRequiredCoinsToLevelup();
+    public int GetCoins() => economyService.GetCoins();
+    public void AddCoins(int val) => economyService.AddCoins(val);
+    public bool SpendCoins(int val) => economyService.SpendCoins(val);
+    #endregion
+
+    #region ResourceService
+    // Food
+    public int GetFood() => resourceService.GetFood();
+    public void SpendFood(int val) => resourceService.SpendFood(val);
+    public void AddFood(int val) => resourceService.AddFood(val);
+
+    // Technology
+    public int GetTechnology() => resourceService.GetTechnology();
+    public void SpendTechnology(int val) => resourceService.SpendTechnology(val);
+    public void AddTechnology(int val) => resourceService.AddTechnology(val);
+
+    // Energy
+    public int GetEnergy() => resourceService.GetEnergy();
+    public void SpendEnergy(int val) => resourceService.SpendEnergy(val);
+    public void AddEnergy(int val) => resourceService.AddEnergy(val);
+
+    // Intelligence
+    public int GetIntelligence() => resourceService.GetIntelligence();
+    public void SpendIntelligence(int val) => resourceService.SpendIntelligence(val);
+    public void AddIntelligence(int val) => resourceService.AddIntelligence(val);
+
     #endregion
 }

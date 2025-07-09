@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum ResourceType
+{
+    Food,
+    Technology,
+    Energy,
+    Intelligence,
+}
 public class ResourceData
 {
 
@@ -12,14 +18,13 @@ public class ResourceData
     public int coins;
     public int bioChips;
     public int maxBioChipCharges = 5;
-    public ResourceData(int food = 1000, int technology = 1000, int energy = 1000, int intelligence = 1000, int coins = 1000, int bioChips = 1)
+    public ResourceData() { }
+    public ResourceData(int food = 1000, int technology = 1000, int energy = 1000, int intelligence = 1000)
     {
         this.food = food;
         this.technology = technology;
         this.energy = energy;
         this.intelligence = intelligence;
-        this.coins = coins;
-        this.bioChips = bioChips;
     }
 }
 
