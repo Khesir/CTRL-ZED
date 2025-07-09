@@ -24,7 +24,7 @@ public class AttackTimer : MonoBehaviour
         {
             var damage = Random.Range(minAttackTimerDamage, maxAttackTimerDamage);
             playerInstance.TakeDamage(damage);
-            if (playerInstance.isDead())
+            if (playerInstance.IsDead())
             {
                 Debug.Log("Game Over");
                 GameplayManager.Instance.SetTarget();

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-public class ExpService
+
+public class ExpService : IExpService
 {
     private PlayerData data;
     public event Action OnLevelUp;

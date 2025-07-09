@@ -8,7 +8,6 @@ public class PlayerData
     // Configurable properties
     public int maxTeam = 2;
     public int maxLevel = 10;
-    public float baseOsHealth = 1000f;
     public float healthPerCoin = 5f;
     public float coinsPerExp = 2f;
 

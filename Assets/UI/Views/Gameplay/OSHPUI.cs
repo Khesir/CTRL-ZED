@@ -14,7 +14,7 @@ public class OSHPUI : MonoBehaviour
         instance = player;
         textLabel.text = player.GetCurrentHealth().ToString();
         UpdateSlider();
-        player.onDamage += UpdateSlider;
+        player.OnHealthChanged += UpdateSlider;
     }
     public void UpdateSlider()
     {

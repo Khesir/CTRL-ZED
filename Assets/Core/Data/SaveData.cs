@@ -11,10 +11,10 @@ public class SaveData
     public int antiVirusLevel;
     public SaveData()
     {
-        playerData = new PlayerData(maxTeam: 3);
-        ownedCharacters = new List<CharacterData>();
-        teams = new List<Team>();
-        resourceData = new ResourceData(coins: 100000);
-        antiVirusLevel = 0;
+        // playerData = new PlayerData{};
+        // ownedCharacters = new List<CharacterData>();
+        // teams = new List<Team>();
+        // resourceData = new ResourceData(coins: 100000);
+        // antiVirusLevel = 0;
     }
 }

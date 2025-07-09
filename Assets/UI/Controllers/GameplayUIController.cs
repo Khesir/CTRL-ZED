@@ -19,7 +19,7 @@ public class GameplayUIController : MonoBehaviour
     public GameObject starWaveButton;
     public async UniTask Initialize()
     {
-        playerService = GameManager.Instance.PlayerManager.GetPlayerService();
+        playerService = GameManager.Instance.PlayerManager.playerService;
         CharacterListInitialize();
         CharacterListIconInitialize();
         InitializeOSHP();
