@@ -63,7 +63,7 @@ public class P4Antivirus : MonoBehaviour
     }
     private void ActionPurchase(int price, int index)
     {
-        var res = GameManager.Instance.ResourceManager.SpendCoins(price);
+        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(price);
         if (res)
         {
             GameManager.Instance.AntiVirusManager.SetLevel(index);

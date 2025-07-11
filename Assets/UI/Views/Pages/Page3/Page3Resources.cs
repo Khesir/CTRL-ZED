@@ -13,7 +13,7 @@ public class Page3Resources : MonoBehaviour
     public BioChipsConversionSection bioChipsConversionSection;
     void OnEnable()
     {
-        var manager = GameManager.Instance.ResourceManager;
+        var manager = GameManager.Instance.PlayerManager.playerService;
         p3ResourceSection.Initialize(manager);
         bioChipsConversionSection.Initialize(manager);
         charges.text = manager.GetRemainingCharge().ToString();
@@ -22,8 +22,8 @@ public class Page3Resources : MonoBehaviour
     }
     private void ActionButton()
     {
-        var manager = GameManager.Instance.ResourceManager;
-        manager.SpendBioChips();
+        var manager = GameManager.Instance.PlayerManager.playerService;
+        manager.SpendBioChip(1);
         charges.text = manager.GetRemainingCharge().ToString();
     }
 }

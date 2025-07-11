@@ -8,11 +8,13 @@ public class ExpService : IExpService
     public event Action OnLevelUp;
     public event Action OnExpGained;
     private LevelCurve levelCurve;
-    public ExpService(PlayerData data)
+    public ExpService(PlayerData data, float coinsPerExp = 5f)
     {
         this.data = data;
         levelCurve = LevelingSystem.OSCurve;
+        data.coinsPerExp = coinsPerExp;
     }
+    public float GetCoinsPerExpRate() => data.coinsPerExp;
     public void GainExp(int amount)
     {
         data.currentExp += amount;

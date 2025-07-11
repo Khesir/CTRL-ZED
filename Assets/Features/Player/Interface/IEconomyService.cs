@@ -1,6 +1,9 @@
 
+using System;
+
 public interface IEconomyService
 {
+  event Action OnCoinsChange;
   float GetCoinsPerExp();
   float GetHealthPerCoin();
   int GetRequiredCoinsToLevelup();

@@ -40,7 +40,7 @@ public class CompleteScreenUI : MonoBehaviour
                 }
                 break;
         }
-        ResourceManager manager = GameManager.Instance.ResourceManager;
+        PlayerService manager = GameManager.Instance.PlayerManager.playerService;
         ResourceFood.text = manager.GetFood() + " + " + (loots != null ? loots.food.ToString() : "0");
         manager.AddFood(loots.food);
 

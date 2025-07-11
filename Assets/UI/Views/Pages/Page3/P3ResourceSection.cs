@@ -9,7 +9,7 @@ public class P3ResourceSection : MonoBehaviour
     public TMP_Text tech;
     public TMP_Text energy;
     public TMP_Text intel;
-    public void Initialize(ResourceManager resourceManager)
+    public void Initialize(IResourceService resourceManager)
     {
         food.text = resourceManager.GetFood().ToString();
         tech.text = resourceManager.GetTechnology().ToString();

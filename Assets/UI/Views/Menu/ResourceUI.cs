@@ -17,7 +17,7 @@ public class ResourceUI : MonoBehaviour
     public TMP_Text ResourceCoins;
     public void Setup()
     {
-        ResourceManager manager = GameManager.Instance.ResourceManager;
+        PlayerService manager = GameManager.Instance.PlayerManager.playerService;
         ResourceFood.text = manager.GetFood().ToString();
         ResourceTechnology.text = manager.GetTechnology().ToString();
         ResourceEnergy.text = manager.GetEnergy().ToString();

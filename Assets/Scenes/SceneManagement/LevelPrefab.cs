@@ -29,10 +29,16 @@ public class LevelPrefab : MonoBehaviour
     }
     public void StartGameplay(int index)
     {
+
         var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
+
+        PlayerService playerService = GameManager.Instance.PlayerManager.playerService;
+        IBioChipService bioChipService = playerService;
+        IResourceService resourceService = playerService;
         if (activeTeam != null)
         {
-            if (!GameManager.Instance.ResourceManager.UseRemainingCharge())
+            // Set DEFAULT 1
+            if (!bioChipService.SpendRemainingCharge(1))
             {
 
                 var members = activeTeam[0].GetMembers();
@@ -53,11 +59,10 @@ public class LevelPrefab : MonoBehaviour
                         }
                     }
                 }
-                GameManager.Instance.ResourceManager.SpendFood((int)totalDeploymentCost["Food"]);
-
-                GameManager.Instance.ResourceManager.SpendTechnology((int)totalDeploymentCost["Technology"]);
-                GameManager.Instance.ResourceManager.SpendEnergy((int)totalDeploymentCost["Energy"]);
-                GameManager.Instance.ResourceManager.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
+                resourceService.SpendFood((int)totalDeploymentCost["Food"]);
+                resourceService.SpendTechnology((int)totalDeploymentCost["Technology"]);
+                resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
+                resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
             }
             GameManager.Instance.LevelManager.activeLevel = index;
             GameManager.Instance.MainMenu.PlayGame("gameplay");

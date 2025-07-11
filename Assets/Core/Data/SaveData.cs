@@ -14,7 +14,7 @@ public class SaveData
         playerData = new PlayerData { };
         ownedCharacters = new List<CharacterData>();
         teams = new List<Team>();
-        resourceData = new ResourceData(coins: 100000);
+        // resourceData = new ResourceData(coins: 100000);
         antiVirusLevel = 0;
     }
 }

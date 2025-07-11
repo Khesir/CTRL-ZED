@@ -19,7 +19,7 @@ public class OSPageController : MonoBehaviour
     public UIRepairSection UIRepairSection;
     private void OnEnable()
     {
-        service = GameManager.Instance.PlayerManager.GetPlayerService();
+        service = GameManager.Instance.PlayerManager.playerService;
 
         oSExpSlider.Setup(service);
         oSHealthSlider.Setup(service);
@@ -31,11 +31,11 @@ public class OSPageController : MonoBehaviour
         repairButton.onClick.RemoveAllListeners();
         repairButton.onClick.AddListener(RepairAction);
 
-        service.onGainExp += UpdateText;
+        service.OnExpGained += UpdateText;
     }
     private void OnDisable()
     {
-        service.onGainExp -= UpdateText;
+        service.OnExpGained -= UpdateText;
     }
     private void LevelUpAction()
     {

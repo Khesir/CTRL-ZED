@@ -14,7 +14,7 @@ public class CreateTeam : MonoBehaviour
     }
     public void CreateTeamGroup()
     {
-        var res = GameManager.Instance.ResourceManager.SpendCoins(manager.increaseSizePrice);
+        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(manager.increaseSizePrice);
         if (res)
         {
             manager.IncreaseMaxTeam();

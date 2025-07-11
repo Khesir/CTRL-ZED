@@ -10,12 +10,12 @@ public class BuyPageController : MonoBehaviour
     private void OnEnable()
     {
         buyInventoryUI.Populate(GameManager.Instance.characterTemplates);
-        coinCounter.Setup(GameManager.Instance.ResourceManager.GetCoins());
+        coinCounter.Setup(GameManager.Instance.PlayerManager.playerService.GetCoins());
 
-        GameManager.Instance.ResourceManager.onCoinsChange += coinCounter.UpdateCoins;
+        GameManager.Instance.PlayerManager.playerService.OnCoinsChange += coinCounter.UpdateCoins;
     }
     private void OnDisable()
     {
-        GameManager.Instance.PlayerManager.onCoinsChanged -= coinCounter.UpdateCoins;
+        GameManager.Instance.PlayerManager.playerService.OnCoinsChange -= coinCounter.UpdateCoins;
     }
 }

@@ -20,19 +20,19 @@ public class UILevelUpSection : MonoBehaviour
         UpdateData();
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(Levelup);
-        instance.onGainExp += UpdateData;
+        instance.OnExpGained += UpdateData;
     }
     private void UpdateData()
     {
         int currentExp = instance.GetCurrentExp();
-        int requiredExp = instance.GetMaxExp();
+        int requiredExp = instance.GetRequiredExp();
         int remainingExp = Mathf.Max(requiredExp - currentExp, 0);
         exp.maxValue = remainingExp;
         exp.value = currentExp;
         float coinsPerExp = instance.GetCoinsPerExpRate();
         costCoins = Mathf.CeilToInt(remainingExp * coinsPerExp);
 
-        int currentCoins = GameManager.Instance.ResourceManager.GetCoins();
+        int currentCoins = instance.GetCoins();
 
         // Update UI
         requirements.text = $"{currentExp}/{requiredExp}";
@@ -44,7 +44,7 @@ public class UILevelUpSection : MonoBehaviour
     {
         float coinsPerExp = instance.GetCoinsPerExpRate();
         int remainingExp = (int)(costCoins / coinsPerExp);
-        if (GameManager.Instance.ResourceManager.SpendCoins(costCoins))
+        if (instance.SpendCoins(costCoins))
         {
             instance.GainExp(remainingExp);
         }

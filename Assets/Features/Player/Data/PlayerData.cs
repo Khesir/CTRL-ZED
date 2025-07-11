@@ -8,8 +8,8 @@ public class PlayerData
     // Configurable properties
     public int maxTeam = 2;
     public int maxLevel = 10;
-    public float healthPerCoin = 5f;
     public float coinsPerExp = 2f;
+    public float healthPerCoin;
 
     // Progression state
     public int level = 1;

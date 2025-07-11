@@ -14,7 +14,7 @@ public class UIOSHealthSlider : MonoBehaviour
         this.instance = instance;
         textlabel.text = instance.GetCurrentHealth().ToString();
         UpdateSlider();
-        instance.onGainExp += UpdateSlider;
+        instance.OnExpGained += UpdateSlider;
     }
     public void UpdateSlider()
     {

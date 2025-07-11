@@ -13,11 +13,11 @@ public class OSExpSlider : MonoBehaviour
     {
         this.instance = instance;
         UpdateSlider();
-        instance.onGainExp += UpdateSlider;
+        instance.OnExpGained += UpdateSlider;
     }
     public void UpdateSlider()
     {
-        int maxValue = (int)instance.GetMaxExp();
+        int maxValue = (int)instance.GetRequiredExp();
         int value = (int)instance.GetCurrentExp();
 
         slider.maxValue = maxValue;

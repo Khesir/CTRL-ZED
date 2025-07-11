@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerService : IResourceService, IEconomyService, IExpService, IHealthService
+public class PlayerService : IResourceService, IEconomyService, IExpService, IHealthService, IBioChipService
 {
     private PlayerData data;
 
@@ -11,10 +11,12 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public HealthService healthService { get; private set; }
     public EconomyService economyService { get; private set; }
     public ResourceService resourceService { get; private set; }
+    public BioChipService bioChipService { get; private set; }
     public event Action OnHealthChanged;
     public event Action OnLevelUp;
     public event Action OnExpGained;
-
+    public event Action OnSpendBioChip;
+    public event Action OnCoinsChange;
     public PlayerService(PlayerData data, ExpService expService, HealthService healthService, EconomyService economyService, ResourceService resourceService)
     {
         this.data = data;
@@ -30,15 +32,27 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public void WiredEvents()
     {
         healthService.OnHealthChanged += () => OnHealthChanged?.Invoke();
+        // Economy events
+        economyService.OnCoinsChange += () => OnCoinsChange?.Invoke();
         // Exp Events
         expService.OnLevelUp += () => OnLevelUp?.Invoke();
         expService.OnExpGained += () => OnExpGained?.Invoke();
+        // BioChip Events
+        bioChipService.OnSpendBioChip += () => OnSpendBioChip?.Invoke();
     }
     public void PlayerHandleEvents()
     {
         OnLevelUp += () => healthService.HandleLevelUp(data.level);
     }
+    #region BioChipService
+    public int GetBioChip() => bioChipService.GetBioChip();
+    public void AddBioChip(int val) => bioChipService.AddBioChip(val);
+    public bool SpendBioChip(int val) => bioChipService.SpendBioChip(val);
+    public bool SpendRemainingCharge(int val) => bioChipService.SpendRemainingCharge(val);
+    public int GetRemainingCharge() => bioChipService.GetRemainingCharge();
+    #endregion
     #region ExperienceService
+    public float GetCoinsPerExpRate() => expService.GetCoinsPerExpRate();
     public void GainExp(int amount) => expService.GainExp(amount);
     public int GetCurrentExp() => expService.GetCurrentExp();
     public int GetRequiredExp() => expService.GetRequiredExp();

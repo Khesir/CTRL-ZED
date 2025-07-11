@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
         var costMultipler = 1.1f;
         var economyService = new EconomyService(data, baseCoins, costMultipler);
 
-        playerService = new PlayerService(data, expService, healthService, economyService);
+        var resourceService = new ResourceService(data);
+        playerService = new PlayerService(data, expService, healthService, economyService, resourceService);
     }
 }

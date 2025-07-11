@@ -10,7 +10,7 @@ public class EconomyService : IEconomyService
     // Internal tuning parameters
     private readonly int baseRequiredCoins;
     private readonly float coinRequirementMultiplier;
-    public event Action onCoinsChange;
+    public event Action OnCoinsChange;
     public EconomyService(PlayerData data, int baseCoins = 100, float multiplier = 1.25f)
     {
         this.data = data;
@@ -21,7 +21,7 @@ public class EconomyService : IEconomyService
     public void AddCoins(int val)
     {
         data.coins += val;
-        onCoinsChange?.Invoke();
+        OnCoinsChange?.Invoke();
     }
     public bool SpendCoins(int val)
     {

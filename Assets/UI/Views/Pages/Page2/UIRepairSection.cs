@@ -20,7 +20,7 @@ public class UIRepairSection : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(Repair);
         UpdateData();
-        instance.onDamage += UpdateData;
+        instance.OnHealthChanged += UpdateData;
     }
     public void UpdateData()
     {
@@ -32,7 +32,7 @@ public class UIRepairSection : MonoBehaviour
         coinsNeeded = Mathf.CeilToInt(missingHealth / healthPerCoin);
         cost.text = coinsNeeded.ToString();
 
-        coins.text = GameManager.Instance.ResourceManager.GetCoins() + " Coins";
+        coins.text = GameManager.Instance.PlayerManager.playerService.GetCoins() + " Coins";
         level.text = "Level " + instance.GetLevel();
         health.text = currentHealth.ToString();
 
@@ -41,7 +41,7 @@ public class UIRepairSection : MonoBehaviour
     }
     private void Repair()
     {
-        if (GameManager.Instance.ResourceManager.SpendCoins(coinsNeeded))
+        if (GameManager.Instance.PlayerManager.playerService.SpendCoins(coinsNeeded))
         {
             instance.Heal();
         }
