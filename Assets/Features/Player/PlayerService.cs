@@ -17,14 +17,21 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public event Action OnExpGained;
     public event Action OnSpendBioChip;
     public event Action OnCoinsChange;
-    public PlayerService(PlayerData data, ExpService expService, HealthService healthService, EconomyService economyService, ResourceService resourceService)
+    public PlayerService(
+        PlayerData data,
+        ExpService expService,
+        HealthService healthService,
+        EconomyService economyService,
+        ResourceService resourceService,
+        BioChipService bioChipService
+    )
     {
         this.data = data;
         this.expService = expService;
         this.healthService = healthService;
         this.economyService = economyService;
         this.resourceService = resourceService;
-
+        this.bioChipService = bioChipService;
         WiredEvents();
         PlayerHandleEvents();
     }

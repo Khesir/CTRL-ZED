@@ -20,6 +20,7 @@ public class OSPageController : MonoBehaviour
     private void OnEnable()
     {
         service = GameManager.Instance.PlayerManager.playerService;
+        UpdateText();
 
         oSExpSlider.Setup(service);
         oSHealthSlider.Setup(service);
@@ -49,6 +50,6 @@ public class OSPageController : MonoBehaviour
     }
     private void UpdateText()
     {
-        level.text = service.GetLevel() + "/" + service.GetMaxLevel();
+        level.text = service.GetLevel().ToString();
     }
 }

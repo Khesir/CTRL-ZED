@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         // Set Initial game state
         isGameActive = false;
 
-        Debug.Log("[GameManage] Game Manager Initialized");
+        Debug.Log("[GameManager] Game Manager Initialized");
         _isInitialized = true;
     }
     public async UniTask InitializeManagerAsync()

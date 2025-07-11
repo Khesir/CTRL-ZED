@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
         // Only create playerservices from scratch
         // Todo Generate
         StartPlayerService(data);
+        Debug.Log("Player Manager Initialized");
         await UniTask.CompletedTask;
     }
     public void StartPlayerService(PlayerData data)
@@ -30,6 +31,14 @@ public class PlayerManager : MonoBehaviour
         var economyService = new EconomyService(data, baseCoins, costMultipler);
 
         var resourceService = new ResourceService(data);
-        playerService = new PlayerService(data, expService, healthService, economyService, resourceService);
+        var bioChipService = new BioChipService(data);
+        playerService = new PlayerService(
+            data,
+            expService,
+            healthService,
+            economyService,
+            resourceService,
+            bioChipService
+        );
     }
 }

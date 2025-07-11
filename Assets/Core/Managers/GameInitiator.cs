@@ -15,6 +15,7 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private GameplayManager _gameplayManager;
     [SerializeField] private MenuManager _menuManager;
+    [SerializeField] public bool inGameplay = false;
     [SerializeField] private bool isGenerated;
     enum Env
     {
@@ -62,7 +63,6 @@ public class GameInitiator : MonoBehaviour
         // Intiaalizing Game Data and other services 
         if (_gameManager != null) await GameManager.Instance.Initialize();
         if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
-        if (_menuManager != null) await MenuManager.Instance.Initialize();
     }
     private async UniTask CreateObjects()
     {
