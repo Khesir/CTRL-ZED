@@ -7,87 +7,83 @@ using UnityEngine.EventSystems;
 
 public class GameInitiator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private Camera _mainCamera;
-    [SerializeField] private EventSystem _eventSystem;
-    [SerializeField] private Canvas _canvas;
-    [SerializeField] private Env _environment;
-    [SerializeField] private GameManager _gameManager;
-    [SerializeField] private GameplayManager _gameplayManager;
-    [SerializeField] private MenuManager _menuManager;
-    [SerializeField] public bool inGameplay = false;
-    [SerializeField] private bool isGenerated;
-    enum Env
-    {
-        Dev,
-        Prod,
-    }
-    async void Start()
-    {
-        Debug.Log("Binding Objects");
-        BindObjects();
-        // Loading Screen
+    [Header("Environment Setup")]
+    [SerializeField] private bool isDevelopmnet = true;
+    // [SerializeField] private GameState initialState = GameState.InitialMenu;
 
-        Debug.Log("Initializing and Creating Game Objects");
-        await IntializeObjects();
-        await CreateObjects();
+    [Header("Prefabs for Runtime Instantiation")]
+    // [SerializeField] private 
+    // [SerializeField] private Env _environment;
+    // [SerializeField] private GameManager _gameManager;
+    // [SerializeField] private GameplayManager _gameplayManager;
+    // [SerializeField] private MenuManager _menuManager;
+    // [SerializeField] public bool inGameplay = false;
+    // [SerializeField] private bool isGenerated;
+    // enum Env
+    // {
+    //     Dev,
+    //     Prod,
+    // }
+    // async void Start()
+    // {
+    //     Debug.Log("Binding Objects");
+    //     BindObjects();
+    //     // Loading Screen
 
-        Debug.Log("Preparing Game");
-        await Preparegame();
-        BeginGame();
-    }
+    //     Debug.Log("Initializing and Creating Game Objects");
+    //     await IntializeObjects();
+    //     await CreateObjects();
 
-    private void BindObjects()
-    {
-        // Need a reference, requires to add manually
-        if (_environment != Env.Dev)
-        {
-            _mainCamera = Instantiate(_mainCamera);
-            _eventSystem = Instantiate(_eventSystem);
-            _canvas = Instantiate(_canvas);
-            _gameManager = Instantiate(_gameManager);
-            _gameplayManager = Instantiate(_gameplayManager);
-        }
-        else
-        {
-            // For Dev: Try to auto-locate scene objects
-            if (_gameManager == null) _gameManager = FindObjectOfType<GameManager>();
-            if (_gameplayManager == null) _gameplayManager = FindObjectOfType<GameplayManager>();
-            if (_mainCamera == null) _mainCamera = Camera.main;
-            if (_eventSystem == null) _eventSystem = FindObjectOfType<EventSystem>();
-            if (_canvas == null) _canvas = FindObjectOfType<Canvas>();
-        }
-    }
-    private async UniTask IntializeObjects()
-    {
-        // Intiaalizing Game Data and other services 
-        if (_gameManager != null) await GameManager.Instance.Initialize();
-        if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
-    }
-    private async UniTask CreateObjects()
-    {
-        // Creation of game objects e.g. UI, player background, spawinning of enemies4
-        // if (!isGenerated) GenerateTestData();
-        await UniTask.CompletedTask;
+    //     Debug.Log("Preparing Game");
+    //     await Preparegame();
+    //     BeginGame();
+    // }
 
-    }
-    private async UniTask Preparegame()
-    {
+    // private void BindObjects()
+    // {
+    //     // Need a reference, requires to add manually
+    //     if (_environment != Env.Dev)
+    //     {
+    //         _gameManager = Instantiate(_gameManager);
+    //         _gameplayManager = Instantiate(_gameplayManager);
+    //     }
+    //     else
+    //     {
+    //         // For Dev: Try to auto-locate scene objects
+    //         if (_gameManager == null) _gameManager = FindObjectOfType<GameManager>();
+    //         if (_gameplayManager == null) _gameplayManager = FindObjectOfType<GameplayManager>();
+    //     }
+    // }
+    // private async UniTask IntializeObjects()
+    // {
+    //     // Intiaalizing Game Data and other services 
+    //     if (_gameManager != null) await GameManager.Instance.Initialize();
+    //     if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
+    // }
+    // private async UniTask CreateObjects()
+    // {
+    //     // Creation of game objects e.g. UI, player background, spawinning of enemies4
+    //     // if (!isGenerated) GenerateTestData();
+    //     await UniTask.CompletedTask;
 
-        // Preparation -- Setting up, states of characters and more
-        if (_gameplayManager != null)
-        {
-            await GameplayManager.Instance.Setup();
-            await GameplayManager.Instance.gameplayUI.Initialize();
-        }
-        if (_menuManager != null) await MenuManager.Instance.menuUIController.Initialize();
-        await UniTask.CompletedTask;
-    }
-    private void BeginGame()
-    {
-        Debug.Log("Game Started");
-        // Game logic -- actual trigger of the game or so
-    }
+    // }
+    // private async UniTask Preparegame()
+    // {
+
+    //     // Preparation -- Setting up, states of characters and more
+    //     if (_gameplayManager != null)
+    //     {
+    //         await GameplayManager.Instance.Setup();
+    //         await GameplayManager.Instance.gameplayUI.Initialize();
+    //     }
+    //     if (_menuManager != null) await MenuManager.Instance.menuUIController.Initialize();
+    //     await UniTask.CompletedTask;
+    // }
+    // private void BeginGame()
+    // {
+    //     Debug.Log("Game Started");
+    //     // Game logic -- actual trigger of the game or so
+    // }
 
     // No team ID provided --- disabled for now
     // private void GenerateTestData()
