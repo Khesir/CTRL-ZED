@@ -24,6 +24,7 @@ public class MenuManager : MonoBehaviour
     }
     public async UniTask Initialize()
     {
+        await UniTask.WaitUntil(() => GameManager.Instance != null && GameManager.Instance._isInitialized);
         if (_isInitialized) return;
 
         isGameActive = false;

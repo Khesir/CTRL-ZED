@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 public enum GameState
 {
     None,
-    MainMenu,
-    Gameplay,
+    Initial,         // App starts
+    TitleScreen,     // Splash or logo scene
+    MainMenu,        // Menu logic
+    Gameplay,        // Actual gameplay scene
+    Loading,          // Internal state (used to transition)
     Credits,
-    Loading
 }
 public class GameStateManager : MonoBehaviour
 {
@@ -16,7 +19,15 @@ public class GameStateManager : MonoBehaviour
 
     public GameState Currentstate { get; private set; } = GameState.None;
     public event Action<GameState> OnStateChanged;
+    private string _sceneToLoadAfterLoading;
+    public bool _isInitialize = false;
+    public async UniTask Intialize()
+    {
+        if (_isInitialize) return;
 
+        _isInitialize = true;
+        await UniTask.CompletedTask;
+    }
     public void Awake()
     {
         if (Instance != null && Instance != this)
@@ -32,7 +43,7 @@ public class GameStateManager : MonoBehaviour
         if (newState == Currentstate) return;
         Currentstate = newState;
         Debug.Log($"[GameStateManager] State changed to: {newState}");
-        OnStateChanged.Invoke(newState);
+        OnStateChanged?.Invoke(newState);
         switch (newState)
         {
             case GameState.MainMenu:
@@ -51,5 +62,17 @@ public class GameStateManager : MonoBehaviour
                 // Optionally use for loading screen scene
                 break;
         }
+    }
+    public void SetSceneToLoadAfterLoading(string sceneName)
+    {
+        _sceneToLoadAfterLoading = sceneName;
+    }
+    public async UniTask HandleSceneLoading()
+    {
+        // Simulate prep work (load managers, data, etc.)
+        await UniTask.Delay(1000);
+
+        if (!string.IsNullOrEmpty(_sceneToLoadAfterLoading))
+            await SceneManagerService.FinalizeLoadingTargetScene(_sceneToLoadAfterLoading);
     }
 }

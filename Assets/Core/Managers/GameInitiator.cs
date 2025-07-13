@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -7,107 +8,102 @@ using UnityEngine.EventSystems;
 
 public class GameInitiator : MonoBehaviour
 {
+    public static GameInitiator Instance { get; private set; }
+    [Header("Bindable Objects")]
+    public GameStateManager gameStateManager;
+    public GameManager gameManager;
+
     [Header("Environment Setup")]
-    [SerializeField] private bool isDevelopmnet = true;
-    // [SerializeField] private GameState initialState = GameState.InitialMenu;
+    [SerializeField] private GameState initialState = GameState.Initial;
+    [SerializeField] private bool isDevelopment = true;
+    [Header("Flags")]
+    [SerializeField] public bool isGenerated = false;
+    private GameStateManager _gameStateManager;
+    private GameManager _gameManager;
 
-    [Header("Prefabs for Runtime Instantiation")]
-    // [SerializeField] private 
-    // [SerializeField] private Env _environment;
-    // [SerializeField] private GameManager _gameManager;
-    // [SerializeField] private GameplayManager _gameplayManager;
-    // [SerializeField] private MenuManager _menuManager;
-    // [SerializeField] public bool inGameplay = false;
-    // [SerializeField] private bool isGenerated;
-    // enum Env
-    // {
-    //     Dev,
-    //     Prod,
-    // }
-    // async void Start()
-    // {
-    //     Debug.Log("Binding Objects");
-    //     BindObjects();
-    //     // Loading Screen
+    private void Awake()
+    {
+        // Singleton pattern
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    //     Debug.Log("Initializing and Creating Game Objects");
-    //     await IntializeObjects();
-    //     await CreateObjects();
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+    private async void Start()
+    {
+        Debug.Log("[GameInitiator] Generating Bindable Objects");
+        await BindObjects();
+        Debug.Log("[GameInitiator] Initializing Objects");
+        await Initialize();
+        Debug.Log("[GameInitiator] Preparing Game");
+        await PrepareGame();
+        // Start of the game
+        isGenerated = true;
+    }
+    private async UniTask BindObjects()
+    {
+        // This handles shared managers that has yet to exists or already on the scene to ensure loading
+        if (_gameStateManager == null)
+        {
+            _gameStateManager = FindObjectOfType<GameStateManager>();
+            if (_gameStateManager == null)
+            {
+                if (gameStateManager == null)
+                {
+                    throw new System.Exception("GameStateManager reference is missing in GameInitiator. Please assign it in the inspector.");
+                }
+                _gameStateManager = Instantiate(gameStateManager);
+            }
+        }
 
-    //     Debug.Log("Preparing Game");
-    //     await Preparegame();
-    //     BeginGame();
-    // }
+        if (_gameManager == null)
+        {
+            _gameManager = FindAnyObjectByType<GameManager>();
+            if (_gameManager == null)
+            {
+                if (gameManager == null)
+                {
+                    throw new System.Exception("GameManager reference is missing in GameInitiator. Please assign it in the inspector.");
+                }
+                _gameManager = Instantiate(gameManager);
+            }
+        }
+        await UniTask.CompletedTask;
+    }
+    private async UniTask Initialize()
+    {
+        // Initialize global Systems
+        await gameManager.Initialize();
+        await gameStateManager.Intialize();
+    }
+    private async UniTask PrepareGame()
+    {
+        var saveData = await GameManager.Instance.PlayerDataManager.Initialize();
 
-    // private void BindObjects()
-    // {
-    //     // Need a reference, requires to add manually
-    //     if (_environment != Env.Dev)
-    //     {
-    //         _gameManager = Instantiate(_gameManager);
-    //         _gameplayManager = Instantiate(_gameplayManager);
-    //     }
-    //     else
-    //     {
-    //         // For Dev: Try to auto-locate scene objects
-    //         if (_gameManager == null) _gameManager = FindObjectOfType<GameManager>();
-    //         if (_gameplayManager == null) _gameplayManager = FindObjectOfType<GameplayManager>();
-    //     }
-    // }
-    // private async UniTask IntializeObjects()
-    // {
-    //     // Intiaalizing Game Data and other services 
-    //     if (_gameManager != null) await GameManager.Instance.Initialize();
-    //     if (_gameplayManager != null) await GameplayManager.Instance.Initialize();
-    // }
-    // private async UniTask CreateObjects()
-    // {
-    //     // Creation of game objects e.g. UI, player background, spawinning of enemies4
-    //     // if (!isGenerated) GenerateTestData();
-    //     await UniTask.CompletedTask;
+        await GameManager.Instance.PlayerManager.Initialize(saveData.playerData);
+        await GameManager.Instance.TeamManager.Initialize(saveData.teams);
+        await GameManager.Instance.CharacterManager.Initialize(saveData.ownedCharacters);
+        await GameManager.Instance.AntiVirusManager.Initialize(saveData.antiVirusLevel);
 
-    // }
-    // private async UniTask Preparegame()
-    // {
+        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
+        // Game Preparation
+        if (isDevelopment)
+        {
+            // Don't load initial scene, just sync current scene to GameStateManager
+            var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
+            gameStateManager.SetState(devState);
+        }
+        else
+        {
+            gameStateManager.SetState(initialState);
+        }
 
-    //     // Preparation -- Setting up, states of characters and more
-    //     if (_gameplayManager != null)
-    //     {
-    //         await GameplayManager.Instance.Setup();
-    //         await GameplayManager.Instance.gameplayUI.Initialize();
-    //     }
-    //     if (_menuManager != null) await MenuManager.Instance.menuUIController.Initialize();
-    //     await UniTask.CompletedTask;
-    // }
-    // private void BeginGame()
-    // {
-    //     Debug.Log("Game Started");
-    //     // Game logic -- actual trigger of the game or so
-    // }
-
-    // No team ID provided --- disabled for now
-    // private void GenerateTestData()
-    // {
-    //     // Create a new team
-    //     GameManager.Instance.TeamManager.CreateTeam();
-
-    //     // Create characters based on character templates
-    //     foreach (var characterService in GameManager.Instance.characterTemplates)
-    //     {
-    //         GameManager.Instance.CharacterManager.CreateCharacter(characterService);
-    //     }
-
-    //     // Get the list of created characters
-    //     var characters = GameManager.Instance.CharacterManager.GetCharacters();
-
-    //     // Ensure there are characters to assign to slots
-    //     for (int i = 0; i < characters.Count; i++)  // Fix: use '<' to avoid out of range
-    //     {
-    //         GameManager.Instance.TeamManager.AssignedCharacterToSlot(0, i, characters[i]);
-    //     }
-
-    //     // Set the active team (0 here represents the first team)
-    //     GameManager.Instance.TeamManager.SetActiveTeam(0);
-    //     isGenerated = true;
-    // }
+        Debug.Log("[GameInitiator] Game preparation (player State) complete.");
+        await UniTask.CompletedTask;
+    }
 }

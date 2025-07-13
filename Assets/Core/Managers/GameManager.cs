@@ -44,30 +44,19 @@ public class GameManager : MonoBehaviour
         if (_isInitialized) return;
 
         // Initialize the Managers and game systems
-        await InitializeManagerAsync();
-
-        // Set Initial game state
-        isGameActive = false;
-
-        Debug.Log("[GameManager] Game Manager Initialized");
-        _isInitialized = true;
-    }
-    public async UniTask InitializeManagerAsync()
-    {
-        // InventoryManager = Instantiate(inventoryManager);
+        // Setup basic manager references (no save data yet)
         PlayerDataManager = playerDataManager;
-        SaveData saveData = await PlayerDataManager.Initialize();
-
-        await playerManager.Initialize(saveData.playerData);
-        await teamManager.Initialize(saveData.teams);
-        await characterManager.Initialize(saveData.ownedCharacters);
-        await antiVirusManager.Initialize(saveData.antiVirusLevel);
-
         PlayerManager = playerManager;
         CharacterManager = characterManager;
         TeamManager = teamManager;
         AntiVirusManager = antiVirusManager;
         LevelManager = levelManager;
         MainMenu = mainMenu;
+        // Set Initial game state
+        isGameActive = false;
+
+        Debug.Log("[GameManager] Game Manager Initialized");
+        _isInitialized = true;
+        await UniTask.CompletedTask;
     }
 }

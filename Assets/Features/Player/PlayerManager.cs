@@ -10,7 +10,6 @@ public class PlayerManager : MonoBehaviour
     public PlayerService playerService { get; private set; }
     public async UniTask Initialize(PlayerData data)
     {
-        // Only create playerservices from scratch
         // Todo Generate
         StartPlayerService(data);
         Debug.Log("Player Manager Initialized");
