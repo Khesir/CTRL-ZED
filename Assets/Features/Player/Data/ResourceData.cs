@@ -18,7 +18,6 @@ public class ResourceData
     public int coins;
     public int bioChips;
     public int maxBioChipCharges = 5;
-    public ResourceData() { }
     public ResourceData(int food = 1000, int technology = 1000, int energy = 1000, int intelligence = 1000)
     {
         this.food = food;

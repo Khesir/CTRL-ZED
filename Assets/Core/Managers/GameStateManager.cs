@@ -47,15 +47,15 @@ public class GameStateManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
-                SceneLoader.LoadScene("MainMenuScene");
+                SceneLoader.LoadScene("MainMenu");
                 break;
 
             case GameState.Gameplay:
-                SceneLoader.LoadScene("GameplayScene");
+                SceneLoader.LoadScene("Gameplay");
                 break;
 
             case GameState.Credits:
-                SceneLoader.LoadScene("CreditsScene");
+                SceneLoader.LoadScene("Credits");
                 break;
 
             case GameState.Loading:

@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     {
         // Todo Generate
         StartPlayerService(data);
-        Debug.Log("Player Manager Initialized");
+        Debug.Log("[PlayerManager] Player Manager Initialized");
         await UniTask.CompletedTask;
     }
     public void StartPlayerService(PlayerData data)

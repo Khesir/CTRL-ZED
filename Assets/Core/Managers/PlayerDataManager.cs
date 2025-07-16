@@ -9,7 +9,7 @@ public class PlayerDataManager : MonoBehaviour
     public string filePath;
     public async UniTask<SaveData> Initialize()
     {
-        Debug.Log($"Save Location {filePath}");
+        Debug.Log($"[PlayerDataManager] Save Location {filePath}");
         // filePath = Application.persistentDataPath + "/playerData.json";
         return await LoadPlayerData();
     }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ResourceService : IResourceService
 {
     private ResourceData data;
+    public event Action OnResourceChange;
     public ResourceService(PlayerData data)
     {
         this.data = data.resources;
@@ -21,11 +22,13 @@ public class ResourceService : IResourceService
         if (val <= data.food)
         {
             data.food -= val;
+            OnResourceChange?.Invoke();
         }
     }
     public void AddFood(int val)
     {
         data.food += val;
+        OnResourceChange?.Invoke();
     }
 
     // Technology
@@ -38,11 +41,13 @@ public class ResourceService : IResourceService
         if (val <= data.technology)
         {
             data.technology -= val;
+            OnResourceChange?.Invoke();
         }
     }
     public void AddTechnology(int val)
     {
         data.technology += val;
+        OnResourceChange?.Invoke();
     }
 
     // Energy
@@ -55,11 +60,13 @@ public class ResourceService : IResourceService
         if (val <= data.energy)
         {
             data.energy -= val;
+            OnResourceChange?.Invoke();
         }
     }
     public void AddEnergy(int val)
     {
         data.energy += val;
+        OnResourceChange?.Invoke();
     }
 
     // Intelligence
@@ -72,10 +79,12 @@ public class ResourceService : IResourceService
         if (val <= data.intelligence)
         {
             data.intelligence -= val;
+            OnResourceChange?.Invoke();
         }
     }
     public void AddIntelligence(int val)
     {
         data.intelligence += val;
+        OnResourceChange?.Invoke();
     }
 }

@@ -23,5 +23,5 @@ public class PlayerData
     public int bioChipsRemainingCharges = 0;
     public int biochips = 0;
     // Economy
-    public int coins;
+    public int coins = 10000;
 }

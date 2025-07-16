@@ -10,7 +10,7 @@ public class OsExpTop : MonoBehaviour
     public Slider expSlider;
     public TMP_Text expText;
     public PlayerService service;
-    private void Setup()
+    public void Setup()
     {
         service = GameManager.Instance.PlayerManager.playerService;
         UpdateText();

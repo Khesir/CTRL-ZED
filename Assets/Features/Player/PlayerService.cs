@@ -17,6 +17,7 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public event Action OnExpGained;
     public event Action OnSpendBioChip;
     public event Action OnCoinsChange;
+    public event Action OnResourceChange;
     public PlayerService(
         PlayerData data,
         ExpService expService,
@@ -46,6 +47,8 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
         expService.OnExpGained += () => OnExpGained?.Invoke();
         // BioChip Events
         bioChipService.OnSpendBioChip += () => OnSpendBioChip?.Invoke();
+        // Resource Events
+        resourceService.OnResourceChange += () => OnResourceChange?.Invoke();
     }
     public void PlayerHandleEvents()
     {

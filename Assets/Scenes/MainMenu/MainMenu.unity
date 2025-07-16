@@ -50019,6 +50019,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 245948468}
+    - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
       propertyPath: _gameManager
       value: 
       objectReference: {fileID: 245948468}
@@ -50026,6 +50030,10 @@ PrefabInstance:
       propertyPath: _menuManager
       value: 
       objectReference: {fileID: 1555143474}
+    - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
+      propertyPath: gameStateManager
+      value: 
+      objectReference: {fileID: 6285907055683387484, guid: e623a50ae7586b043b7efa3161378000, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

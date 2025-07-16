@@ -20,6 +20,7 @@ public class TeamManager : MonoBehaviour
         {
             this.teams.Add(new TeamService(team));
         }
+        Debug.Log("[TeamManager] Player Manager Initialized");
         await UniTask.CompletedTask;
     }
     public bool isTeamActive(string teadID)

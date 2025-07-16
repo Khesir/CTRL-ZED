@@ -15,6 +15,7 @@ public class CharacterManager : MonoBehaviour
         {
             this.characters.Add(new CharacterService(character));
         }
+        Debug.Log("[CharacterManager] Character Manager Initialized");
         await UniTask.CompletedTask;
     }
     public List<CharacterService> GetCharacters()

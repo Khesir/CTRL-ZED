@@ -12,6 +12,7 @@ public class AntiVirusManager : MonoBehaviour
     {
         this.level = level;
         maxLevel = antiVirusStage.Count;
+        Debug.Log("[AntiVirusManager] Anti-Virus Manager Initialized");
         await UniTask.CompletedTask;
     }
     public void LevelUp()

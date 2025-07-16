@@ -1,6 +1,9 @@
 
+using System;
+
 public interface IResourceService
 {
+  event Action OnResourceChange;
   int GetFood();
   void SpendFood(int val);
   void AddFood(int val);
