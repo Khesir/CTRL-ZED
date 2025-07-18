@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c99027f406d54941a98d8b7e3de61ee, type: 3}
+  m_Name: Buff
+  m_EditorClassIdentifier: 
+  buffID: antivirus_id_000
+  effectName: Basic
+  description: -5% enemy speed, +5 HP/sec, +2 Dex
+  cost: 500
+  duration: 10
+  modifiers:
+  - statId: hp
+    value: 5
+    type: 0
+    priority: 100
+  - statId: dex
+    value: 2
+    type: 0
+    priority: 100

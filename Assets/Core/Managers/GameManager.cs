@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MainMenu mainMenu;
     public bool isGameActive;
     public bool _isInitialized = false;
+
     [Header("Do not Change Anything")]
     [SerializeField] private SaveData saveData;
 

@@ -10,11 +10,11 @@ public class CharacterBattleState : MonoBehaviour
     public CharacterBattleState(CharacterService service)
     {
         characterService = service;
-        currentHealth = service.GetMaxHealth();
     }
     public bool isDead => currentHealth <= 0;
     public void TakeDamage(float dmg)
     {
         currentHealth -= dmg;
+        characterService.InvokeOnDamage();
     }
 }

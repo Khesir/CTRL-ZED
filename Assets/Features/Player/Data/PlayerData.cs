@@ -14,7 +14,7 @@ public class PlayerData
     // Progression state
     public int level = 1;
     public int currentExp = 0;
-    public float currentHealth = 0f;
+    public float currentHealth = -1;
 
     // Level configuration (health/exp curve)
     // Go to LevelingSystem, find the oscurve

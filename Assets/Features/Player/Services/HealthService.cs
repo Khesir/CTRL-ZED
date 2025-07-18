@@ -29,6 +29,13 @@ public class HealthService : IHealthService
         OnHealthChanged?.Invoke();
     }
     public float GetMaxHealth() => baseHealth * Mathf.Pow(hpLevelMultiplier, data.level - 1);
-    public float GetCurrentHealth() => data.currentHealth;
+    public float GetCurrentHealth()
+    {
+        if (data.currentHealth == -1)
+        {
+            data.currentHealth = GetMaxHealth();
+        }
+        return data.currentHealth;
+    }
     public bool IsDead() => data.currentHealth <= 0;
 }
