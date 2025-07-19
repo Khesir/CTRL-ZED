@@ -33,12 +33,13 @@ public class LevelPrefab : MonoBehaviour
         var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
 
         PlayerService playerService = GameManager.Instance.PlayerManager.playerService;
-        IBioChipService bioChipService = playerService;
+        // IBioChipService bioChipService = playerService;
         IResourceService resourceService = playerService;
         if (activeTeam != null)
         {
             // Set DEFAULT 1
-            if (!bioChipService.SpendRemainingCharge(1))
+            // if (!bioChipService.SpendRemainingCharge(1))
+            if (true)
             {
 
                 var members = activeTeam[0].GetMembers();

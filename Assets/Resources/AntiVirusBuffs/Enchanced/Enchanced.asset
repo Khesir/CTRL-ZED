@@ -15,7 +15,7 @@ MonoBehaviour:
   buffID: antivirus_id_001
   effectName: Enchanced
   description: -5% enemy speed, +5 HP/sec, +2 Dex
-  cost: 500
+  cost: 1500
   duration: 10
   icon: {fileID: 21300000, guid: b925d37821c0faa42b16ea1bd25b626f, type: 3}
   playerBuff: {fileID: 0}

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292a39a4a4a4a464b9fb840d980d3f74, type: 3}
   m_Name: Advance
   m_EditorClassIdentifier: 
-  buffID: antivirus_id_001
+  buffID: antivirus_id_002
   effectName: Advanced
   description: -5% enemy speed, +5 HP/sec, +2 Dex
-  cost: 500
+  cost: 3000
   duration: 10
   icon: {fileID: 21300000, guid: 45fd7eeb8f206e9438aeecf30d491d55, type: 3}
   playerBuff: {fileID: 11400000, guid: 5d60ccf3c37b8b14f97ab177e5ed4788, type: 2}

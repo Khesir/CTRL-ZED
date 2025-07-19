@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerService : IResourceService, IEconomyService, IExpService, IHealthService, IBioChipService
+public class PlayerService : IResourceService, IEconomyService, IExpService, IHealthService, IDrivesService
 {
     private PlayerData data;
 
@@ -11,11 +11,11 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public HealthService healthService { get; private set; }
     public EconomyService economyService { get; private set; }
     public ResourceService resourceService { get; private set; }
-    public BioChipService bioChipService { get; private set; }
+    public DrivesService drivesService { get; private set; }
     public event Action OnHealthChanged;
     public event Action OnLevelUp;
     public event Action OnExpGained;
-    public event Action OnSpendBioChip;
+    public event Action OnSpendDrives;
     public event Action OnCoinsChange;
     public event Action OnResourceChange;
     public PlayerService(
@@ -24,7 +24,7 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
         HealthService healthService,
         EconomyService economyService,
         ResourceService resourceService,
-        BioChipService bioChipService
+        DrivesService drivesService
     )
     {
         this.data = data;
@@ -32,7 +32,7 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
         this.healthService = healthService;
         this.economyService = economyService;
         this.resourceService = resourceService;
-        this.bioChipService = bioChipService;
+        this.drivesService = drivesService;
         WiredEvents();
         PlayerHandleEvents();
     }
@@ -45,8 +45,8 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
         // Exp Events
         expService.OnLevelUp += () => OnLevelUp?.Invoke();
         expService.OnExpGained += () => OnExpGained?.Invoke();
-        // BioChip Events
-        bioChipService.OnSpendBioChip += () => OnSpendBioChip?.Invoke();
+        // Drives Events
+        drivesService.OnSpendDrives += () => OnSpendDrives?.Invoke();
         // Resource Events
         resourceService.OnResourceChange += () => OnResourceChange?.Invoke();
     }
@@ -54,12 +54,13 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     {
         OnLevelUp += () => healthService.HandleLevelUp(data.level);
     }
-    #region BioChipService
-    public int GetBioChip() => bioChipService.GetBioChip();
-    public void AddBioChip(int val) => bioChipService.AddBioChip(val);
-    public bool SpendBioChip(int val) => bioChipService.SpendBioChip(val);
-    public bool SpendRemainingCharge(int val) => bioChipService.SpendRemainingCharge(val);
-    public int GetRemainingCharge() => bioChipService.GetRemainingCharge();
+    #region DrivesService
+    public int GetDrives() => drivesService.GetDrives();
+    public void AddDrives(int val) => drivesService.AddDrives(val);
+    public bool SpendDrives(int val) => drivesService.SpendDrives(val);
+    public bool SpendRemainingCharge(int val) => drivesService.SpendRemainingCharge(val);
+    public int GetChargedDrives() => drivesService.GetChargedDrives();
+    public DrivesChargePerResource GetResourceChargePerDrives() => drivesService.GetResourceChargePerDrives();
     #endregion
     #region ExperienceService
     public float GetCoinsPerExpRate() => expService.GetCoinsPerExpRate();

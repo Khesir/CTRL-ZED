@@ -20,8 +20,8 @@ public class PlayerData
     // Go to LevelingSystem, find the oscurve
     public ResourceData resources = new();
     // Bio chips implementation
-    public int bioChipsRemainingCharges = 0;
-    public int biochips = 0;
+    public int chargedDrives = 0;
+    public int usableDrives = 50;
     // Economy
     public int coins = 10000;
 }

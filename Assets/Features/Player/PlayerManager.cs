@@ -30,14 +30,14 @@ public class PlayerManager : MonoBehaviour
         var economyService = new EconomyService(data, baseCoins, costMultipler);
 
         var resourceService = new ResourceService(data);
-        var bioChipService = new BioChipService(data);
+        var drivesService = new DrivesService(data);
         playerService = new PlayerService(
             data,
             expService,
             healthService,
             economyService,
             resourceService,
-            bioChipService
+            drivesService
         );
     }
 }
