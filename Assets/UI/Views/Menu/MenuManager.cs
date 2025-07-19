@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     public FundsMenuComponent fundsMenuComponent;
     public ResourceUI resourceUI;
     public RepairComponent repairComponent;
+    public DrivesMenuComponent drivesMenuComponent;
     public bool isGameActive;
     public bool _isInitialized = false;
     private void Awake()
@@ -46,5 +47,6 @@ public class MenuManager : MonoBehaviour
         fundsMenuComponent.Setup();
         resourceUI.Setup();
         repairComponent.Setup();
+        drivesMenuComponent.Setup();
     }
 }

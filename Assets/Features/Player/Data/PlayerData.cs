@@ -23,5 +23,5 @@ public class PlayerData
     public int chargedDrives = 0;
     public int usableDrives = 50;
     // Economy
-    public int coins = 10000;
+    public int coins = 50000;
 }

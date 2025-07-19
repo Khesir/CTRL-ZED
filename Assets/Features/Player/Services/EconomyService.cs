@@ -27,6 +27,7 @@ public class EconomyService : IEconomyService
     {
         if (val > data.coins) return false;
         data.coins -= val;
+        OnCoinsChange?.Invoke();
         return true;
     }
     public float GetCoinsPerExp() => data.coinsPerExp;

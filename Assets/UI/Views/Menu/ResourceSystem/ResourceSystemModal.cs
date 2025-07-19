@@ -8,6 +8,7 @@ public class ResourceSystemModal : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Button lockButton;
+    [SerializeField] private TMP_Text buttonText;
     [SerializeField] private TMP_Text costs;
     [SerializeField] private TMP_Text topCurrency;
     [SerializeField] private DrivesComponent drivesComponent;
@@ -27,7 +28,6 @@ public class ResourceSystemModal : MonoBehaviour
 
         lockButton.onClick.RemoveAllListeners();
         lockButton.onClick.AddListener(LockAction);
-
         playerService.OnCoinsChange += UpdateText;
         playerService.OnSpendDrives += UpdateCost;
     }
@@ -45,10 +45,21 @@ public class ResourceSystemModal : MonoBehaviour
     private void UpdateCost()
     {
         costs.text = playerService.GetResourceChargePerDrives().coins + " Coins";
+        if (playerService.CanSpendDrives())
+        {
+            lockButton.interactable = true;
+            buttonText.text = "Lock Resources";
+        }
+        else
+        {
+            lockButton.interactable = false;
+            buttonText.text = "Not Enough Resources";
+        }
     }
 
     private void LockAction()
     {
-        Debug.Log("Locking Item");
+        // Currently set as 1
+        playerService.SpendDrives(1);
     }
 }

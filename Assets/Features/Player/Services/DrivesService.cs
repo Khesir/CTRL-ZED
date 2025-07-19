@@ -15,6 +15,9 @@ public class DrivesService : IDrivesService
     public void AddDrives(int val)
     {
         data.usableDrives += val;
+        // I know this is bad in name sense
+        // Just keep event same with spending drive
+        OnSpendDrives?.Invoke();
     }
 
     public int GetDrives()
@@ -23,12 +26,8 @@ public class DrivesService : IDrivesService
     }
     public bool SpendDrives(int val)
     {
-        // If Drives charges are 0 then add charges and reduce bio chips
-        // Then if Drives charges have charge reduce it
-        if (data.usableDrives < val) return false;
-        // return true if both are done, otherwise false
-        // Insert validation and interaction with resources here;
         data.chargedDrives += val;
+        data.usableDrives -= val;
         OnSpendDrives?.Invoke();
         return true;
     }

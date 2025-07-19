@@ -129,6 +129,7 @@ public class TeamManager : MonoBehaviour
         if (team != null && slotIndex < team.GetMembers().Count)
         {
             team.GetMembers()[slotIndex] = character;
+            onTeamChange?.Invoke();
             Debug.Log($"Assigned Character to Team {teamId} Slot {slotIndex}");
             return;
         }

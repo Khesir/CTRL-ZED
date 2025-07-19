@@ -55,9 +55,33 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
         OnLevelUp += () => healthService.HandleLevelUp(data.level);
     }
     #region DrivesService
+    public bool CanSpendDrives(int val = 1)
+    {
+        var resourceCost = GetResourceChargePerDrives();
+        // Check Each Element
+        if (GetCoins() < resourceCost.coins * val) return false;
+        if (GetTechnology() < resourceCost.technology * val) return false;
+        if (GetEnergy() < resourceCost.energy * val) return false;
+        if (GetIntelligence() < resourceCost.intelligence * val) return false;
+        if (GetFood() < resourceCost.food * val) return false;
+        return true;
+    }
     public int GetDrives() => drivesService.GetDrives();
     public void AddDrives(int val) => drivesService.AddDrives(val);
-    public bool SpendDrives(int val) => drivesService.SpendDrives(val);
+    public bool SpendDrives(int val = 1)
+    {
+        var resourceCost = GetResourceChargePerDrives();
+        if (!CanSpendDrives(val) || val <= 0 || data.usableDrives < val) return false;
+
+        SpendCoins(resourceCost.coins * val);
+        SpendTechnology(resourceCost.technology * val);
+        SpendEnergy(resourceCost.energy * val);
+        SpendIntelligence(resourceCost.intelligence * val);
+        SpendFood(resourceCost.food * val);
+        Debug.Log($"Spent drives x{val}: Coins-{resourceCost.coins * val}");
+        drivesService.SpendDrives(val);
+        return true;
+    }
     public bool SpendRemainingCharge(int val) => drivesService.SpendRemainingCharge(val);
     public int GetChargedDrives() => drivesService.GetChargedDrives();
     public DrivesChargePerResource GetResourceChargePerDrives() => drivesService.GetResourceChargePerDrives();
@@ -109,6 +133,5 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public int GetIntelligence() => resourceService.GetIntelligence();
     public void SpendIntelligence(int val) => resourceService.SpendIntelligence(val);
     public void AddIntelligence(int val) => resourceService.AddIntelligence(val);
-
     #endregion
 }
