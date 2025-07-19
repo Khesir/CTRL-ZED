@@ -10,6 +10,7 @@ public class AntiVirus : StatusEffect
     public string description = "-5% enemy speed, +5 HP/sec, +2 Dex";
     public int cost = 500;
     public float duration = 10f;
+    public Sprite icon;
 
     [Header("Stat Modifiers")]
     public StatusEffect playerBuff;

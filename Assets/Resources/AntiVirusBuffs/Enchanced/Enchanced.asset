@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292a39a4a4a4a464b9fb840d980d3f74, type: 3}
   m_Name: Enchanced
   m_EditorClassIdentifier: 
-  buffID: antivirus_id_000
-  effectName: Basic
+  buffID: antivirus_id_001
+  effectName: Enchanced
   description: -5% enemy speed, +5 HP/sec, +2 Dex
   cost: 500
   duration: 10
+  icon: {fileID: 21300000, guid: b925d37821c0faa42b16ea1bd25b626f, type: 3}
   playerBuff: {fileID: 0}
-  enemyDebuff: {fileID: 0}
+  enemyDebuff: {fileID: 11400000, guid: 0f008ccc0e1d7c84c89c9a5653f0f5ae, type: 2}

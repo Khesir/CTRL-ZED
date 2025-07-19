@@ -8,7 +8,6 @@ public class CharacterData
 {
     public string id;
     public CharacterConfig baseData;
-    public List<int> assignedTeam = new();
 
     public float maxHealth;
     public string name;
@@ -16,4 +15,5 @@ public class CharacterData
 
     public int currentLevel;
     public int experience;
+    public List<int> assignedTeam = new();
 }
