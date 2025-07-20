@@ -65,8 +65,8 @@ public class GameplayManager : MonoBehaviour
             spawn.Setup(battleStates);
         }
         SwitchControlledFollower(currentFollowerIndex);
-        await spawner.Initialize(gameManager.LevelManager.levels[gameManager.LevelManager.activeLevel].waves);
-        parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.levels[gameManager.LevelManager.activeLevel].sprites);
+        await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
+        parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.activeLevel.background);
         await UniTask.CompletedTask;
     }
     void Update()

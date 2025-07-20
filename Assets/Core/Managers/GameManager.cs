@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public CharacterManager CharacterManager { get; private set; }
     public AntiVirusManager AntiVirusManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
-    public MainMenu MainMenu { get; private set; }
     public List<CharacterConfig> characterTemplates;
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
@@ -23,7 +22,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerDataManager playerDataManager;
     [SerializeField] private AntiVirusManager antiVirusManager;
     [SerializeField] private LevelManager levelManager;
-    [SerializeField] private MainMenu mainMenu;
     public bool isGameActive;
     public bool _isInitialized = false;
 
@@ -52,7 +50,6 @@ public class GameManager : MonoBehaviour
         TeamManager = teamManager;
         AntiVirusManager = antiVirusManager;
         LevelManager = levelManager;
-        MainMenu = mainMenu;
         // Set Initial game state
         isGameActive = false;
 
