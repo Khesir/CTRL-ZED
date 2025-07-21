@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class BattleButton : MonoBehaviour
 {
-    public Animator animator;
+    public LevelUIManager levelUIManager;
     public void PushMessage()
     {
-        animator.SetTrigger("Close");
+        var x = levelUIManager.GetComponent<Animator>();
+        x.SetTrigger("Close");
+        levelUIManager.Generate();
     }
 }

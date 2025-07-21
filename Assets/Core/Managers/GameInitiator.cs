@@ -87,7 +87,8 @@ public class GameInitiator : MonoBehaviour
         await GameManager.Instance.PlayerManager.Initialize(saveData.playerData);
         await GameManager.Instance.TeamManager.Initialize(saveData.teams);
         await GameManager.Instance.CharacterManager.Initialize(saveData.ownedCharacters);
-        await GameManager.Instance.AntiVirusManager.Initialize(saveData.antiVirusLevel);
+        await GameManager.Instance.AntiVirusManager.Initialize();
+        await GameManager.Instance.LevelManager.Initialize();
 
         Debug.Log("[GameInitiator] Game preparation (player data) complete.");
         // Game Preparation

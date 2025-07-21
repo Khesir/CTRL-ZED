@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     }
     public async UniTask Initialize()
     {
+
         if (allLevels.Count == 0)
             allLevels.AddRange(Resources.LoadAll<LevelData>("Levels"));
 

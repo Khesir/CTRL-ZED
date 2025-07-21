@@ -6,9 +6,13 @@ public class LevelUIManager : MonoBehaviour
 {
     public GameObject LevelPrefab;
     public Transform content;
-    void OnEnable()
+    void OnDisable()
     {
         // #A500FF // Active Color button
+        Clear();
+    }
+    public void Generate()
+    {
         var levels = GameManager.Instance.LevelManager.allLevels;
         Clear();
         for (int i = 0; i < levels.Count - 1; i++)
