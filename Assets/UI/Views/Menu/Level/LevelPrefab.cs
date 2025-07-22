@@ -10,8 +10,11 @@ public class LevelPrefab : MonoBehaviour
     public TMP_Text title;
     public TMP_Text objective;
     public Image disabled;
+    public LevelInformationModal modalComponent;
+    private LevelData data;
     public void Setup(LevelData data)
     {
+        this.data = data;
         var button = GetComponent<Button>();
         title.text = data.levelName;
         icon.sprite = data.levelIcon;
@@ -34,7 +37,8 @@ public class LevelPrefab : MonoBehaviour
     }
     public void Active()
     {
-        Debug.Log("Test");
+        modalComponent.data = data;
+        modalComponent.Trigger();
     }
     public void StartGameplay(int index)
     {

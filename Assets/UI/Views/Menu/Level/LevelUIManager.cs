@@ -6,6 +6,7 @@ public class LevelUIManager : MonoBehaviour
 {
     public GameObject LevelPrefab;
     public Transform content;
+    public LevelInformationModal levelInformationModal;
     void OnDisable()
     {
         // #A500FF // Active Color button
@@ -20,6 +21,7 @@ public class LevelUIManager : MonoBehaviour
             var go = Instantiate(LevelPrefab, content);
             var lvl = go.GetComponent<LevelPrefab>();
             lvl.Setup(levels[i]);
+            lvl.modalComponent = levelInformationModal;
         }
 
     }
