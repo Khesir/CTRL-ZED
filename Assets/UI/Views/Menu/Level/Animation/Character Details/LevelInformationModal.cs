@@ -18,9 +18,9 @@ public class LevelInformationModal : MonoBehaviour
     {
         gameObject.SetActive(true);
         animator.SetTrigger("Close");
-        Debug.Log("Truggered");
-
+        Debug.Log("Triggered");
     }
+
     public void CloseTrigger()
     {
         animator.SetTrigger("Close");
@@ -59,6 +59,40 @@ public class LevelInformationModal : MonoBehaviour
     }
     void StartGame()
     {
-        Debug.Log("Starting Game!");
+        var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
+
+        PlayerService playerService = GameManager.Instance.PlayerManager.playerService;
+        // IBioChipService bioChipService = playerService;
+        IResourceService resourceService = playerService;
+        if (activeTeam.Count < 1)
+        {
+            Debug.LogWarning("No set active team");
+            return;
+        }
+        var members = activeTeam[0].GetMembers();
+        var totalDeploymentCost = new Dictionary<string, float>();
+
+        foreach (CharacterService character in members)
+        {
+            var cost = character.GetDeploymentCost();
+            foreach (var kvp in cost)
+            {
+                if (totalDeploymentCost.ContainsKey(kvp.Key))
+                {
+                    totalDeploymentCost[kvp.Key] += kvp.Value;
+                }
+                else
+                {
+                    totalDeploymentCost[kvp.Key] = kvp.Value;
+                }
+            }
+        }
+        resourceService.SpendFood((int)totalDeploymentCost["Food"]);
+        resourceService.SpendTechnology((int)totalDeploymentCost["Technology"]);
+        resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
+        resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
+
+        GameManager.Instance.LevelManager.activeLevel = data;
+        GameManager.Instance.LevelManager.LoadScene(GameState.Gameplay);
     }
 }

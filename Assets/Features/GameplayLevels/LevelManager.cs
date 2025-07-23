@@ -7,10 +7,11 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
-    public LevelData activeLevel;
+    [HideInInspector] public LevelData activeLevel;
     [Header("Assigned via Inspector or Resources.Load")]
     public List<LevelData> allLevels = new();
     private Dictionary<string, LevelData> levelLookup;
+    public GameObject loaderCanva;
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -33,4 +34,11 @@ public class LevelManager : MonoBehaviour
     }
     public List<LevelData> GetAllLevels() => allLevels;
     public LevelData GetActiveLevel() => activeLevel;
+    // This is depends on GameStateManager
+    public void LoadScene(GameState gameState)
+    {
+        Debug.Log("[LevelManager] Preparing for the mission");
+        GameInitiator.Instance.gameStateManager.SetState(gameState);
+        Debug.Log("[LevelManager] Preparation Complete!");
+    }
 }

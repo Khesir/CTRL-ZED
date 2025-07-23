@@ -21,10 +21,11 @@ public class GameStateManager : MonoBehaviour
     public event Action<GameState> OnStateChanged;
     private string _sceneToLoadAfterLoading;
     public bool _isInitialize = false;
+    public GameObject loaderCanvas;
     public async UniTask Intialize()
     {
         if (_isInitialize) return;
-
+        loaderCanvas = GameManager.Instance.LevelManager.loaderCanva;
         _isInitialize = true;
         await UniTask.CompletedTask;
     }
@@ -47,15 +48,15 @@ public class GameStateManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
-                SceneLoader.LoadScene("MainMenu");
+                SceneLoader.LoadScene("MainMenu", loaderCanvas);
                 break;
 
             case GameState.Gameplay:
-                SceneLoader.LoadScene("Gameplay");
+                SceneLoader.LoadScene("Gameplay", loaderCanvas);
                 break;
 
             case GameState.Credits:
-                SceneLoader.LoadScene("Credits");
+                SceneLoader.LoadScene("Credits", loaderCanvas);
                 break;
 
             case GameState.Loading:

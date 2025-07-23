@@ -40,46 +40,4 @@ public class LevelPrefab : MonoBehaviour
         modalComponent.data = data;
         modalComponent.Trigger();
     }
-    public void StartGameplay(int index)
-    {
-
-        var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
-
-        PlayerService playerService = GameManager.Instance.PlayerManager.playerService;
-        // IBioChipService bioChipService = playerService;
-        IResourceService resourceService = playerService;
-        if (activeTeam != null)
-        {
-            // Set DEFAULT 1
-            // if (!bioChipService.SpendRemainingCharge(1))
-            if (true)
-            {
-
-                var members = activeTeam[0].GetMembers();
-                var totalDeploymentCost = new Dictionary<string, float>();
-
-                foreach (CharacterService character in members)
-                {
-                    var cost = character.GetDeploymentCost();
-                    foreach (var kvp in cost)
-                    {
-                        if (totalDeploymentCost.ContainsKey(kvp.Key))
-                        {
-                            totalDeploymentCost[kvp.Key] += kvp.Value;
-                        }
-                        else
-                        {
-                            totalDeploymentCost[kvp.Key] = kvp.Value;
-                        }
-                    }
-                }
-                resourceService.SpendFood((int)totalDeploymentCost["Food"]);
-                resourceService.SpendTechnology((int)totalDeploymentCost["Technology"]);
-                resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
-                resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
-            }
-            // GameManager.Instance.LevelManager.activeLevel = ;
-            // GameManager.Instance.MainMenu.PlayGame("gameplay");
-        }
-    }
 }

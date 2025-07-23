@@ -20,11 +20,11 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
 
             manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
 
-            GameObject newDraggableGO = Instantiate(draggableItemPrefab, transform);
-            DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
-            newDraggable.Setup(transferredCharacter);
+            // GameObject newDraggableGO = Instantiate(draggableItemPrefab, transform);
+            // DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
+            // newDraggable.Setup(transferredCharacter);
 
-            Debug.Log("Transferred: " + transferredCharacter.GetName());
+            // Debug.Log("Transferred: " + transferredCharacter.GetName());
         }
         else
         {
