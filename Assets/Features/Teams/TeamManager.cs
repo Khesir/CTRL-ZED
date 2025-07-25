@@ -36,18 +36,20 @@ public class TeamManager : MonoBehaviour
         }
         return false;
     }
-    public void CreateTeam()
+    public string CreateTeam()
     {
         if (teams.Count < maxSize)
         {
-            teams.Add(new TeamService());
+            var newTeam = new TeamService();
+            teams.Add(newTeam);
             onTeamChange?.Invoke();
+            return newTeam.teamID;
         }
         else
         {
             Debug.LogError("Max size met");
+            return "";
         }
-        Debug.Log(teams.Count);
     }
     public void IncreaseMaxTeam()
     {

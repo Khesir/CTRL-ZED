@@ -18,7 +18,6 @@ public class LevelInformationModal : MonoBehaviour
     {
         gameObject.SetActive(true);
         animator.SetTrigger("Close");
-        Debug.Log("Triggered");
     }
 
     public void CloseTrigger()

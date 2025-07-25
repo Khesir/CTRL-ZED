@@ -7,6 +7,10 @@ public class LevelUIManager : MonoBehaviour
     public GameObject LevelPrefab;
     public Transform content;
     public LevelInformationModal levelInformationModal;
+    void OnEnable()
+    {
+        Generate();
+    }
     void OnDisable()
     {
         // #A500FF // Active Color button

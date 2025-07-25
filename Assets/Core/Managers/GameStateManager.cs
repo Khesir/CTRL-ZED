@@ -25,6 +25,12 @@ public class GameStateManager : MonoBehaviour
     public async UniTask Intialize()
     {
         if (_isInitialize) return;
+
+        Debug.Log("[GameStateManager] Waiting for loaderCanva...");
+        Debug.Log($"[GSM] GameManager.Instance: {GameManager.Instance}");
+        Debug.Log($"[GSM] GameManager.LevelManager: {GameManager.Instance?.LevelManager}");
+        Debug.Log($"[GSM] loaderCanva: {GameManager.Instance?.LevelManager?.loaderCanva}");
+
         loaderCanvas = GameManager.Instance.LevelManager.loaderCanva;
         _isInitialize = true;
         await UniTask.CompletedTask;

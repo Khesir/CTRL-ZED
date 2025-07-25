@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &30167257484732487
+--- !u!1 &3250823969433667784
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1140652181900166657}
-  - component: {fileID: 7762684297046556317}
+  - component: {fileID: 8232592193709936661}
+  - component: {fileID: 2494061501919174187}
   m_Layer: 0
-  m_Name: GameInitiator
+  m_Name: MenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1140652181900166657
+--- !u!4 &8232592193709936661
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30167257484732487}
+  m_GameObject: {fileID: 3250823969433667784}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 956.4362, y: 488.94598, z: -1.910287}
+  m_LocalPosition: {x: 210.74109, y: 112.03909, z: -0.7745062}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7762684297046556317
+--- !u!114 &2494061501919174187
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30167257484732487}
+  m_GameObject: {fileID: 3250823969433667784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b773814b6676094695746661abbf531, type: 3}
+  m_Script: {fileID: 11500000, guid: a1dfde32c6c30e44ba5cc0e0d4e0c863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 5222120273285241215, guid: 11a34b7e5be660541896faa02437263c, type: 3}
-  _eventSystem: {fileID: 4765302152956870310, guid: ab870fc40f8bc584687f1f33a7e40deb, type: 3}
-  _canvas: {fileID: 2404006910334455838, guid: e852d6939dc9d04468c128d2b8c783b4, type: 3}
-  _environment: 0
-  _gameManager: {fileID: 0}
+  osExpTop: {fileID: 0}
+  fundsMenuComponent: {fileID: 0}
+  resourceUI: {fileID: 0}
+  repairComponent: {fileID: 0}
+  drivesMenuComponent: {fileID: 0}
+  isGameActive: 0
+  _isInitialized: 0

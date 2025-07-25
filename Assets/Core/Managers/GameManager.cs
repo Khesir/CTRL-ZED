@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public CharacterManager CharacterManager { get; private set; }
     public AntiVirusManager AntiVirusManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
-    public List<CharacterConfig> characterTemplates;
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;

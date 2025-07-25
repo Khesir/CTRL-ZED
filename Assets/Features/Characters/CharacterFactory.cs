@@ -20,6 +20,31 @@ public static class CharacterFactory
 
         return new CharacterService(data);
     }
+    public static CharacterService CreateTestCharacter()
+    {
+        List<CharacterConfig> possibleConfigs = GameManager.Instance.CharacterManager.characterTemplates;
+        if (possibleConfigs == null || possibleConfigs.Count == 0)
+        {
+            Debug.LogError("No character configs available.");
+            return null;
+        }
+
+        var config = possibleConfigs[UnityEngine.Random.Range(0, possibleConfigs.Count)];
+
+        var data = new CharacterData
+        {
+            id = CharacterUtils.GenerateCharID(),
+            baseData = config,
+            name = config.name,
+            level = 1,
+            currentLevel = 1,
+            experience = 0,
+            maxHealth = config.baseHealth,
+            assignedTeam = new List<int>()
+        };
+
+        return new CharacterService(data);
+    }
     // We can add test characters in case
     // We can add tutorial characters
 }

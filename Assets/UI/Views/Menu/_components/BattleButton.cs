@@ -9,6 +9,6 @@ public class BattleButton : MonoBehaviour
     {
         var x = levelUIManager.GetComponent<Animator>();
         x.SetTrigger("Close");
-        levelUIManager.Generate();
+        levelUIManager.gameObject.SetActive(true);
     }
 }

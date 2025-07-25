@@ -41,6 +41,11 @@ public class GameplayManager : MonoBehaviour
             Instance = this;
         }
     }
+    private async void Start()
+    {
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isGenerated);
+        await Initialize();
+    }
     public async UniTask Initialize()
     {
         if (_isInitialized) return;
@@ -48,6 +53,7 @@ public class GameplayManager : MonoBehaviour
         await parallaxBackground.Initialize();
         squadLevelManager.Setup(SquadMaxLevel);
         // Set Initial game state
+        await Setup();
         isGameActive = false;
 
         Debug.Log("[GameplayManager] Gameplay Manager Initialized");
