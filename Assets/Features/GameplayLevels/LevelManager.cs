@@ -7,7 +7,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
-    [HideInInspector] public LevelData activeLevel;
+    public LevelData activeLevel;
     [Header("Assigned via Inspector or Resources.Load")]
     public List<LevelData> allLevels = new();
     private Dictionary<string, LevelData> levelLookup;
@@ -38,7 +38,7 @@ public class LevelManager : MonoBehaviour
     public void LoadScene(GameState gameState)
     {
         Debug.Log("[LevelManager] Preparing for the mission");
-        GameInitiator.Instance.gameStateManager.SetState(gameState);
+        GameStateManager.Instance.SetState(gameState);
         Debug.Log("[LevelManager] Preparation Complete!");
     }
 }

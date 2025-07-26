@@ -91,7 +91,7 @@ public class LevelInformationModal : MonoBehaviour
         resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
         resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
 
-        GameManager.Instance.LevelManager.activeLevel = data;
-        GameManager.Instance.LevelManager.LoadScene(GameState.Gameplay);
+        LevelManager.Instance.activeLevel = data;
+        LevelManager.Instance.LoadScene(GameState.Gameplay);
     }
 }

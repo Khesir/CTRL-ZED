@@ -27,8 +27,10 @@ public static class SceneLoader
 
         // Now activate the scene
         loadOperation.allowSceneActivation = true;
-        canvas.SetActive(false);
         // Optionally wait one more frame to let it finish
         await UniTask.Yield();
+        canvas.SetActive(false);
+        Debug.Log($"[SceneLoader] Scene {sceneName} loaded successfully.");
+
     }
 }

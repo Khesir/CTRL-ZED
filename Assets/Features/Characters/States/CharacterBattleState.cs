@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class CharacterBattleState : MonoBehaviour
+public class CharacterBattleState
 {
     public CharacterService characterService;
     public float currentHealth;

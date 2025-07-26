@@ -10,8 +10,8 @@ public class GameInitiator : MonoBehaviour
 {
     public static GameInitiator Instance { get; private set; }
     [Header("Bindable Objects")]
-    public GameStateManager gameStateManager;
-    public GameManager gameManager;
+    [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField] private GameManager gameManager;
 
     [Header("Environment Setup")]
     [SerializeField] private GameState initialState = GameState.Initial;
