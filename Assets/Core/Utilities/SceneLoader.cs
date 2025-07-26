@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
-    public static async void LoadScene(string sceneName, GameObject canvas)
+    public static async UniTask LoadScene(string sceneName, GameObject canvas)
     {
         Debug.Log($"[SceneLoader] Loading scene: {sceneName}");
 

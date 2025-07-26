@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,13 +52,23 @@ public class LevelInformationModal : MonoBehaviour
         description.text = data.description;
 
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(StartGame);
+        button.onClick.AddListener(async () =>
+        {
+            try
+            {
+                await StartGame();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"StartGame error: {ex}");
+            }
+        });
     }
     void OnDisable()
     {
         button.onClick.RemoveAllListeners();
     }
-    void StartGame()
+    async UniTask StartGame()
     {
         var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
 
@@ -92,6 +104,6 @@ public class LevelInformationModal : MonoBehaviour
         resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
 
         LevelManager.Instance.activeLevel = data;
-        LevelManager.Instance.LoadScene(GameState.Gameplay);
+        await LevelManager.Instance.LoadScene(GameState.Gameplay);
     }
 }

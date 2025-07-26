@@ -35,10 +35,10 @@ public class LevelManager : MonoBehaviour
     public List<LevelData> GetAllLevels() => allLevels;
     public LevelData GetActiveLevel() => activeLevel;
     // This is depends on GameStateManager
-    public void LoadScene(GameState gameState)
+    public async UniTask LoadScene(GameState gameState)
     {
         Debug.Log("[LevelManager] Preparing for the mission");
-        GameStateManager.Instance.SetState(gameState);
+        await GameInitiator.Instance.GetGameStateManager().SetState(gameState);
         Debug.Log("[LevelManager] Preparation Complete!");
     }
 }

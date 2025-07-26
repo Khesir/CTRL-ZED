@@ -45,24 +45,28 @@ public class GameStateManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    public void SetState(GameState newState)
+    public async UniTask SetState(GameState newState)
     {
-        if (newState == Currentstate) return;
+        if (newState == Currentstate)
+        {
+            Debug.LogWarning($"[GameStateManager] Tried to set state to {newState}, but it was already the current state. Scene load skipped.");
+            return;
+        }
         Currentstate = newState;
         Debug.Log($"[GameStateManager] State changed to: {newState}");
         OnStateChanged?.Invoke(newState);
         switch (newState)
         {
             case GameState.MainMenu:
-                SceneLoader.LoadScene("MainMenu", loaderCanvas);
+                await SceneLoader.LoadScene("MainMenu", loaderCanvas);
                 break;
 
             case GameState.Gameplay:
-                SceneLoader.LoadScene("Gameplay", loaderCanvas);
+                await SceneLoader.LoadScene("Gameplay", loaderCanvas);
                 break;
 
             case GameState.Credits:
-                SceneLoader.LoadScene("Credits", loaderCanvas);
+                await SceneLoader.LoadScene("Credits", loaderCanvas);
                 break;
 
             case GameState.Loading:

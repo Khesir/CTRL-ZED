@@ -99,12 +99,12 @@ public class GameInitiator : MonoBehaviour
             // Don't load initial scene, just sync current scene to GameStateManager
             var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
-            gameStateManager.SetState(devState);
+            await _gameStateManager.SetState(devState);
             GenerateTestData();
         }
         else
         {
-            gameStateManager.SetState(initialState);
+            await _gameStateManager.SetState(initialState);
         }
 
         Debug.Log("[GameInitiator] Game preparation (player State) complete.");
@@ -137,4 +137,7 @@ public class GameInitiator : MonoBehaviour
 
         Debug.Log("[GameInitiator] Generating Data Successfull");
     }
+    public GameManager GetGameManager() => _gameManager;
+    public GameStateManager GetGameStateManager() => _gameStateManager;
+
 }
