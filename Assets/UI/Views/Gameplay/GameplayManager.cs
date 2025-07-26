@@ -23,6 +23,7 @@ public class GameplayManager : MonoBehaviour
     public bool isGameActive;
     public bool _isInitialized = false;
     [Header("Gameplay References")]
+    public FollowerManager followerManager;
     public ParallaxBackground parallaxBackground;
     public FollowerSpawn spawn;
     public GameplayUIController gameplayUI;
@@ -60,96 +61,116 @@ public class GameplayManager : MonoBehaviour
         _isInitialized = true;
         await UniTask.CompletedTask;
     }
+    // public async UniTask Setup()
+    // {
+    //     gameManager = GameManager.Instance;
+    //     if (followers.Count == 0)
+    //     {
+    //         List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
+    //         List<CharacterService> members = team[0].GetMembers();
+    //         var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
+    //         spawn.Setup(battleStates);
+    //     }
+    //     SwitchControlledFollower(currentFollowerIndex);
+    //     await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
+    //     parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.activeLevel.background);
+    //     await UniTask.CompletedTask;
+    // }
     public async UniTask Setup()
     {
-        gameManager = GameManager.Instance;
-        if (followers.Count == 0)
-        {
-            List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
-            List<CharacterService> members = team[0].GetMembers();
-            var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
-            spawn.Setup(battleStates);
-        }
-        SwitchControlledFollower(currentFollowerIndex);
+        // Get active team
+        List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
+        List<CharacterService> members = team[0].GetMembers();
+        var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
+
+        spawn.Setup(battleStates); // Instantiates follower GameObjects
+
+        await UniTask.Delay(100); // Wait for them to be added via AddFollower()
+
+        followerManager.Initialize(followers); // Pass current followers
         await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
-        parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.activeLevel.background);
-        await UniTask.CompletedTask;
     }
-    void Update()
-    {
-        for (int i = 0; i < followers.Count; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-            {
-                if (i != currentFollowerIndex)
-                {
-                    IsDead(i);
-                    SwitchControlledFollower(i);
-                }
-            }
-        }
-    }
-    public void SwitchControlledFollower(int newIndex)
-    {
-        if (newIndex >= 0 && newIndex < followers.Count)
-        {
 
-            var newLeader = followers[newIndex];
-            currentFollowerIndex = newIndex;
-            globalTargetPlayer = newLeader.transform;
-            virtualCamera.Follow = newLeader.transform;
+    public void AddFollower(Follower f)
+    {
+        followers.Add(f);
+        followerManager.AddFollower(f);
+    }
+    // void Update()
+    // {
+    //     for (int i = 0; i < followers.Count; i++)
+    //     {
+    //         if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+    //         {
+    //             if (i != currentFollowerIndex)
+    //             {
+    //                 IsDead(i);
+    //                 SwitchControlledFollower(i);
+    //             }
+    //         }
+    //     }
+    // }
+    // public void SwitchControlledFollower(int newIndex)
+    // {
+    //     if (newIndex >= 0 && newIndex < followers.Count)
+    //     {
 
-            // Handles UI
-            var characterService = newLeader.GetComponent<PlayerController>().playerData;
-            Instance.gameplayUI.characterListUI.hotbar1.GetComponent<CharacterDetails>().Initialize(characterService);
-            for (int i = 0; i < followers.Count; i++)
-            {
-                if (i == newIndex)
-                {
-                    followers[i].SetTarget();
-                }
-                else
-                {
-                    followers[i].Refresh();
-                }
-            }
-            switchUser?.Invoke();
-            Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
-        }
-    }
-    public void AddFollower(Follower data)
-    {
-        followers.Add(data);
-    }
-    private void IsDead(int index)
-    {
-        var character = followers[index].GetComponent<PlayerController>().playerData;
-        if (character.isDead)
-        {
-            return;
-        }
-    }
-    public int IsAvailable()
-    {
-        for (int i = 0; i < followers.Count; i++)
-        {
-            var controller = followers[i].GetComponent<PlayerController>().playerData;
+    //         var newLeader = followers[newIndex];
+    //         currentFollowerIndex = newIndex;
+    //         globalTargetPlayer = newLeader.transform;
+    //         virtualCamera.Follow = newLeader.transform;
 
-            if (!controller.isDead)
-            {
-                return i;
-            }
-            else
-            {
-                continue;
-            }
-        }
-        return -1;
-    }
-    public void SetTarget()
-    {
-        currentFollowerIndex = -1;
-        globalTargetPlayer = null;
-        switchUser?.Invoke();
-    }
+    //         // Handles UI
+    //         var characterService = newLeader.GetComponent<PlayerController>().playerData;
+    //         Instance.gameplayUI.characterListUI.hotbar1.GetComponent<CharacterDetails>().Initialize(characterService);
+    //         for (int i = 0; i < followers.Count; i++)
+    //         {
+    //             if (i == newIndex)
+    //             {
+    //                 followers[i].SetTarget();
+    //             }
+    //             else
+    //             {
+    //                 followers[i].Refresh();
+    //             }
+    //         }
+    //         switchUser?.Invoke();
+    //         Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
+    //     }
+    // }
+    // public void AddFollower(Follower data)
+    // {
+    //     followers.Add(data);
+    // }
+    // private void IsDead(int index)
+    // {
+    //     var character = followers[index].GetComponent<PlayerController>().playerData;
+    //     if (character.isDead)
+    //     {
+    //         return;
+    //     }
+    // }
+    // public int IsAvailable()
+    // {
+    //     for (int i = 0; i < followers.Count; i++)
+    //     {
+    //         var controller = followers[i].GetComponent<PlayerController>().playerData;
+
+    //         if (!controller.isDead)
+    //         {
+    //             return i;
+    //         }
+    //         else
+    //         {
+    //             continue;
+    //         }
+    //     }
+    //     return -1;
+    // }
+    // public void SetTarget()
+    // {
+    //     currentFollowerIndex = -1;
+    //     globalTargetPlayer = null;
+    //     switchUser?.Invoke();
+    // }
 }
