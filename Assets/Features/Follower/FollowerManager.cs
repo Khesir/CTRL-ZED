@@ -34,4 +34,7 @@ public class FollowerManager : MonoBehaviour
     }
 
     public Transform GetCurrentTarget() => service.GetCurrentTarget();
+    public void ResetTarget() => service.ResetTarget();
+    public int GetAvailableFollower() => service.GetAvailableFollower();
+    public void SwitchTo(int newIndex) => service.SwitchTo(newIndex);
 }

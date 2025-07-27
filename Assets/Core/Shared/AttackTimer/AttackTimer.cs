@@ -27,7 +27,7 @@ public class AttackTimer : MonoBehaviour
             if (playerInstance.IsDead())
             {
                 Debug.Log("Game Over");
-                GameplayManager.Instance.SetTarget();
+                GameplayManager.Instance.followerManager.ResetTarget();
                 GameplayManager.Instance.gameplayUI.Complete("os", false);
 
             }

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
     public CharacterBattleState playerData;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float immunityTimer;
 
     // Update is called once per frame
-    void Start()
+    public void Intialize()
     {
         immunityDuration = 1f;
     }
@@ -104,14 +105,14 @@ public class PlayerController : MonoBehaviour
                 follower.enabled = false;
             }
 
-            var index = GameplayManager.Instance.IsAvailable();
+            var index = GameplayManager.Instance.followerManager.GetAvailableFollower();
             if (index != -1)
             {
-                GameplayManager.Instance.SwitchControlledFollower(index);
+                GameplayManager.Instance.followerManager.SwitchTo(index);
             }
             else
             {
-                GameplayManager.Instance.SetTarget();
+                GameplayManager.Instance.followerManager.ResetTarget();
                 var spawner = GameplayManager.Instance.spawner;
                 var team = GameManager.Instance.TeamManager.GetActiveTeam();
                 var loots = spawner.waves[spawner.waveNumber].waveRewards;

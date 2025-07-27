@@ -24,4 +24,12 @@ public class PlayerData
     public int usableDrives = 50;
     // Economy
     public int coins = 50000;
+
+    // Movement
+    public float moveSpeed = 5f;
+    // Dash
+    public float dashCooldown = 1f;
+    public float dashDuration = 0.2f;
+    public float dashSpeed = 10f;
+
 }

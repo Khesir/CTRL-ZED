@@ -70,4 +70,10 @@ public class FollowerService
     {
         return globalTargetPlayer;
     }
+    public void ResetTarget()
+    {
+        currentFollowerIndex = -1;
+        globalTargetPlayer = null;
+        OnFollowerSwitch?.Invoke();
+    }
 }
