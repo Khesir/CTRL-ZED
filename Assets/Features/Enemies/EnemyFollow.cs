@@ -27,11 +27,11 @@ public class EnemyFollow : MonoBehaviour
 
     private void Start()
     {
-        GameplayManager.Instance.switchUser += Refresh;
+        GameplayManager.Instance.followerManager.OnSwitch += Refresh;
     }
     private void Refresh()
     {
-        target = GameplayManager.Instance.globalTargetPlayer;
+        target = GameplayManager.Instance.followerManager.GetCurrentTarget();
     }
 
     private void Update()

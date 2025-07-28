@@ -6,23 +6,19 @@ public class PlayerGameplayService : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
     [SerializeField] private Rigidbody2D rb;
-
-    // Services    
     private IInputService inputService;
     private PlayerMovement playerMovement;
     private PlayerDash playerDash;
-
-
     public void Initialize()
     {
-        inputService = new InputService(); // Or injected
+        rb = GetComponent<Rigidbody2D>();
+        inputService = new InputService(); // Replace with injected or test service if needed
 
         playerMovement = GetComponent<PlayerMovement>();
         playerMovement.Initialize(rb, playerData.moveSpeed);
 
         playerDash = GetComponent<PlayerDash>();
         playerDash.Initialize(playerData, rb);
-        // playerDash.Initialize(playerData.DashConfig);
     }
 
     void Update()
@@ -33,7 +29,4 @@ public class PlayerGameplayService : MonoBehaviour
         playerMovement.SetInput(moveInput);
         playerDash.HandleDashInput(dashPressed, moveInput);
     }
-    // public void FixedUpdate()
-    // {
-    // }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -9,12 +10,14 @@ public class FollowerManager : MonoBehaviour
     public GameplayUIController gameplayUI;
 
     private FollowerService service = new();
-
+    public event Action OnSwitch;
     public void Initialize(List<Follower> followers)
     {
         service.Initialize(virtualCamera, gameplayUI);
         service.SetFollowers(followers);
         service.SwitchTo(0);
+        // Subscribe event
+        service.OnFollowerSwitch += () => OnSwitch.Invoke();
     }
 
     void Update()
@@ -23,7 +26,7 @@ public class FollowerManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                service.SwitchTo(i);
+                SwitchTo(i);
             }
         }
     }
@@ -36,5 +39,7 @@ public class FollowerManager : MonoBehaviour
     public Transform GetCurrentTarget() => service.GetCurrentTarget();
     public void ResetTarget() => service.ResetTarget();
     public int GetAvailableFollower() => service.GetAvailableFollower();
+
     public void SwitchTo(int newIndex) => service.SwitchTo(newIndex);
+
 }

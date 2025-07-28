@@ -12,18 +12,19 @@ public class GameplayManager : MonoBehaviour
 
     public GameManager gameManager;
     public static GameplayManager Instance { get; private set; }
-    [Header("Follower System")]
-    public GameObject followerPrefab;
-    public Transform Spawnpoint;
-    [SerializeField] public List<Follower> followers = new List<Follower>();
-    [SerializeField] private int currentFollowerIndex = 0;
-    public Transform globalTargetPlayer;
-    public CinemachineVirtualCamera virtualCamera;
-    public event Action switchUser;
+    // [Header("Follower System")]
+    // public GameObject followerPrefab;
+    // public Transform Spawnpoint;
+    // public List<Follower> followers = new List<Follower>();
+    // [SerializeField] private int currentFollowerIndex = 0;
+    // public Transform globalTargetPlayer;
+    // public CinemachineVirtualCamera virtualCamera;
+    // public event Action switchUser;
     public bool isGameActive;
     public bool _isInitialized = false;
     [Header("Gameplay References")]
     public FollowerManager followerManager;
+    public PlayerGameplayManager playerGameplayManager;
     public ParallaxBackground parallaxBackground;
     public FollowerSpawn spawn;
     public GameplayUIController gameplayUI;
@@ -46,98 +47,37 @@ public class GameplayManager : MonoBehaviour
     {
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isGenerated);
         await Initialize();
+        await Setup();
     }
     public async UniTask Initialize()
     {
         if (_isInitialized) return;
 
+        // Check all Managers;
+
+        // Initialize data level
         await parallaxBackground.Initialize();
         squadLevelManager.Setup(SquadMaxLevel);
-        // Set Initial game state
-        await Setup();
-        isGameActive = false;
-
         Debug.Log("[GameplayManager] Gameplay Manager Initialized");
         _isInitialized = true;
         await UniTask.CompletedTask;
     }
-    // public async UniTask Setup()
-    // {
-    //     gameManager = GameManager.Instance;
-    //     if (followers.Count == 0)
-    //     {
-    //         List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
-    //         List<CharacterService> members = team[0].GetMembers();
-    //         var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
-    //         spawn.Setup(battleStates);
-    //     }
-    //     SwitchControlledFollower(currentFollowerIndex);
-    //     await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
-    //     parallaxBackground.SetupParallaxLayerMaterial(gameManager.LevelManager.activeLevel.background);
-    //     await UniTask.CompletedTask;
-    // }
+
     public async UniTask Setup()
     {
-        // Get active team
         List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
         List<CharacterService> members = team[0].GetMembers();
         var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
 
-        spawn.Setup(battleStates); // Instantiates follower GameObjects
+        spawn.Setup(battleStates); // This handles spawns the GameObject with everything attach including follower system
 
-        await UniTask.Delay(100); // Wait for them to be added via AddFollower()
-
-        followerManager.Initialize(followers); // Pass current followers
+        // Wait for one frame to make sure followers are instantiated
+        await UniTask.NextFrame();
+        playerGameplayManager.Initialize(spawn.SpawnedFollowers);
         await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
+        isGameActive = false;
     }
 
-    public void AddFollower(Follower f)
-    {
-        followers.Add(f);
-        followerManager.AddFollower(f);
-    }
-    // void Update()
-    // {
-    //     for (int i = 0; i < followers.Count; i++)
-    //     {
-    //         if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-    //         {
-    //             if (i != currentFollowerIndex)
-    //             {
-    //                 IsDead(i);
-    //                 SwitchControlledFollower(i);
-    //             }
-    //         }
-    //     }
-    // }
-    // public void SwitchControlledFollower(int newIndex)
-    // {
-    //     if (newIndex >= 0 && newIndex < followers.Count)
-    //     {
-
-    //         var newLeader = followers[newIndex];
-    //         currentFollowerIndex = newIndex;
-    //         globalTargetPlayer = newLeader.transform;
-    //         virtualCamera.Follow = newLeader.transform;
-
-    //         // Handles UI
-    //         var characterService = newLeader.GetComponent<PlayerController>().playerData;
-    //         Instance.gameplayUI.characterListUI.hotbar1.GetComponent<CharacterDetails>().Initialize(characterService);
-    //         for (int i = 0; i < followers.Count; i++)
-    //         {
-    //             if (i == newIndex)
-    //             {
-    //                 followers[i].SetTarget();
-    //             }
-    //             else
-    //             {
-    //                 followers[i].Refresh();
-    //             }
-    //         }
-    //         switchUser?.Invoke();
-    //         Debug.Log($"Now controlling follower {currentFollowerIndex + 1}");
-    //     }
-    // }
     // public void AddFollower(Follower data)
     // {
     //     followers.Add(data);

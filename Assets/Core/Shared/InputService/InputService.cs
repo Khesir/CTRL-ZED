@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class InputService : MonoBehaviour, IInputService
@@ -33,5 +34,9 @@ public class InputService : MonoBehaviour, IInputService
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    public async UniTask Initialize()
+    {
+        await UniTask.CompletedTask;
     }
 }

@@ -8,6 +8,7 @@ public class FollowerSpawn : MonoBehaviour
     public Transform spawnArea;
     public GameObject followerPrefab;
     public float spawnRadius = 5f;
+    public List<GameObject> SpawnedFollowers { get; private set; } = new();
 
     public void Setup(List<CharacterBattleState> characterServices)
     {
@@ -22,12 +23,13 @@ public class FollowerSpawn : MonoBehaviour
 
             var go = Instantiate(followerPrefab, spawnPosition, transform.rotation);
             var follower = go.GetComponent<Follower>();
-            var playerController = go.GetComponent<PlayerController>();
             var img = go.GetComponent<SpriteRenderer>();
-            img.sprite = characterService.characterService.GetInstance().ship;
-            follower.characterData = characterService.characterService;
-            playerController.playerData = characterService;
-            GameplayManager.Instance.AddFollower(follower);
+
+            img.sprite = characterService.data.GetInstance().ship;
+            follower.characterData = characterService.data;
+
+            GameplayManager.Instance.followerManager.AddFollower(follower);
+            SpawnedFollowers.Add(go);
         }
     }
 

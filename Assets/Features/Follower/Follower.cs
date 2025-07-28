@@ -49,7 +49,7 @@ public class Follower : MonoBehaviour
             isControlledPlayer = false;
             controller.enabled = false;
         }
-        var globalTarget = GameplayManager.Instance.globalTargetPlayer;
+        var globalTarget = GameplayManager.Instance.followerManager.GetCurrentTarget();
         target = globalTarget;
         targetRb = globalTarget.GetComponent<Rigidbody2D>();
     }

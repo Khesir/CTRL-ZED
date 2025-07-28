@@ -12,16 +12,19 @@ public class GameInitiator : MonoBehaviour
     [Header("Bindable Objects")]
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GameManager gameManager;
-
+    [SerializeField] private InputService inputService;
     [Header("Environment Setup")]
     [SerializeField] private GameState initialState = GameState.Initial;
-    [SerializeField] private bool isDevelopment = true;
     [Header("Flags")]
-    [SerializeField] public bool isGenerated = false;
-    private GameStateManager _gameStateManager;
-    private GameManager _gameManager;
+    [SerializeField] private bool isDevelopment = true;
+    [SerializeField] public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
+
     [Header("Gameplay Settings - Dev Settings")]
     [SerializeField] private LevelData currentLevel;
+    ////////////////////////////////////////////////////
+    private GameStateManager _gameStateManager;
+    private GameManager _gameManager;
+    private InputService _inputService;
     private void Awake()
     {
         // Singleton pattern
@@ -73,6 +76,18 @@ public class GameInitiator : MonoBehaviour
                 _gameManager = Instantiate(gameManager);
             }
         }
+        if (_inputService == null)
+        {
+            _inputService = FindObjectOfType<InputService>();
+            if (_inputService == null)
+            {
+                if (inputService == null)
+                {
+                    throw new System.Exception("InputService reference is missing in GameInitiator. Please assign it in the inspector.");
+                }
+                _inputService = Instantiate(inputService);
+            }
+        }
         await UniTask.CompletedTask;
     }
     private async UniTask Initialize()
@@ -80,6 +95,7 @@ public class GameInitiator : MonoBehaviour
         // Initialize global Systems
         await _gameManager.Initialize();
         await _gameStateManager.Intialize();
+        await _inputService.Initialize();
     }
     private async UniTask PrepareGame()
     {
@@ -139,5 +155,5 @@ public class GameInitiator : MonoBehaviour
     }
     public GameManager GetGameManager() => _gameManager;
     public GameStateManager GetGameStateManager() => _gameStateManager;
-
+    public InputService GetInputService() => _inputService;
 }

@@ -28,7 +28,7 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
-        if (startWave && GameplayManager.Instance.globalTargetPlayer != null)
+        if (startWave && GameplayManager.Instance.followerManager.GetCurrentTarget() != null)
         {
             GameplayManager.Instance.gameplayUI.timer.TriggerTimer(); // Attack Timer
             // Progress to next wave when enough kills are made
@@ -81,7 +81,7 @@ public class EnemySpawner : MonoBehaviour
         var randomEnemyPrefab = wave.enemyPrefabs[Random.Range(0, wave.enemyPrefabs.Count)];
         var go = Instantiate(randomEnemyPrefab, RandomSpawnPoint(), transform.rotation);
         var enemyFollowTarget = go.GetComponent<EnemyFollow>();
-        enemyFollowTarget.target = GameplayManager.Instance.globalTargetPlayer;
+        enemyFollowTarget.target = GameplayManager.Instance.followerManager.GetCurrentTarget();
     }
 
     private Vector2 RandomSpawnPoint()

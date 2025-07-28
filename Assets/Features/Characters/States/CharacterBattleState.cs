@@ -5,16 +5,16 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterBattleState
 {
-    public CharacterService characterService;
+    public CharacterService data;
     public float currentHealth;
     public CharacterBattleState(CharacterService service)
     {
-        characterService = service;
+        data = service;
     }
     public bool isDead => currentHealth <= 0;
     public void TakeDamage(float dmg)
     {
         currentHealth -= dmg;
-        characterService.InvokeOnDamage();
+        data.InvokeOnDamage();
     }
 }

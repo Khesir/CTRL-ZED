@@ -14,19 +14,19 @@ public class CharacterDetails : MonoBehaviour
     public void Initialize(CharacterBattleState data)
     {
         instance = data;
-        image.sprite = data.characterService.GetInstance().ship;
-        characterName.text = data.characterService.GetName();
-        level.text = "LVL " + data.characterService.GetLevel().ToString();
+        image.sprite = data.data.GetInstance().ship;
+        characterName.text = data.data.GetName();
+        level.text = "LVL " + data.data.GetLevel().ToString();
         UpdateHealth();
         // Register CharacterBattleState event -- for damage updates, etc.
-        data.characterService.onDamage += UpdateHealth;
+        data.data.onDamage += UpdateHealth;
     }
 
     private void UpdateHealth()
     {
-        healthSlider.maxValue = instance.characterService.GetMaxHealth();
+        healthSlider.maxValue = instance.data.GetMaxHealth();
         healthSlider.value = instance.currentHealth;
-        HealthLevel.text = instance.currentHealth + " / " + instance.characterService.GetMaxHealth();
+        HealthLevel.text = instance.currentHealth + " / " + instance.data.GetMaxHealth();
     }
 
 }
