@@ -1,26 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
 
 public class FollowerManager : MonoBehaviour
 {
-    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera focusCamera;
     public GameplayUIController gameplayUI;
+    private Transform globalTargetPlayer;
+    [SerializeField] private FollowerSpawn followerSpawn;
 
-    private FollowerService service = new();
+    [SerializeField] private FollowerService service = new();
     public event Action OnSwitch;
-    public void Initialize(List<Follower> followers)
+    public List<GameObject> Initialize(List<CharacterBattleState> data)
     {
-        service.Initialize(virtualCamera, gameplayUI);
-        service.SetFollowers(followers);
-        service.SwitchTo(0);
+        List<Follower> followers = followerSpawn.SpawnedFollowers(data);
+        List<GameObject> followerObjects = followers.Select(f => f.gameObject).ToList();
+
+        service.Initialize(followers);
         // Subscribe event
-        service.OnFollowerSwitch += () => OnSwitch.Invoke();
+        Debug.Log("[FollowerManager] Successfully Initilized all followers");
+        return followerObjects;
     }
 
-    void Update()
+    private void Update()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -30,16 +35,22 @@ public class FollowerManager : MonoBehaviour
             }
         }
     }
-
+    public void SwitchTo(int index)
+    {
+        service.SwitchTo(index);
+        var newFollower = service.GetCurrentFollower();
+        focusCamera.Follow = newFollower.transform;
+        globalTargetPlayer = newFollower.transform;
+        Debug.Log($"[FollowerManager] Switching to {newFollower.characterData.data.GetID()}");
+    }
     public void AddFollower(Follower follower)
     {
         service.AddFollower(follower);
     }
-
-    public Transform GetCurrentTarget() => service.GetCurrentTarget();
     public void ResetTarget() => service.ResetTarget();
     public int GetAvailableFollower() => service.GetAvailableFollower();
-
-    public void SwitchTo(int newIndex) => service.SwitchTo(newIndex);
-
+    public Transform GetCurrentTarget()
+    {
+        return globalTargetPlayer;
+    }
 }

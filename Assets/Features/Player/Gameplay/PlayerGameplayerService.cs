@@ -9,24 +9,37 @@ public class PlayerGameplayService : MonoBehaviour
     private IInputService inputService;
     private PlayerMovement playerMovement;
     private PlayerDash playerDash;
-    public void Initialize()
+
+    [SerializeField] private bool inputEnabled = false;
+
+    public void Initialize(IInputService inputService)
     {
+        this.inputService = inputService;
+
         rb = GetComponent<Rigidbody2D>();
-        inputService = new InputService(); // Replace with injected or test service if needed
 
         playerMovement = GetComponent<PlayerMovement>();
         playerMovement.Initialize(rb, playerData.moveSpeed);
 
         playerDash = GetComponent<PlayerDash>();
         playerDash.Initialize(playerData, rb);
+        Debug.Log("[PlayerGameplayService] Succesfully initialized");
     }
-
+    public void SetInputEnabled(bool enabled)
+    {
+        inputEnabled = enabled;
+    }
     void Update()
     {
+        if (!GameplayManager.Instance.isGameActive || !inputEnabled || inputService == null) return;
+
         Vector2 moveInput = inputService.MoveInput;
         bool dashPressed = inputService.DashPressed;
+        Vector2 mousePos = inputService.GetMouseWorldPosition();
 
         playerMovement.SetInput(moveInput);
+        playerMovement.SetAimTarget(mousePos);
         playerDash.HandleDashInput(dashPressed, moveInput);
     }
+
 }

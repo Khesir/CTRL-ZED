@@ -3,19 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-
+[Serializable]
 public class FollowerService
 {
-    private readonly List<Follower> followers = new();
-    private int currentFollowerIndex = 0;
-    private CinemachineVirtualCamera camera;
-    private Transform globalTargetPlayer;
-    private GameplayUIController ui;
+    [Header("Followers")]
+    [SerializeField] private List<Follower> followers = new();
+    private int currentIndex = 0;
+
     public event Action OnFollowerSwitch;
-    public void Initialize(CinemachineVirtualCamera cam, GameplayUIController uiController)
+    public void Initialize(List<Follower> followers)
     {
-        camera = cam;
-        ui = uiController;
+        SetFollowers(followers);
     }
 
     public void AddFollower(Follower follower)
@@ -25,30 +23,40 @@ public class FollowerService
 
     public void SetFollowers(List<Follower> newFollowers)
     {
-        followers.Clear();
-        followers.AddRange(newFollowers);
+        followers = newFollowers;
+        foreach (var f in followers)
+        {
+            var x = f.gameObject.GetComponent<PlayerGameplayService>();
+            x.SetInputEnabled(false);
+        }
     }
+
     public void SwitchTo(int index)
     {
-        if (index < 0 || index >= followers.Count) return;
-        if (IsDead(index)) return;
-
-        currentFollowerIndex = index;
-        var target = followers[index].transform;
-        globalTargetPlayer = target;
-        camera.Follow = target;
-
-        var characterService = followers[index].GetComponent<PlayerController>().playerData;
-        ui.characterListUI.hotbar1.GetComponent<CharacterDetails>().Initialize(characterService);
-
-        for (int i = 0; i < followers.Count; i++)
+        if (index < 0 || index >= followers.Count)
         {
-            if (i == index)
-                followers[i].SetTarget();
-            else
-                followers[i].Refresh();
+            Debug.LogWarning("[FollowerService] Index out of range");
+            return;
         }
 
+        if (IsDead(index))
+        {
+            Debug.LogWarning("[FollowerService] Target follower is dead");
+            return;
+        }
+        // Update Target
+        for (int i = 0; i < followers.Count; i++)
+        {
+            bool isActive = i == index;
+            // followers[i].isControlledPlayer = isActive;
+            followers[i].SetTarget(!isActive ? followers[index].transform : null);
+
+            var pgs = followers[i].GetComponent<PlayerGameplayService>();
+            if (pgs != null)
+                pgs.SetInputEnabled(isActive);
+        }
+
+        currentIndex = index;
         OnFollowerSwitch?.Invoke();
         Debug.Log($"[FollowerService] Switched to follower {index + 1}");
     }
@@ -60,20 +68,16 @@ public class FollowerService
         }
         return -1;
     }
+    public Follower GetCurrentFollower() => followers[currentIndex];
 
     public bool IsDead(int index)
     {
-        return followers[index].GetComponent<PlayerController>().playerData.isDead;
+        return followers[index].GetComponent<Follower>().characterData.isDead;
     }
 
-    public Transform GetCurrentTarget()
-    {
-        return globalTargetPlayer;
-    }
     public void ResetTarget()
     {
-        currentFollowerIndex = -1;
-        globalTargetPlayer = null;
+        currentIndex = -1;
         OnFollowerSwitch?.Invoke();
     }
 }

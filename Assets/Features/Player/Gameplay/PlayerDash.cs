@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerDash : MonoBehaviour
 {
     private PlayerData playerData;
-    private float lastDashTime;
-    private float dashTimeRemaining;
-    private bool isDashing;
+    [SerializeField] private float lastDashTime;
+    [SerializeField] private float dashTimeRemaining;
+    [SerializeField] private bool isDashing;
     private Rigidbody2D rb;
     private Vector2 dashDirection;
 

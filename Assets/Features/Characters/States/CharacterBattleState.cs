@@ -10,6 +10,7 @@ public class CharacterBattleState
     public CharacterBattleState(CharacterService service)
     {
         data = service;
+        currentHealth = data.GetMaxHealth();
     }
     public bool isDead => currentHealth <= 0;
     public void TakeDamage(float dmg)

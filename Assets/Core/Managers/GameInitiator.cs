@@ -16,9 +16,9 @@ public class GameInitiator : MonoBehaviour
     [Header("Environment Setup")]
     [SerializeField] private GameState initialState = GameState.Initial;
     [Header("Flags")]
-    [SerializeField] private bool isDevelopment = true;
-    [SerializeField] public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
-
+    public bool isDevelopment = true;
+    public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
+    public bool isFinished = false;
     [Header("Gameplay Settings - Dev Settings")]
     [SerializeField] private LevelData currentLevel;
     ////////////////////////////////////////////////////
@@ -108,6 +108,8 @@ public class GameInitiator : MonoBehaviour
         await GameManager.Instance.LevelManager.Initialize();
 
         Debug.Log("[GameInitiator] Game preparation (player data) complete.");
+        GenerateTestData();
+
         // Game Preparation
         if (isDevelopment)
         {
@@ -116,7 +118,6 @@ public class GameInitiator : MonoBehaviour
             var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
             await _gameStateManager.SetState(devState);
-            GenerateTestData();
         }
         else
         {
@@ -124,6 +125,7 @@ public class GameInitiator : MonoBehaviour
         }
 
         Debug.Log("[GameInitiator] Game preparation (player State) complete.");
+        isFinished = true;
         await UniTask.CompletedTask;
     }
     private void GenerateTestData()

@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 6872028420862429024}
   - component: {fileID: 4388295539255147988}
   - component: {fileID: 7955985156239361765}
+  - component: {fileID: 2083579790593172461}
+  - component: {fileID: 4244078852386870159}
+  - component: {fileID: 2446434157766536587}
   m_Layer: 7
   m_Name: Follower
   m_TagString: Player
@@ -101,20 +104,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b9e4b8c4af8424482541811e7b10dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   rb: {fileID: 6872028420862429024}
-  normalFollowDistance: 2
-  maxWanderRadius: 3
-  wanderSpeed: 1.5
-  changeDirectionInterval: 2
-  tooFarDistance: 6
-  returnSpeed: 6
-  m_RotationSpeed: 8
-  maxIdleTime: 1
-  isControlledPlayer: 0
-  ignoreLayer:
+  player: {fileID: 0}
+  followDistance: 3
+  moveSpeed: 4
+  attackRange: 5
+  attackCooldown: 2
+  enemyLayer:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 256
 --- !u!50 &6872028420862429024
 Rigidbody2D:
   serializedVersion: 4
@@ -197,6 +195,14 @@ MonoBehaviour:
     level: 1
     currentExp: 0
     currentHealth: -1
+    resources:
+      food: 1000
+      technology: 1000
+      energy: 1000
+      intelligence: 1000
+      coins: 0
+      bioChips: 0
+      maxBioChipCharges: 5
     chargedDrives: 0
     usableDrives: 50
     coins: 50000
@@ -205,6 +211,49 @@ MonoBehaviour:
     dashDuration: 0.2
     dashSpeed: 10
   rb: {fileID: 0}
+  inputEnabled: 0
+--- !u!114 &2083579790593172461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556851498346534052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181f63bb34e8a4b439cee91e272a65ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4244078852386870159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556851498346534052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ef8f88563572bf4f89beaeaf518ac0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastDashTime: 0
+  dashTimeRemaining: 0
+  isDashing: 0
+--- !u!114 &2446434157766536587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556851498346534052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 132d473fc240e3b4e85442d71952a4b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImmune: 0
+  immunityDuration: 0
+  immunityTimer: 0
 --- !u!1 &2208862743814490002
 GameObject:
   m_ObjectHideFlags: 0

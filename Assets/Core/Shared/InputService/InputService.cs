@@ -7,20 +7,30 @@ public class InputService : MonoBehaviour, IInputService
 {
     public static InputService Instance { get; private set; }
 
-    public Vector2 MoveInput => new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+    // Main directional input
+    public Vector2 MoveInput => new Vector2(
+        Input.GetAxisRaw("Horizontal"),
+        Input.GetAxisRaw("Vertical")
+    ).normalized;
 
-    public bool DashPressed => Input.GetKeyDown(KeyCode.Space);
-
-    public bool IsFirePressed() => Input.GetMouseButton(0);
+    // Dash / Fire Inputs
+    public bool DashPressed => Input.GetKeyDown(KeyCode.Space); // Or LeftShift?
     public bool IsDashPressed() => Input.GetKeyDown(KeyCode.LeftShift);
-    public Vector2 GetMouseWorldPosition() => Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    public bool IsFirePressed() => Input.GetMouseButton(0);
 
+    // Mouse World Position
+    public Vector2 GetMouseWorldPosition()
+    {
+        if (Camera.main == null) return Vector2.zero;
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
     public bool SkillPressed(int slot)
     {
         return slot switch
         {
             0 => Input.GetKeyDown(KeyCode.Q),
             1 => Input.GetKeyDown(KeyCode.E),
+            2 => Input.GetKeyDown(KeyCode.R), // optional third skill
             _ => false,
         };
     }

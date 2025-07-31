@@ -10,18 +10,13 @@ using UnityEngine.AI;
 public class GameplayManager : MonoBehaviour
 {
 
-    public GameManager gameManager;
     public static GameplayManager Instance { get; private set; }
-    // [Header("Follower System")]
-    // public GameObject followerPrefab;
-    // public Transform Spawnpoint;
-    // public List<Follower> followers = new List<Follower>();
-    // [SerializeField] private int currentFollowerIndex = 0;
-    // public Transform globalTargetPlayer;
-    // public CinemachineVirtualCamera virtualCamera;
-    // public event Action switchUser;
     public bool isGameActive;
     public bool _isInitialized = false;
+    [Header("Core References")]
+    public GameManager gameManager;
+    [SerializeField] private IInputService inputService;
+
     [Header("Gameplay References")]
     public FollowerManager followerManager;
     public PlayerGameplayManager playerGameplayManager;
@@ -31,7 +26,7 @@ public class GameplayManager : MonoBehaviour
     public EnemySpawner spawner;
     public SquadLevelManager squadLevelManager;
     public DamageNumberController damageNumberController;
-    public int SquadMaxLevel;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,7 +40,7 @@ public class GameplayManager : MonoBehaviour
     }
     private async void Start()
     {
-        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isGenerated);
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
         await Initialize();
         await Setup();
     }
@@ -53,11 +48,12 @@ public class GameplayManager : MonoBehaviour
     {
         if (_isInitialized) return;
 
-        // Check all Managers;
-
+        // Check all core Managers;
+        inputService = GameInitiator.Instance.GetInputService();
+        gameManager = GameInitiator.Instance.GetGameManager();
         // Initialize data level
         await parallaxBackground.Initialize();
-        squadLevelManager.Setup(SquadMaxLevel);
+        squadLevelManager.Setup(100);
         Debug.Log("[GameplayManager] Gameplay Manager Initialized");
         _isInitialized = true;
         await UniTask.CompletedTask;
@@ -67,15 +63,18 @@ public class GameplayManager : MonoBehaviour
     {
         List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
         List<CharacterService> members = team[0].GetMembers();
-        var battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
+        List<CharacterBattleState> battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
 
-        spawn.Setup(battleStates); // This handles spawns the GameObject with everything attach including follower system
+        List<GameObject> GO = followerManager.Initialize(battleStates);
+        playerGameplayManager.Initialize(GO, inputService);
 
         // Wait for one frame to make sure followers are instantiated
         await UniTask.NextFrame();
-        playerGameplayManager.Initialize(spawn.SpawnedFollowers);
         await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
-        isGameActive = false;
+        followerManager.SwitchTo(0);
+        isGameActive = true;
+        Debug.Log("[GameplayManager] Gameplay Manager is now Active");
+
     }
 
     // public void AddFollower(Follower data)
