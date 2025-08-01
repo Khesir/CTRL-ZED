@@ -68,11 +68,11 @@ public class FollowerService
         }
         return -1;
     }
-    public Follower GetCurrentFollower() => followers[currentIndex];
+    public PlayerGameplayService GetCurrentFollower() => followers[currentIndex].GetComponent<PlayerGameplayService>();
 
     public bool IsDead(int index)
     {
-        return followers[index].GetComponent<Follower>().characterData.isDead;
+        return followers[index].GetComponent<PlayerGameplayService>().IsDead();
     }
 
     public void ResetTarget()

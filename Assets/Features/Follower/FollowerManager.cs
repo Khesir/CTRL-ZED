@@ -41,7 +41,7 @@ public class FollowerManager : MonoBehaviour
         var newFollower = service.GetCurrentFollower();
         focusCamera.Follow = newFollower.transform;
         globalTargetPlayer = newFollower.transform;
-        Debug.Log($"[FollowerManager] Switching to {newFollower.characterData.data.GetID()}");
+        Debug.Log($"[FollowerManager] Switching to {newFollower.GetCharacterID()}");
     }
     public void AddFollower(Follower follower)
     {

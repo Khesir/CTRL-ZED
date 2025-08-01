@@ -18,7 +18,8 @@ public class PlayerGameplayManager : MonoBehaviour
         for (int i = 0; i < playerGOs.Count; i++)
         {
             var service = playerGOs[i].GetComponent<PlayerGameplayService>();
-            service.Initialize(inputService);
+            service.SetInputService(inputService);
+            service.Initialize();
             playerService.Add(service);
         }
         Debug.Log($"[PlayerGameplayManager] Successfully Initialized with {playerGOs.Count + 1} objects");

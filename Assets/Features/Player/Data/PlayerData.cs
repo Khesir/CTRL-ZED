@@ -29,13 +29,4 @@ public class PlayerData
     // Economy
     [Header("Economy")]
     public int coins = 50000;
-
-    // Movement
-    [Header("Movement")]
-    public float moveSpeed = 5f;
-    [Header("Dash Controls")]
-    public float dashCooldown = 1f;
-    public float dashDuration = 0.2f;
-    public float dashSpeed = 10f;
-
 }

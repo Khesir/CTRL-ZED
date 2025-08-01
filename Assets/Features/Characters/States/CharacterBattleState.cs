@@ -13,9 +13,10 @@ public class CharacterBattleState
         currentHealth = data.GetMaxHealth();
     }
     public bool isDead => currentHealth <= 0;
-    public void TakeDamage(float dmg)
+    public bool TakeDamage(float dmg)
     {
-        currentHealth -= dmg;
+        currentHealth = Mathf.Max(currentHealth - dmg, 0f);
         data.InvokeOnDamage();
+        return isDead;
     }
 }

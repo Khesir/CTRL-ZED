@@ -13,7 +13,6 @@ public enum FollowerState
 public class Follower : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public CharacterBattleState characterData;
     [Header("References")]
     public Transform player;
 
@@ -40,11 +39,6 @@ public class Follower : MonoBehaviour
     }
 
 
-    public void Initialize(CharacterBattleState data)
-    {
-        characterData = data;
-
-    }
     void Update()
     {
         if (player == null) return;

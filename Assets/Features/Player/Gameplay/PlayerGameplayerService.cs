@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class PlayerGameplayService : MonoBehaviour
 {
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] private CharacterBattleState characterData;
     [SerializeField] private Rigidbody2D rb;
-    private IInputService inputService;
+    [SerializeField] private IInputService inputService;
     private PlayerMovement playerMovement;
     private PlayerDash playerDash;
-
+    private PlayerCombat playerCombat;
     [SerializeField] private bool inputEnabled = false;
 
-    public void Initialize(IInputService inputService)
+    // Setting Dependencies
+    public void SetCharacterData(CharacterBattleState data)
     {
-        this.inputService = inputService;
-
+        characterData = data;
+    }
+    public void SetInputService(IInputService data)
+    {
+        // We can now change input Service based on cene
+        inputService = data;
+    }
+    public void Initialize()
+    {
         rb = GetComponent<Rigidbody2D>();
-
+        var baseConfig = characterData.data.GetInstance();
         playerMovement = GetComponent<PlayerMovement>();
-        playerMovement.Initialize(rb, playerData.moveSpeed);
+        playerMovement.Initialize(rb, baseConfig.moveSpeed);
 
         playerDash = GetComponent<PlayerDash>();
-        playerDash.Initialize(playerData, rb);
+        playerDash.Initialize(characterData, rb);
+
+        WeaponConfig weapon = baseConfig.weapon;
+        playerCombat = GetComponent<PlayerCombat>();
+        playerCombat.Initialize(inputService, weapon, characterData);
+
         Debug.Log("[PlayerGameplayService] Succesfully initialized");
     }
     public void SetInputEnabled(bool enabled)
@@ -40,6 +53,9 @@ public class PlayerGameplayService : MonoBehaviour
         playerMovement.SetInput(moveInput);
         playerMovement.SetAimTarget(mousePos);
         playerDash.HandleDashInput(dashPressed, moveInput);
+        playerCombat.TickUpdate();
     }
-
+    public void TakeDamage(float val) => playerCombat.TakeDamage(val);
+    public bool IsDead() => characterData.isDead;
+    public string GetCharacterID() => characterData.data.GetID();
 }

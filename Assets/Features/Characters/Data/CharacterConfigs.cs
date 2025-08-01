@@ -16,6 +16,14 @@ public class CharacterConfig : ScriptableObject
     public int defense;
     public int dex;
     public int level;
+    // Movement
+    [Header("Movement")]
+    public float moveSpeed = 5f;
+    [Header("Dash Controls")]
+    public float dashCooldown = 1f;
+    public float dashDuration = 0.2f;
+    public float dashSpeed = 10f;
+
     [Header("Shop Info")]
     public int price;
     [Header("Deployment Cost")]
@@ -23,4 +31,7 @@ public class CharacterConfig : ScriptableObject
     public float technology;
     public float energy;
     public float intelligence;
+
+    [Header("Weapon")]
+    public WeaponConfig weapon;
 }

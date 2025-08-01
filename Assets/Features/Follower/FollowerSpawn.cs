@@ -46,7 +46,8 @@ public class FollowerSpawn : MonoBehaviour
             var follower = instance.GetComponent<Follower>();
             var img = instance.GetComponent<SpriteRenderer>();
             img.sprite = data.data.GetInstance().ship;
-            follower.Initialize(data);
+            // Injects character data to player service
+            instance.GetComponent<PlayerGameplayService>().SetCharacterData(data);
             followers.Add(follower);
         }
         Debug.Log($"[FollowerSpawn] Successfully Spawned over {followers.Count + 1} followers");

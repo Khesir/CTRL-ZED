@@ -2,20 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IWeapon
 {
-    public GameObject bulletPrefab;
-    public Transform firepoint;
-    public float fireForce = 20f;
-    public float nextFireTime = 0f;
-    public float fireRate = 5f;
+    [SerializeField] private Transform firepoint;
+    private GameObject bulletPrefab;
+    private float fireForce;
+    private float fireRate;
+    private float nextFireTime = 0f;
 
+    public void Initialize(WeaponConfig config)
+    {
+        bulletPrefab = config.bulletPrefab;
+        fireForce = config.fireForce;
+        fireRate = config.fireRate;
+        // You could also store baseDamage here if needed
+    }
     public void Fire()
     {
-        if (Time.time >= nextFireTime)
+        if (Time.time >= nextFireTime && bulletPrefab != null && firepoint != null)
         {
             GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
-            bullet.GetComponent<Rigidbody2D>().AddForce(firepoint.up * fireForce, ForceMode2D.Impulse);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.AddForce(firepoint.up * fireForce, ForceMode2D.Impulse);
+            }
             bullet.transform.up = firepoint.up;
             nextFireTime = Time.time + (1f / fireRate);
         }

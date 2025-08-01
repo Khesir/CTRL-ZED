@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
-    private PlayerData playerData;
+    [SerializeField] private CharacterBattleState characterData;
+
     [SerializeField] private float lastDashTime;
     [SerializeField] private float dashTimeRemaining;
     [SerializeField] private bool isDashing;
@@ -13,9 +14,9 @@ public class PlayerDash : MonoBehaviour
 
     public bool IsDashing => isDashing;
 
-    public void Initialize(PlayerData playerData, Rigidbody2D rb)
+    public void Initialize(CharacterBattleState characterData, Rigidbody2D rb)
     {
-        this.playerData = playerData;
+        this.characterData = characterData;
         this.rb = rb;
     }
 
@@ -31,7 +32,7 @@ public class PlayerDash : MonoBehaviour
             return;
         }
 
-        if (dashPressed && Time.time >= lastDashTime + playerData.dashCooldown)
+        if (dashPressed && Time.time >= lastDashTime + characterData.data.GetInstance().dashCooldown)
         {
             StartDash(moveDirection);
         }
@@ -40,13 +41,13 @@ public class PlayerDash : MonoBehaviour
     {
         if (isDashing && rb != null)
         {
-            rb.velocity = dashDirection * playerData.dashSpeed;
+            rb.velocity = dashDirection * characterData.data.GetInstance().dashSpeed;
         }
     }
     private void StartDash(Vector2 direction)
     {
         lastDashTime = Time.time;
-        dashTimeRemaining = playerData.dashDuration;
+        dashTimeRemaining = characterData.data.GetInstance().dashDuration;
         isDashing = true;
         dashDirection = direction.normalized;
     }

@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-        var player = collision.gameObject.GetComponent<PlayerController>();
+        var player = collision.gameObject.GetComponent<PlayerGameplayService>();
         if (player != null && player.isActiveAndEnabled)
         {
             // Enemy Damage

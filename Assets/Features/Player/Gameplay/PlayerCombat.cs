@@ -4,32 +4,79 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    private readonly IInputService input;
-    private readonly IWeapon weapon;
+    private IInputService input;
+    private CharacterBattleState characterData;
     [Header("Player Properties")]
     [SerializeField] private bool isImmune;
     [SerializeField] private float immunityDuration;
     [SerializeField] private float immunityTimer;
+    [SerializeField] private WeaponHolder weaponHolder;
 
-    public PlayerCombat(IInputService input, IWeapon weapon)
+    public void Initialize(IInputService input, WeaponConfig weaponConfig, CharacterBattleState characterData)
     {
         this.input = input;
-        this.weapon = weapon;
+        this.characterData = characterData;
+        weaponHolder = GetComponentInChildren<WeaponHolder>();
+        weaponHolder.EquipWeapon(weaponConfig);
     }
 
-    public void HandleCombat()
+    public void TickUpdate()
     {
-        if (input.IsFirePressed())
+        HandleImmunity();
+        if (input != null && input.IsFirePressed())
         {
-            weapon.Fire();
+            weaponHolder.Fire();
         }
     }
-    public void TakeDamage(int rawDamage, GameObject source = null)
+    private void HandleImmunity()
     {
-        // int finalDamage = Mathf.Max(0, rawDamage - statService.GetDefense());
-        // healthService.ReduceHealth(finalDamage);
-        // effectService.PlayHitEffect();
+        if (!isImmune) return;
 
-        // Debug.Log($"Took {finalDamage} damage from {source?.name ?? "unknown"}");
+        immunityTimer -= Time.deltaTime;
+        if (immunityTimer <= 0f)
+        {
+            isImmune = false;
+        }
+    }
+    public void TakeDamage(float damage, GameObject source = null)
+    {
+        if (isImmune) return;
+        isImmune = true;
+        immunityTimer = immunityDuration;
+        bool died = characterData.TakeDamage(damage);
+        if (died)
+        {
+            HandleDeath();
+        }
+    }
+    private void HandleDeath()
+    {
+        gameObject.SetActive(false);
+
+        var follower = GetComponent<Follower>();
+        if (follower != null) follower.enabled = false;
+
+        var followerManager = GameplayManager.Instance.followerManager;
+        int index = followerManager.GetAvailableFollower();
+
+        if (index != -1)
+        {
+            followerManager.SwitchTo(index);
+        }
+        else
+        {
+            followerManager.ResetTarget();
+
+            var spawner = GameplayManager.Instance.spawner;
+            var team = GameManager.Instance.TeamManager.GetActiveTeam();
+            var loots = spawner.waves[spawner.waveNumber].waveRewards;
+
+            GameplayManager.Instance.gameplayUI.Complete(
+                type: "character",
+                complete: false,
+                team[0].GetTeamName(),
+                loots: loots
+            );
+        }
     }
 }

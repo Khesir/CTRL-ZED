@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IWeapon
 {
     void Fire();
+    void Initialize(WeaponConfig weaponConfig);
 }
