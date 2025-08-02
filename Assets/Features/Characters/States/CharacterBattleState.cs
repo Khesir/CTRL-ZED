@@ -19,4 +19,15 @@ public class CharacterBattleState
         data.InvokeOnDamage();
         return isDead;
     }
+    public float Heal(float amount)
+    {
+        float maxHealth = data.GetMaxHealth();
+        float previousHealth = currentHealth;
+
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        float actualHealed = currentHealth - previousHealth;
+
+        data.InvokeOnHeal();
+        return actualHealed;
+    }
 }

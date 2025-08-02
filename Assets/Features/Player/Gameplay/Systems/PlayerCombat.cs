@@ -11,13 +11,19 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float immunityDuration;
     [SerializeField] private float immunityTimer;
     [SerializeField] private WeaponHolder weaponHolder;
-
-    public void Initialize(IInputService input, WeaponConfig weaponConfig, CharacterBattleState characterData)
+    [SerializeField] private SkillHolder skillHolder;
+    public void Initialize(IInputService input, CharacterBattleState characterData)
     {
+        var baseConfig = characterData.data.GetInstance();
+
         this.input = input;
         this.characterData = characterData;
+
         weaponHolder = GetComponentInChildren<WeaponHolder>();
-        weaponHolder.EquipWeapon(weaponConfig);
+        weaponHolder.EquipWeapon(baseConfig.weapon);
+
+        skillHolder = GetComponentInChildren<SkillHolder>();
+        skillHolder.EquipSkills(baseConfig.skill1, baseConfig.skill2);
     }
 
     public void TickUpdate()
@@ -26,6 +32,17 @@ public class PlayerCombat : MonoBehaviour
         if (input != null && input.IsFirePressed())
         {
             weaponHolder.Fire();
+        }
+    }
+    public void HandleSkillInput()
+    {
+        // Currently support 2 skill
+        for (int i = 0; i < 2; i++)
+        {
+            if (input.SkillPressed(i))
+            {
+                skillHolder.UseSkill(i);
+            }
         }
     }
     private void HandleImmunity()

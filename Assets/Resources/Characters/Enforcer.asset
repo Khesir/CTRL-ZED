@@ -21,8 +21,13 @@ MonoBehaviour:
   defense: 4
   dex: 9
   level: 1
+  moveSpeed: 5
+  dashCooldown: 1
+  dashDuration: 0.2
+  dashSpeed: 10
   price: 1000
   food: 100
   technology: 100
   energy: 100
   intelligence: 100
+  weapon: {fileID: 11400000, guid: 867839c98a294e14fac9fb8713149842, type: 2}

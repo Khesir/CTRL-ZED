@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd0850922f4a3d84788da2e4c41cebc5, type: 3}
   m_Name: Weapon
   m_EditorClassIdentifier: 
-  weaponName: 
+  weaponName: Basic
   weaponIcon: {fileID: 0}
-  weaponPrefab: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  weaponPrefab: {fileID: 4933378538986614006, guid: 3d032fc411ebb6644ac02994697a7b9d, type: 3}
+  bulletPrefab: {fileID: 6866471133968512978, guid: 27d6ca8aa10b6724494476cf37779d31, type: 3}
   fireRate: 5
   fireForce: 20
   baseDamage: 1

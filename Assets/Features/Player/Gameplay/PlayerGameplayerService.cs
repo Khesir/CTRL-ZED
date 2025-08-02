@@ -19,11 +19,13 @@ public class PlayerGameplayService : MonoBehaviour
     }
     public void SetInputService(IInputService data)
     {
-        // We can now change input Service based on cene
+        // We can now change input Service based on scene
         inputService = data;
     }
     public void Initialize()
     {
+        // For now Its we'll pass the characterGameState rather than passing just the needed value.
+        // Just for convinience
         rb = GetComponent<Rigidbody2D>();
         var baseConfig = characterData.data.GetInstance();
         playerMovement = GetComponent<PlayerMovement>();
@@ -32,9 +34,9 @@ public class PlayerGameplayService : MonoBehaviour
         playerDash = GetComponent<PlayerDash>();
         playerDash.Initialize(characterData, rb);
 
-        WeaponConfig weapon = baseConfig.weapon;
         playerCombat = GetComponent<PlayerCombat>();
-        playerCombat.Initialize(inputService, weapon, characterData);
+        playerCombat.Initialize(inputService, characterData);
+
 
         Debug.Log("[PlayerGameplayService] Succesfully initialized");
     }
@@ -53,9 +55,12 @@ public class PlayerGameplayService : MonoBehaviour
         playerMovement.SetInput(moveInput);
         playerMovement.SetAimTarget(mousePos);
         playerDash.HandleDashInput(dashPressed, moveInput);
+
         playerCombat.TickUpdate();
+        playerCombat.HandleSkillInput();
     }
     public void TakeDamage(float val) => playerCombat.TakeDamage(val);
     public bool IsDead() => characterData.isDead;
     public string GetCharacterID() => characterData.data.GetID();
+    public CharacterBattleState GetCharacterState() => characterData;
 }

@@ -34,4 +34,8 @@ public class CharacterConfig : ScriptableObject
 
     [Header("Weapon")]
     public WeaponConfig weapon;
+
+    [Header("Skill")]
+    public SkillConfig skill1;
+    public SkillConfig skill2;
 }
