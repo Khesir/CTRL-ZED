@@ -23,10 +23,11 @@ public class GameplayManager : MonoBehaviour
     public ParallaxBackground parallaxBackground;
     public FollowerSpawn spawn;
     public GameplayUIController gameplayUI;
-    public EnemySpawner spawner;
     public SquadLevelManager squadLevelManager;
     public DamageNumberController damageNumberController;
-
+    public EnemySpawner spawner;
+    public EnemyManager enemyManager;
+    public WaveManager waveManager;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -70,46 +71,9 @@ public class GameplayManager : MonoBehaviour
 
         // Wait for one frame to make sure followers are instantiated
         await UniTask.NextFrame();
-        await spawner.Initialize(gameManager.LevelManager.activeLevel.waves);
+        waveManager.Initialize(GameManager.Instance.LevelManager.activeLevel);
         followerManager.SwitchTo(0);
         isGameActive = true;
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");
-
     }
-
-    // public void AddFollower(Follower data)
-    // {
-    //     followers.Add(data);
-    // }
-    // private void IsDead(int index)
-    // {
-    //     var character = followers[index].GetComponent<PlayerController>().playerData;
-    //     if (character.isDead)
-    //     {
-    //         return;
-    //     }
-    // }
-    // public int IsAvailable()
-    // {
-    //     for (int i = 0; i < followers.Count; i++)
-    //     {
-    //         var controller = followers[i].GetComponent<PlayerController>().playerData;
-
-    //         if (!controller.isDead)
-    //         {
-    //             return i;
-    //         }
-    //         else
-    //         {
-    //             continue;
-    //         }
-    //     }
-    //     return -1;
-    // }
-    // public void SetTarget()
-    // {
-    //     currentFollowerIndex = -1;
-    //     globalTargetPlayer = null;
-    //     switchUser?.Invoke();
-    // }
 }

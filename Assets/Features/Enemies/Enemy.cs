@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
         GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGive);
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
-        if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
+        // if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
         // if (hp <= 0 || damage == -1)
         // {
 
@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
             Instantiate(destroyEffect, transform.position, Quaternion.identity);
             GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGive);
-            GameplayManager.Instance.spawner.ReportKill(1);
+            // GameplayManager.Instance.spawner.ReportKill(1);
         }
     }
 }

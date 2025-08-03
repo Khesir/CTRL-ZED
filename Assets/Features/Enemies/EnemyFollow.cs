@@ -18,9 +18,9 @@ public class EnemyFollow : MonoBehaviour
     private Vector2 m_direction = Vector2.zero;
     private float m_MovementSpeedBlend;
 
-    public Transform target; // Assign in Inspector
+    public Transform target;
     public Rigidbody2D rb;
-    public float followRange = 5f;       // Distance to start following
+    public float followRange = 5f;
     public bool alwaysFollow = false;
     private Vector2 m_SeparationFore = Vector2.zero;
     public LayerMask ignoreLayer;

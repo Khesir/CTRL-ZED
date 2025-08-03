@@ -5482,56 +5482,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 631692db011a8374db3f8452215d2635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - enemyPrefabs:
-    - {fileID: 5854188709080172386, guid: db29792e125ad72438410f130ea2917b, type: 3}
-    spawntTimer: 0
-    spawnInterval: 0.5
-    attackTimer: 0
-    minAttackTimerDamage: 5
-    maxAttackTimerDamage: 10
-    requiredKills: 10
-    waveRewards:
-      food: 100
-      technology: 100
-      energy: 100
-      intelligence: 100
-      coins: 100
-  - enemyPrefabs:
-    - {fileID: 5854188709080172386, guid: db29792e125ad72438410f130ea2917b, type: 3}
-    - {fileID: 4766893749039834836, guid: c8b016def0b0c044aba3a106cc7f9dca, type: 3}
-    spawntTimer: 0
-    spawnInterval: 0.5
-    attackTimer: 0
-    minAttackTimerDamage: 5
-    maxAttackTimerDamage: 10
-    requiredKills: 10
-    waveRewards:
-      food: 200
-      technology: 200
-      energy: 200
-      intelligence: 200
-      coins: 200
-  - enemyPrefabs:
-    - {fileID: 5027452726756111778, guid: 2e2de2a7c27cd2c4697ec802452730e7, type: 3}
-    spawntTimer: 0
-    spawnInterval: 0.5
-    attackTimer: 0
-    minAttackTimerDamage: 50
-    maxAttackTimerDamage: 100
-    requiredKills: 10
-    waveRewards:
-      food: 300
-      technology: 300
-      energy: 300
-      intelligence: 300
-      coins: 300
-  waveNumber: 0
   minPos: {fileID: 972969318}
   maxPos: {fileID: 853622806}
-  playerKillCount: 0
-  waveLevel: 1
-  startWave: 0
+  prefab: {fileID: 0}
 --- !u!4 &1562620955
 Transform:
   m_ObjectHideFlags: 0
@@ -8433,15 +8386,33 @@ PrefabInstance:
       propertyPath: followerSpawn
       value: 
       objectReference: {fileID: 1418764995}
-    - target: {fileID: 7850368718434146567, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: virtualCamera
-      value: 
-      objectReference: {fileID: 1144828850}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8237023318716642558, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8090268815861168026}
   m_SourcePrefab: {fileID: 100100000, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+--- !u!1 &8090268815861168025 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8237023318716642558, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+  m_PrefabInstance: {fileID: 8090268815861168024}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8090268815861168026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090268815861168025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a038ac345e1c4740955c4776c1a6b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevelData: {fileID: 0}
+  spawner: {fileID: 1562620954}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

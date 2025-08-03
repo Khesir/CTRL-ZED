@@ -34,6 +34,8 @@ Transform:
   - {fileID: 4587933250364890105}
   - {fileID: 8641713355584358508}
   - {fileID: 5284003075780868033}
+  - {fileID: 1366781953838018056}
+  - {fileID: 4064422483860692857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3891308729030426309
@@ -103,8 +105,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c306609387fd67b438fb52bb6fa2471b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 0}
+  focusCamera: {fileID: 0}
   gameplayUI: {fileID: 4035268777878427305}
+  followerSpawn: {fileID: 0}
+  service:
+    followers: []
 --- !u!1 &4154918508699622063
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +155,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerService: []
+  activePlayerIndex: 0
+--- !u!1 &5808777742333676973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366781953838018056}
+  - component: {fileID: 4369155390820268657}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1366781953838018056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5808777742333676973}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.22002673, y: -2.2040224, z: 7.7416444}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3007050461895703854}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4369155390820268657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5808777742333676973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d123c2f1c3f6049a199077d4383073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6471400808237631259
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,3 +301,34 @@ MonoBehaviour:
   completeScreenUI: {fileID: 0}
   squadLevelUI: {fileID: 0}
   starWaveButton: {fileID: 0}
+--- !u!1 &8237023318716642558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4064422483860692857}
+  m_Layer: 0
+  m_Name: WaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4064422483860692857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8237023318716642558}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.22002673, y: -2.2040224, z: 7.7416444}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3007050461895703854}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -88,14 +88,14 @@ public class PlayerCombat : MonoBehaviour
 
             var spawner = GameplayManager.Instance.spawner;
             var team = GameManager.Instance.TeamManager.GetActiveTeam();
-            var loots = spawner.waves[spawner.waveNumber].waveRewards;
+            // var loots = spawner.waves[spawner.waveNumber].waveRewards;
 
             GameplayManager.Instance.gameplayUI.Complete(
                 type: "character",
                 complete: false,
-                team[0].GetTeamName(),
-                loots: loots
+                team[0].GetTeamName()
             );
+            // Remove Loots
         }
     }
 }

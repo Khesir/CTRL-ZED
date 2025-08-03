@@ -14,20 +14,20 @@ public class WaveUIController : MonoBehaviour
     {
         instance = player;
         textLabel.text = player.GetCurrentHealth().ToString();
-        GameplayManager.Instance.spawner.ReportedKill += UpdateSlider;
-        title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
+        // GameplayManager.Instance.spawner.ReportedKill += UpdateSlider;
+        // title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
     }
     public void UpdateSlider()
     {
         var spawner = GameplayManager.Instance.spawner;
-        int currentKills = spawner.playerKillCount;
-        int requiredKills = spawner.waves[spawner.waveNumber].requiredKills;
+        // int currentKills = spawner.playerKillCount;
+        // int requiredKills = spawner.waves[spawner.waveNumber].requiredKills;
 
-        progressSlider.maxValue = requiredKills;
-        progressSlider.value = currentKills;
+        // progressSlider.maxValue = requiredKills;
+        // progressSlider.value = currentKills;
 
-        float percent = (float)currentKills / requiredKills * 100f;
-        textLabel.text = Mathf.FloorToInt(percent) + "%";
-        title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
+        // float percent = (float)currentKills / requiredKills * 100f;
+        // textLabel.text = Mathf.FloorToInt(percent) + "%";
+        // title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
     }
 }

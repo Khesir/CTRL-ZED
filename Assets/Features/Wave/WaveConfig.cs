@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Wave
+public class WaveConfig
 {
-  public List<GameObject> enemyPrefabs;
+  public List<EnemyConfig> enemyConfigs;
   public float spawntTimer;
   public float spawnInterval;
   public float attackTimer;

@@ -15,6 +15,6 @@ public class LevelData : ScriptableObject
     public bool isCleared;
 
     [Header("Level Setup")]
-    public List<Wave> waves;
+    public WaveSet waveSet;
     public List<Material> background;
 }
