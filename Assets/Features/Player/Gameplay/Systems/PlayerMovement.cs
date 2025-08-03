@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     {
         this.rb = rb;
         this.moveSpeed = moveSpeed;
+        Debug.Log("[PlayerMovement] Succesfully initialized");
     }
 
     public void SetInput(Vector2 input)

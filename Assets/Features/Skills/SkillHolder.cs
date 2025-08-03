@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkillHolder : MonoBehaviour
 {
     private ISkill[] skills = new ISkill[2];
+    public GameObject skillUser;
 
     public void EquipSkills(SkillConfig skill1, SkillConfig skill2)
     {
@@ -20,7 +21,7 @@ public class SkillHolder : MonoBehaviour
 
         if (skill != null)
         {
-            skill.Initialize(config, gameObject);
+            skill.Initialize(config, skillUser);
             skills[index] = skill;
         }
         else

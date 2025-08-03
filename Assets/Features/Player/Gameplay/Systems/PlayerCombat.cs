@@ -23,7 +23,9 @@ public class PlayerCombat : MonoBehaviour
         weaponHolder.EquipWeapon(baseConfig.weapon);
 
         skillHolder = GetComponentInChildren<SkillHolder>();
+        skillHolder.skillUser = gameObject;
         skillHolder.EquipSkills(baseConfig.skill1, baseConfig.skill2);
+        Debug.Log("[PlayerCombat] Succesfully initialized");
     }
 
     public void TickUpdate()

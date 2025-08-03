@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Light Heal
   description: Light heal
-  cooldown: 5
   icon: {fileID: 0}
-  skillPrefab: {fileID: 0}
+  cooldown: 5
+  skillPrefab: {fileID: 1246334360194110145, guid: 732784baeb8d09048a8dc78b12949641, type: 3}
   vfxPrefab: {fileID: 0}
   vfxLifetime: 2
   healAmount: 20

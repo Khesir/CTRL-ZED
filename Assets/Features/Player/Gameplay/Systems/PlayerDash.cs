@@ -18,6 +18,8 @@ public class PlayerDash : MonoBehaviour
     {
         this.characterData = characterData;
         this.rb = rb;
+        Debug.Log("[PlayerDash] Succesfully initialized");
+
     }
 
     public void HandleDashInput(bool dashPressed, Vector2 moveDirection)
