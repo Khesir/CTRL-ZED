@@ -32,12 +32,9 @@ public class Bullet : MonoBehaviour
             return;
         }
 
-        // Otherwise, destroy the bullet and maybe do damage
         Destroy(gameObject);
 
-        // Optionally, damage enemy here if tagged or has enemy component
-        // Example:
-        var enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy != null) enemy.TakeDamage(1);
+        var enemy = collision.gameObject.GetComponent<EnemyService>();
+        if (enemy != null) enemy.TakeDamage(100);
     }
 }

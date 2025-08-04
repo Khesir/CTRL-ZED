@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class EnemyFollow : MonoBehaviour
 {
+    [Header("Movement Setting")]
     [SerializeField] private float m_Speed = 4f;
     [SerializeField] private float m_RotationSpeed = 8f;
     [SerializeField] private float m_StopDistance = 3f;
     [SerializeField] private float m_SlowMultiplier = 1f;
-    [Header("Boids")]
+    [Header("Boids Setting")]
     [SerializeField] private float m_DetectionDistance = 1f;
     [SerializeField] private float m_SeparationWeight = 1f;
     [SerializeField] private float m_AlignmentWeight = 1f;
@@ -25,8 +26,16 @@ public class EnemyFollow : MonoBehaviour
     private Vector2 m_SeparationFore = Vector2.zero;
     public LayerMask ignoreLayer;
 
-    private void Start()
+    private EnemyConfig config;
+
+    public void Initialize(EnemyConfig config)
     {
+        this.config = config;
+
+        m_Speed = config.movementSpeed;
+        m_StopDistance = config.stopDistance;
+        m_DetectionDistance = config.detectionRange;
+
         GameplayManager.Instance.followerManager.OnSwitch += Refresh;
     }
     private void Refresh()

@@ -21,6 +21,7 @@ public class EnemyService : MonoBehaviour, IStatHandler
         }
 
         follow = gameObject.GetComponent<EnemyFollow>();
+        follow.Initialize(config);
         follow.target = GameplayManager.Instance.followerManager.GetCurrentTarget();
         GameplayManager.Instance.enemyManager.RegisterEnemy(this);
     }

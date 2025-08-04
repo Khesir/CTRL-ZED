@@ -130,7 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 741825772633710050}
   m_Layer: 0
-  m_Name: Effect
+  m_Name: BasicExplosionEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
