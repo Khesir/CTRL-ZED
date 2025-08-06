@@ -3238,6 +3238,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1562620955}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &875310446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4369155390820268657, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+  m_PrefabInstance: {fileID: 8090268815861168024}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d123c2f1c3f6049a199077d4383073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &962793387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4305,9 +4316,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1562620954}
-        m_TargetAssemblyTypeName: EnemySpawner, Assembly-CSharp
-        m_MethodName: StartWave
+      - m_Target: {fileID: 8090268815861168026}
+        m_TargetAssemblyTypeName: WaveManager, Assembly-CSharp
+        m_MethodName: StartNextWave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5484,7 +5495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minPos: {fileID: 972969318}
   maxPos: {fileID: 853622806}
-  prefab: {fileID: 0}
+  prefab: {fileID: 5027452726756111778, guid: 9aa1e41d4221bb34ab2096e40a78a45e, type: 3}
 --- !u!4 &1562620955
 Transform:
   m_ObjectHideFlags: 0
@@ -8334,6 +8345,14 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1279795981}
+    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: waveManager
+      value: 
+      objectReference: {fileID: 8090268815861168026}
+    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: enemyManager
+      value: 
+      objectReference: {fileID: 875310446}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: parallaxBackground
       value: 

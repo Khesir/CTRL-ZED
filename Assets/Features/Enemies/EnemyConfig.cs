@@ -19,5 +19,5 @@ public class EnemyConfig : ScriptableObject
     public float stopDistance = 1f;
 
     [Header("Misc")]
-    public GameObject dropPrefab;
+    public List<LootDropData> lootDrops;
 }

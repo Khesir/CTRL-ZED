@@ -200,4 +200,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 0}
-  rb: {fileID: 0}
+  lootDropPrefab: {fileID: 2570120143428822013, guid: a4a43a34f01ff9142910f7eb3c8d6a1c, type: 3}

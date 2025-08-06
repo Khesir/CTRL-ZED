@@ -11,5 +11,5 @@ public class WaveConfig
   public float minAttackTimerDamage;
   public float maxAttackTimerDamage;
   public int requiredKills;
-  public Loots waveRewards;
+  public List<LootDropData> waveRewards;
 }

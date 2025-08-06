@@ -36,6 +36,7 @@ Transform:
   - {fileID: 5284003075780868033}
   - {fileID: 1366781953838018056}
   - {fileID: 4064422483860692857}
+  - {fileID: 1045149788769801101}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3891308729030426309
@@ -58,9 +59,12 @@ MonoBehaviour:
   parallaxBackground: {fileID: 0}
   spawn: {fileID: 0}
   gameplayUI: {fileID: 4035268777878427305}
-  spawner: {fileID: 0}
   squadLevelManager: {fileID: 1772367184815221831}
   damageNumberController: {fileID: 0}
+  spawner: {fileID: 0}
+  enemyManager: {fileID: 4369155390820268657}
+  waveManager: {fileID: 822019436188621062}
+  lootManager: {fileID: 818863747149330968}
 --- !u!1 &961352731125913463
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +305,50 @@ MonoBehaviour:
   completeScreenUI: {fileID: 0}
   squadLevelUI: {fileID: 0}
   starWaveButton: {fileID: 0}
+--- !u!1 &7862667196828465748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045149788769801101}
+  - component: {fileID: 818863747149330968}
+  m_Layer: 0
+  m_Name: LootManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1045149788769801101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862667196828465748}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3007050461895703854}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818863747149330968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862667196828465748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7665baf61c6d07a4a9ecb46ee0d4dbbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8237023318716642558
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4064422483860692857}
+  - component: {fileID: 822019436188621062}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -332,3 +381,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3007050461895703854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &822019436188621062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8237023318716642558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a038ac345e1c4740955c4776c1a6b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevelData: {fileID: 0}
+  spawner: {fileID: 0}

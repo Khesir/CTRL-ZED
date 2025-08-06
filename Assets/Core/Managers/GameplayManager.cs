@@ -28,6 +28,7 @@ public class GameplayManager : MonoBehaviour
     public EnemySpawner spawner;
     public EnemyManager enemyManager;
     public WaveManager waveManager;
+    public LootManager lootManager;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -74,6 +75,7 @@ public class GameplayManager : MonoBehaviour
         waveManager.Initialize(GameManager.Instance.LevelManager.activeLevel);
         followerManager.SwitchTo(0);
         isGameActive = true;
+
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");
     }
 }

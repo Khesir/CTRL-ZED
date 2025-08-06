@@ -13,29 +13,35 @@ MonoBehaviour:
   m_Name: WaveSet
   m_EditorClassIdentifier: 
   waves:
-  - enemyConfigs: []
-    spawntTimer: 0
-    spawnInterval: 0
-    attackTimer: 0
-    minAttackTimerDamage: 0
-    maxAttackTimerDamage: 0
-    requiredKills: 0
+  - enemyConfigs:
+    - {fileID: 11400000, guid: 86bab569df7e65a4b8245d62901e35a8, type: 2}
+    - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
+    - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
+    spawntTimer: 10
+    spawnInterval: 0.2
+    attackTimer: 50
+    minAttackTimerDamage: 10
+    maxAttackTimerDamage: 50
+    requiredKills: 50
     waveRewards:
-      food: 0
-      technology: 0
-      energy: 0
-      intelligence: 0
-      coins: 0
-  - enemyConfigs: []
-    spawntTimer: 0
-    spawnInterval: 0
-    attackTimer: 0
-    minAttackTimerDamage: 0
-    maxAttackTimerDamage: 0
-    requiredKills: 0
+      food: 10
+      technology: 10
+      energy: 10
+      intelligence: 10
+      coins: 10
+  - enemyConfigs:
+    - {fileID: 11400000, guid: 86bab569df7e65a4b8245d62901e35a8, type: 2}
+    - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
+    - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
+    spawntTimer: 10
+    spawnInterval: 10
+    attackTimer: 50
+    minAttackTimerDamage: 10
+    maxAttackTimerDamage: 50
+    requiredKills: 50
     waveRewards:
-      food: 0
-      technology: 0
-      energy: 0
-      intelligence: 0
-      coins: 0
+      food: 10
+      technology: 10
+      energy: 10
+      intelligence: 10
+      coins: 10

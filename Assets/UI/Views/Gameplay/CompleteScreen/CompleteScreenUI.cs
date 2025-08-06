@@ -18,7 +18,7 @@ public class CompleteScreenUI : MonoBehaviour
 
     public TMP_Text ResourceCoins;
     // Include resources plundered during battle
-    public void Complete(string type, bool complete, string team = "", Loots loots = null)
+    public void Complete(string type, bool complete, string team = "", List<LootDropData> loots = null)
     {
         switch (type)
         {
@@ -41,20 +41,20 @@ public class CompleteScreenUI : MonoBehaviour
                 break;
         }
         PlayerService manager = GameManager.Instance.PlayerManager.playerService;
-        ResourceFood.text = manager.GetFood() + " + " + (loots != null ? loots.food.ToString() : "0");
-        manager.AddFood(loots.food);
+        // ResourceFood.text = manager.GetFood() + " + " + (loots != null ? loots.food.ToString() : "0");
+        // manager.AddFood(loots.food);
 
-        ResourceTechnology.text = manager.GetTechnology() + " + " + (loots != null ? loots.technology.ToString() : "0");
-        manager.AddTechnology(loots.technology);
+        // ResourceTechnology.text = manager.GetTechnology() + " + " + (loots != null ? loots.technology.ToString() : "0");
+        // manager.AddTechnology(loots.technology);
 
-        ResourceEnergy.text = manager.GetEnergy() + " + " + (loots != null ? loots.energy.ToString() : "0");
-        manager.AddEnergy(loots.energy);
+        // ResourceEnergy.text = manager.GetEnergy() + " + " + (loots != null ? loots.energy.ToString() : "0");
+        // manager.AddEnergy(loots.energy);
 
-        ResourceIntelligence.text = manager.GetIntelligence() + " + " + (loots != null ? loots.intelligence.ToString() : "0");
-        manager.AddIntelligence(loots.intelligence);
+        // ResourceIntelligence.text = manager.GetIntelligence() + " + " + (loots != null ? loots.intelligence.ToString() : "0");
+        // manager.AddIntelligence(loots.intelligence);
 
-        ResourceCoins.text = "Reward: " + manager.GetCoins() + " + " + (loots != null ? loots.coins.ToString() : "0") + " Coins";
-        manager.AddCoins(loots.coins);
+        // ResourceCoins.text = "Reward: " + manager.GetCoins() + " + " + (loots != null ? loots.coins.ToString() : "0") + " Coins";
+        // manager.AddCoins(loots.coins);
 
         animator.SetTrigger("Complete");
     }

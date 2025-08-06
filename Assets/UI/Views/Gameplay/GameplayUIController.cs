@@ -118,7 +118,7 @@ public class GameplayUIController : MonoBehaviour
     {
         announcementUI.PushMessage(message);
     }
-    public void Complete(string type, bool complete, string team = "", Loots loots = null)
+    public void Complete(string type, bool complete, string team = "", List<LootDropData> loots = null)
     {
         completeScreenUI.Complete(type, complete, team, loots);
     }
