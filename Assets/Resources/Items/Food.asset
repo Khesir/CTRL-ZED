@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca710973ad800449941524f0fca1d2f, type: 3}
   m_Name: Food
   m_EditorClassIdentifier: 
-  id: 
+  id: 3
   itemType: 0
-  icon: {fileID: 0}
-  displayName: 
-  description: 
+  icon: {fileID: 21300000, guid: c395604e21a930f43bb3d467354813f3, type: 3}
+  displayName: Wheat
+  description: Wheat

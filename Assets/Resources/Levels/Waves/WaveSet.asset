@@ -24,11 +24,21 @@ MonoBehaviour:
     maxAttackTimerDamage: 50
     requiredKills: 50
     waveRewards:
-      food: 10
-      technology: 10
-      energy: 10
-      intelligence: 10
-      coins: 10
+    - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
+      amount: 500
+      dropChance: 1
+    - item: {fileID: 11400000, guid: 111219a2d2bb69d40828076056e6224c, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: 569af82d94da6ef46b1d237b0261a5c3, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: b44e267d8fd1de949a29b72a31744ad4, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: df217983fa955b842a09ebe76e637bb1, type: 2}
+      amount: 100
+      dropChance: 1
   - enemyConfigs:
     - {fileID: 11400000, guid: 86bab569df7e65a4b8245d62901e35a8, type: 2}
     - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
@@ -40,8 +50,18 @@ MonoBehaviour:
     maxAttackTimerDamage: 50
     requiredKills: 50
     waveRewards:
-      food: 10
-      technology: 10
-      energy: 10
-      intelligence: 10
-      coins: 10
+    - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
+      amount: 500
+      dropChance: 1
+    - item: {fileID: 11400000, guid: 111219a2d2bb69d40828076056e6224c, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: 569af82d94da6ef46b1d237b0261a5c3, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: b44e267d8fd1de949a29b72a31744ad4, type: 2}
+      amount: 100
+      dropChance: 1
+    - item: {fileID: 11400000, guid: df217983fa955b842a09ebe76e637bb1, type: 2}
+      amount: 100
+      dropChance: 1

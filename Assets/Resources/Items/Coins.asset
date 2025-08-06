@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca710973ad800449941524f0fca1d2f, type: 3}
   m_Name: Coins
   m_EditorClassIdentifier: 
-  id: 
-  itemType: 0
-  icon: {fileID: 0}
-  displayName: 
-  description: 
+  id: 1
+  itemType: 4
+  icon: {fileID: 21300000, guid: e7a66e421f6e5864bb8406f9e61cc177, type: 3}
+  displayName: Cash
+  description: Used for majority of payments

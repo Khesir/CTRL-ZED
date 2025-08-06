@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca710973ad800449941524f0fca1d2f, type: 3}
   m_Name: Technology
   m_EditorClassIdentifier: 
-  id: 
-  itemType: 0
+  id: 5
+  itemType: 1
   icon: {fileID: 0}
-  displayName: 
-  description: 
+  displayName: Technology
+  description: Technology
