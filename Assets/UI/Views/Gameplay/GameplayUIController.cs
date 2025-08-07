@@ -17,7 +17,7 @@ public class GameplayUIController : MonoBehaviour
     public SquadLevelUI squadLevelUI;
     [Header("GameObject Controls")]
     public GameObject starWaveButton;
-    public async UniTask Initialize()
+    public void Initialize()
     {
         playerService = GameManager.Instance.PlayerManager.playerService;
         CharacterListInitialize();
@@ -25,13 +25,8 @@ public class GameplayUIController : MonoBehaviour
         InitializeOSHP();
         InitializeWaveUI();
         InitializeAttackTimer();
-        InitializeSquanLevelUI();
-        await UniTask.CompletedTask;
     }
-    private void InitializeSquanLevelUI()
-    {
-        squadLevelUI.Setup();
-    }
+
     private void InitializeWaveUI()
     {
         waveUI.Setup(playerService);
@@ -57,29 +52,11 @@ public class GameplayUIController : MonoBehaviour
         {
             compactCharacters.Add(null);
         }
-
-        var hotbars = new List<GameObject>
-        {
-            characterIcons.hotbar1,
-            characterIcons.hotbar2,
-            characterIcons.hotbar3,
-            characterIcons.hotbar4
-        };
-
-        for (int i = 0; i < hotbars.Count; i++)
-        {
-            var hotbar = hotbars[i];
-
-            if (compactCharacters[i] != null)
-            {
-                hotbar.GetComponent<CharacterDetailsIcon>().Initialize(compactCharacters[i], i);
-            }
-        }
+        characterIcons.Initialize(compactCharacters);
     }
     private void CharacterListInitialize()
     {
         var team = GameManager.Instance.TeamManager.GetActiveTeam();
-        // TODO: default team 0 is set
         var characters = team[0].GetMembers();
         var compactCharacters = new List<CharacterBattleState>();
         foreach (var c in characters)
@@ -90,29 +67,7 @@ public class GameplayUIController : MonoBehaviour
         {
             compactCharacters.Add(null);
         }
-
-        var hotbars = new List<GameObject>
-        {
-            characterListUI.hotbar1,
-            characterListUI.hotbar2,
-            characterListUI.hotbar3,
-            characterListUI.hotbar4
-        };
-
-        for (int i = 0; i < hotbars.Count; i++)
-        {
-            var hotbar = hotbars[i];
-
-            if (compactCharacters[i] != null)
-            {
-                hotbar.SetActive(true);
-                hotbar.GetComponent<CharacterDetails>().Initialize(compactCharacters[i]);
-            }
-            else
-            {
-                hotbar.SetActive(false); // Hide or optionally show "empty" UI
-            }
-        }
+        characterListUI.Initialize(compactCharacters);
     }
     public void PushMessage(string message)
     {

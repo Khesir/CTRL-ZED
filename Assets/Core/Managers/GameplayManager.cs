@@ -15,6 +15,8 @@ public class GameplayManager : MonoBehaviour
     public bool _isInitialized = false;
     [Header("Core References")]
     public GameManager gameManager;
+    public GameplayUIController gameplayUI;
+
     [SerializeField] private IInputService inputService;
 
     [Header("Gameplay References")]
@@ -22,7 +24,6 @@ public class GameplayManager : MonoBehaviour
     public PlayerGameplayManager playerGameplayManager;
     public ParallaxBackground parallaxBackground;
     public FollowerSpawn spawn;
-    public GameplayUIController gameplayUI;
     public SquadLevelManager squadLevelManager;
     public DamageNumberController damageNumberController;
     public EnemySpawner spawner;
@@ -53,6 +54,7 @@ public class GameplayManager : MonoBehaviour
         // Check all core Managers;
         inputService = GameInitiator.Instance.GetInputService();
         gameManager = GameInitiator.Instance.GetGameManager();
+        gameplayUI.Initialize();
         // Initialize data level
         await parallaxBackground.Initialize();
         squadLevelManager.Setup(100);

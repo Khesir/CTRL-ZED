@@ -11,8 +11,7 @@ public class SquadLevelUI : MonoBehaviour
     public void Setup()
     {
         textLabel.text = GameplayManager.Instance.squadLevelManager.experience.ToString();
-        GameplayManager.Instance.squadLevelManager.onGainExperience += UpdateSlider;
-        UpdateSlider();
+        // GameplayManager.Instance.squadLevelManager.onGainExperience += UpdateSlider;
     }
     public void UpdateSlider()
     {

@@ -98,8 +98,8 @@ public class EnemyService : MonoBehaviour, IStatHandler
         var player = collision.gameObject.GetComponent<PlayerGameplayService>();
         if (player != null)
         {
+            Debug.Log($"Enemy Dealt Damage to player {config.damage}");
             player.TakeDamage(config.damage);
-            // Die();
         }
     }
     // Appy Buffs and Debuff

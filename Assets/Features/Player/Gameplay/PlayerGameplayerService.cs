@@ -59,7 +59,7 @@ public class PlayerGameplayService : MonoBehaviour
         playerCombat.TickUpdate();
         playerCombat.HandleSkillInput();
     }
-    public void TakeDamage(float val) => playerCombat.TakeDamage(val);
+    public void TakeDamage(float val, GameObject source = null) => playerCombat.TakeDamage(val, source);
     public bool IsDead() => characterData.isDead;
     public string GetCharacterID() => characterData.data.GetID();
     public CharacterBattleState GetCharacterState() => characterData;

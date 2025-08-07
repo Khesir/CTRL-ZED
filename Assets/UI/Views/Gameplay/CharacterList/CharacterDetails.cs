@@ -18,7 +18,6 @@ public class CharacterDetails : MonoBehaviour
         characterName.text = data.data.GetName();
         level.text = "LVL " + data.data.GetLevel().ToString();
         UpdateHealth();
-        // Register CharacterBattleState event -- for damage updates, etc.
         data.data.onDamage += UpdateHealth;
     }
 

@@ -12,10 +12,11 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float immunityTimer;
     [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private SkillHolder skillHolder;
+    [SerializeField] private ShaderDamageFlash damageFlash;
     public void Initialize(IInputService input, CharacterBattleState characterData)
     {
         var baseConfig = characterData.data.GetInstance();
-
+        immunityDuration = 2f;
         this.input = input;
         this.characterData = characterData;
 
@@ -25,6 +26,9 @@ public class PlayerCombat : MonoBehaviour
         skillHolder = GetComponentInChildren<SkillHolder>();
         skillHolder.skillUser = gameObject;
         skillHolder.EquipSkills(baseConfig.skill1, baseConfig.skill2);
+
+        damageFlash = GetComponent<ShaderDamageFlash>();
+        damageFlash.Initialize();
         Debug.Log("[PlayerCombat] Succesfully initialized");
     }
 
@@ -60,6 +64,7 @@ public class PlayerCombat : MonoBehaviour
     public void TakeDamage(float damage, GameObject source = null)
     {
         if (isImmune) return;
+        damageFlash.Flash(immunityDuration);
         isImmune = true;
         immunityTimer = immunityDuration;
         bool died = characterData.TakeDamage(damage);

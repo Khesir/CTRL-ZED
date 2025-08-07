@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2083579790593172461}
   - component: {fileID: 4244078852386870159}
   - component: {fileID: 2446434157766536587}
+  - component: {fileID: -1304694212060332860}
   m_Layer: 7
   m_Name: Follower
   m_TagString: Player
@@ -61,7 +62,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: aa9b3cca865c5a5419cb841d9493aa99, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -234,6 +235,20 @@ MonoBehaviour:
   immunityTimer: 0
   weaponHolder: {fileID: 0}
   skillHolder: {fileID: 0}
+  damageFlash: {fileID: 0}
+--- !u!114 &-1304694212060332860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556851498346534052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af5a0064ed4a5974483b0cf999660a5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashTime: 0.1
 --- !u!1 &2208862743814490002
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,3 +337,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6ad4e7c79bae4a48bc04707431eb3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillUser: {fileID: 0}

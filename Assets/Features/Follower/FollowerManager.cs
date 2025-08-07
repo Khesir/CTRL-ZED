@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class FollowerManager : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class FollowerManager : MonoBehaviour
         var newFollower = service.GetCurrentFollower();
         focusCamera.Follow = newFollower.transform;
         globalTargetPlayer = newFollower.transform;
+        OnSwitch?.Invoke();
         Debug.Log($"[FollowerManager] Switching to {newFollower.GetCharacterID()}");
     }
     public void AddFollower(Follower follower)
@@ -52,5 +54,9 @@ public class FollowerManager : MonoBehaviour
     public Transform GetCurrentTarget()
     {
         return globalTargetPlayer;
+    }
+    public CharacterBattleState GetCurrentTargetBattleState()
+    {
+        return service.GetCurrentFollower().GetCharacterState();
     }
 }
