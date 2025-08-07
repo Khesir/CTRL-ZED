@@ -18,7 +18,8 @@ public class CharacterDetails : MonoBehaviour
         characterName.text = data.data.GetName();
         level.text = "LVL " + data.data.GetLevel().ToString();
         UpdateHealth();
-        data.data.onDamage += UpdateHealth;
+        data.onDamage += UpdateHealth;
+        data.onHeal += UpdateHealth;
     }
 
     private void UpdateHealth()

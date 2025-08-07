@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,17 +8,28 @@ public class CharacterBattleState
 {
     public CharacterService data;
     public float currentHealth;
+    public event Action onDamage;
+    public event Action onHeal;
+    public event Action onDeath;
+    public bool isDead = false;
     public CharacterBattleState(CharacterService service)
     {
         data = service;
         currentHealth = data.GetMaxHealth();
     }
-    public bool isDead => currentHealth <= 0;
-    public bool TakeDamage(float dmg)
+    public void TakeDamage(float dmg)
     {
+        if (isDead)
+            return;
+
         currentHealth = Mathf.Max(currentHealth - dmg, 0f);
-        data.InvokeOnDamage();
-        return isDead;
+        onDamage?.Invoke();
+        if (currentHealth <= 0f)
+        {
+            isDead = true;
+            onDeath?.Invoke();
+            Debug.Log("Character Dead!");
+        }
     }
     public float Heal(float amount)
     {
@@ -27,7 +39,7 @@ public class CharacterBattleState
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         float actualHealed = currentHealth - previousHealth;
 
-        data.InvokeOnHeal();
+        onHeal?.Invoke();
         return actualHealed;
     }
 }

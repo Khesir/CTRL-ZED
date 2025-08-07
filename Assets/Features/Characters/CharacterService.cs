@@ -8,8 +8,6 @@ public class CharacterService : IStatHandler
 {
     private readonly CharacterData _data;
     private readonly List<IStatProvider> statProviders = new();
-    public event Action onDamage;
-    public event Action onHeal;
     public event Action onLevelUp;
     public event Action onStatChange;
     public CharacterService(CharacterData character)
@@ -136,14 +134,4 @@ public class CharacterService : IStatHandler
     }
     #endregion
 
-    #region Event Triggers
-    public void InvokeOnDamage()
-    {
-        onDamage?.Invoke();
-    }
-    public void InvokeOnHeal()
-    {
-        onHeal?.Invoke();
-    }
-    #endregion
 }

@@ -29,6 +29,8 @@ public class PlayerCombat : MonoBehaviour
 
         damageFlash = GetComponent<ShaderDamageFlash>();
         damageFlash.Initialize();
+
+        // Register relative events
         Debug.Log("[PlayerCombat] Succesfully initialized");
     }
 
@@ -67,40 +69,7 @@ public class PlayerCombat : MonoBehaviour
         damageFlash.Flash(immunityDuration);
         isImmune = true;
         immunityTimer = immunityDuration;
-        bool died = characterData.TakeDamage(damage);
-        if (died)
-        {
-            HandleDeath();
-        }
+        characterData.TakeDamage(damage);
     }
-    private void HandleDeath()
-    {
-        gameObject.SetActive(false);
 
-        var follower = GetComponent<Follower>();
-        if (follower != null) follower.enabled = false;
-
-        var followerManager = GameplayManager.Instance.followerManager;
-        int index = followerManager.GetAvailableFollower();
-
-        if (index != -1)
-        {
-            followerManager.SwitchTo(index);
-        }
-        else
-        {
-            followerManager.ResetTarget();
-
-            var spawner = GameplayManager.Instance.spawner;
-            var team = GameManager.Instance.TeamManager.GetActiveTeam();
-            // var loots = spawner.waves[spawner.waveNumber].waveRewards;
-
-            GameplayManager.Instance.gameplayUI.Complete(
-                type: "character",
-                complete: false,
-                team[0].GetTeamName()
-            );
-            // Remove Loots
-        }
-    }
 }

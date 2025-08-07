@@ -54,7 +54,6 @@ public class GameplayManager : MonoBehaviour
         // Check all core Managers;
         inputService = GameInitiator.Instance.GetInputService();
         gameManager = GameInitiator.Instance.GetGameManager();
-        gameplayUI.Initialize();
         // Initialize data level
         await parallaxBackground.Initialize();
         squadLevelManager.Setup(100);
@@ -76,6 +75,8 @@ public class GameplayManager : MonoBehaviour
         await UniTask.NextFrame();
         waveManager.Initialize(GameManager.Instance.LevelManager.activeLevel);
         followerManager.SwitchTo(0);
+        gameplayUI.Initialize(battleStates);
+
         isGameActive = true;
 
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");

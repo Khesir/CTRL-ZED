@@ -147,7 +147,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023841858, y: 0.06988491}
+  m_Offset: {x: 0.0055432618, y: -0.08718158}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -158,7 +158,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6809864, y: 0.8606906}
+  m_Size: {x: 0.37424487, y: 0.54655766}
   m_EdgeRadius: 0
 --- !u!114 &3863602351833163314
 MonoBehaviour:
@@ -201,3 +201,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 0}
   lootDropPrefab: {fileID: 2570120143428822013, guid: a4a43a34f01ff9142910f7eb3c8d6a1c, type: 3}
+  isInitialized: 0

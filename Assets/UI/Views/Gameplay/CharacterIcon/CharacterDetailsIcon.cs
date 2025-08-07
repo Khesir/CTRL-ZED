@@ -12,11 +12,11 @@ public class CharacterDetailsIcon : MonoBehaviour
         instance = data;
         indexText.text = (index + 1).ToString();
         image.sprite = data.data.GetInstance().ship;
-
-        data.data.onDamage += UpdateHealth;
+        UpdateIcon();
+        data.onDeath += UpdateIcon;
     }
 
-    private void UpdateHealth()
+    private void UpdateIcon()
     {
         if (instance.isDead)
         {

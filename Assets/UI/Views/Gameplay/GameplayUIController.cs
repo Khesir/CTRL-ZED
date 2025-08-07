@@ -17,11 +17,11 @@ public class GameplayUIController : MonoBehaviour
     public SquadLevelUI squadLevelUI;
     [Header("GameObject Controls")]
     public GameObject starWaveButton;
-    public void Initialize()
+    public void Initialize(List<CharacterBattleState> characters)
     {
         playerService = GameManager.Instance.PlayerManager.playerService;
-        CharacterListInitialize();
-        CharacterListIconInitialize();
+        CharacterListInitialize(characters);
+        CharacterListIconInitialize(characters);
         InitializeOSHP();
         InitializeWaveUI();
         InitializeAttackTimer();
@@ -39,35 +39,13 @@ public class GameplayUIController : MonoBehaviour
     {
         baseOSHP.Setup(playerService);
     }
-    private void CharacterListIconInitialize()
+    private void CharacterListIconInitialize(List<CharacterBattleState> characters)
     {
-        var team = GameManager.Instance.TeamManager.GetActiveTeam();
-        var characters = team[0].GetMembers();
-        var compactCharacters = new List<CharacterBattleState>();
-        foreach (var c in characters)
-        {
-            if (c != null) compactCharacters.Add(new CharacterBattleState(c));
-        }
-        while (compactCharacters.Count < 4)
-        {
-            compactCharacters.Add(null);
-        }
-        characterIcons.Initialize(compactCharacters);
+        characterIcons.Initialize(characters);
     }
-    private void CharacterListInitialize()
+    private void CharacterListInitialize(List<CharacterBattleState> characters)
     {
-        var team = GameManager.Instance.TeamManager.GetActiveTeam();
-        var characters = team[0].GetMembers();
-        var compactCharacters = new List<CharacterBattleState>();
-        foreach (var c in characters)
-        {
-            if (c != null) compactCharacters.Add(new CharacterBattleState(c));
-        }
-        while (compactCharacters.Count < 4)
-        {
-            compactCharacters.Add(null);
-        }
-        characterListUI.Initialize(compactCharacters);
+        characterListUI.Initialize(characters);
     }
     public void PushMessage(string message)
     {

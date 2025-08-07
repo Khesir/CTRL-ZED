@@ -47,13 +47,24 @@ public class FollowerService
         // Update Target
         for (int i = 0; i < followers.Count; i++)
         {
-            bool isActive = i == index;
-            // followers[i].isControlledPlayer = isActive;
-            followers[i].SetTarget(!isActive ? followers[index].transform : null);
-
+            var isActive = i == index;
             var pgs = followers[i].GetComponent<PlayerGameplayService>();
+            var follower = followers[i];
+
+            // If dead, ensure they don't follow anyone
+            if (IsDead(i))
+            {
+                follower.SetTarget(null);
+            }
+            else
+            {
+                follower.SetTarget(!isActive ? followers[index].transform : null);
+            }
+
             if (pgs != null)
+            {
                 pgs.SetInputEnabled(isActive);
+            }
         }
 
         currentIndex = index;
