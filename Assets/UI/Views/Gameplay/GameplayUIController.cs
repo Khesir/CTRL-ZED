@@ -14,45 +14,30 @@ public class GameplayUIController : MonoBehaviour
     public WaveUIController waveUI;
     public AnnouncementUI announcementUI;
     public CompleteScreenUI completeScreenUI;
-    public SquadLevelUI squadLevelUI;
+    public LootHolder lootHolder;
     [Header("GameObject Controls")]
     public GameObject starWaveButton;
     public void Initialize(List<CharacterBattleState> characters)
     {
         playerService = GameManager.Instance.PlayerManager.playerService;
-        CharacterListInitialize(characters);
-        CharacterListIconInitialize(characters);
-        InitializeOSHP();
-        InitializeWaveUI();
-        InitializeAttackTimer();
+        characterListUI.Initialize(characters);
+        characterIcons.Initialize(characters);
+        baseOSHP.Setup(playerService);
+        waveUI.Setup();
+        timer.Setup(playerService);
+        lootHolder.Setup();
     }
 
-    private void InitializeWaveUI()
-    {
-        waveUI.Setup(playerService);
-    }
-    private void InitializeAttackTimer()
-    {
-        timer.Setup(playerService);
-    }
-    private void InitializeOSHP()
-    {
-        baseOSHP.Setup(playerService);
-    }
-    private void CharacterListIconInitialize(List<CharacterBattleState> characters)
-    {
-        characterIcons.Initialize(characters);
-    }
-    private void CharacterListInitialize(List<CharacterBattleState> characters)
-    {
-        characterListUI.Initialize(characters);
-    }
     public void PushMessage(string message)
     {
         announcementUI.PushMessage(message);
     }
-    public void Complete(string type, bool complete, string team = "", List<LootDropData> loots = null)
+    public void Complete(string type, bool complete, string team = "")
     {
-        completeScreenUI.Complete(type, complete, team, loots);
+        completeScreenUI.Complete(type, complete, team);
+    }
+    public void LootHolderAddAmount(LootDropData data)
+    {
+        lootHolder.AddAmount(data);
     }
 }

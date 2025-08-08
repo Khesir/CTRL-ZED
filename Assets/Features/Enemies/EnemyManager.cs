@@ -18,6 +18,7 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (var enemy in new List<EnemyService>(activeEnemies))
         {
+            if (enemy == null) continue;
             if (silent)
                 enemy.SilentKill();
             else

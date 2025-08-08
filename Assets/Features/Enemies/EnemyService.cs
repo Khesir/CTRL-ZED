@@ -42,9 +42,9 @@ public class EnemyService : MonoBehaviour, IStatHandler
     }
     public void SilentKill()
     {
-        Die(notifyWaveSystem: false);
+        Die(notifyWaveSystem: false, isSilent: true);
     }
-    private void Die(bool notifyWaveSystem = true)
+    private void Die(bool isSilent = false, bool notifyWaveSystem = true)
     {
         if (config.destroyEffect != null)
             Instantiate(config.destroyEffect, transform.position, UnityEngine.Quaternion.identity);
@@ -54,8 +54,7 @@ public class EnemyService : MonoBehaviour, IStatHandler
         if (notifyWaveSystem)
             GameplayManager.Instance.waveManager.ReportKill();
 
-        GameplayManager.Instance.squadLevelManager.GetExperience(config.experienceToGive);
-        InstantiateLoot(transform.position);
+        if (!isSilent) InstantiateLoot(transform.position);
         Destroy(gameObject);
     }
     private LootDropData GetDropItem()

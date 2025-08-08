@@ -18,7 +18,7 @@ public class CompleteScreenUI : MonoBehaviour
 
     public TMP_Text ResourceCoins;
     // Include resources plundered during battle
-    public void Complete(string type, bool complete, string team = "", List<LootDropData> loots = null)
+    public void Complete(string type, bool complete, string team = "")
     {
         switch (type)
         {
@@ -41,21 +41,19 @@ public class CompleteScreenUI : MonoBehaviour
                 break;
         }
         PlayerService manager = GameManager.Instance.PlayerManager.playerService;
-        // ResourceFood.text = manager.GetFood() + " + " + (loots != null ? loots.food.ToString() : "0");
-        // manager.AddFood(loots.food);
+        var lootHolder = GameplayManager.Instance.gameplayUI.lootHolder;
 
-        // ResourceTechnology.text = manager.GetTechnology() + " + " + (loots != null ? loots.technology.ToString() : "0");
-        // manager.AddTechnology(loots.technology);
-
-        // ResourceEnergy.text = manager.GetEnergy() + " + " + (loots != null ? loots.energy.ToString() : "0");
-        // manager.AddEnergy(loots.energy);
-
-        // ResourceIntelligence.text = manager.GetIntelligence() + " + " + (loots != null ? loots.intelligence.ToString() : "0");
-        // manager.AddIntelligence(loots.intelligence);
-
-        // ResourceCoins.text = "Reward: " + manager.GetCoins() + " + " + (loots != null ? loots.coins.ToString() : "0") + " Coins";
-        // manager.AddCoins(loots.coins);
+        manager.AddFood(lootHolder.GetLoot(ItemType.Food));
+        manager.AddTechnology(lootHolder.GetLoot(ItemType.Technology));
+        manager.AddEnergy(lootHolder.GetLoot(ItemType.Energy));
+        manager.AddIntelligence(lootHolder.GetLoot(ItemType.Intelligence));
+        manager.AddCoins(lootHolder.GetLoot(ItemType.Coins));
 
         animator.SetTrigger("Complete");
+    }
+    public void BackToMainMenu()
+    {
+        Debug.Log("Going Back to mainmenu");
+        GameInitiator.Instance.SwitchStates(GameState.MainMenu);
     }
 }

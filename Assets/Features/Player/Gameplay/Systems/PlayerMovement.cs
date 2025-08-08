@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (rb == null) return;
+        if (rb.bodyType == RigidbodyType2D.Static)
+            return;
         // Move
         rb.velocity = inputDirection * moveSpeed;
 

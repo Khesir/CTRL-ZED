@@ -53,7 +53,6 @@ public class PlayerGameplayService : MonoBehaviour
         Vector2 moveInput = inputService.MoveInput;
         bool dashPressed = inputService.DashPressed;
         Vector2 mousePos = inputService.GetMouseWorldPosition();
-
         playerMovement.SetInput(moveInput);
         playerMovement.SetAimTarget(mousePos);
         playerDash.HandleDashInput(dashPressed, moveInput);

@@ -15,8 +15,9 @@ public class LootManager : MonoBehaviour
 
         if (player == null) return;
 
-        foreach (var loot in activeLoots)
+        foreach (var loot in new List<LootCollect>(activeLoots))
         {
+            if (loot == null) continue;
             loot.TryAttract(player);
         }
     }

@@ -9,25 +9,17 @@ public class WaveUIController : MonoBehaviour
     public TMP_Text textLabel;
     public TMP_Text title;
     public Slider progressSlider;
-    public PlayerService instance;
-    public void Setup(PlayerService player)
+    public void Setup()
     {
-        instance = player;
-        textLabel.text = player.GetCurrentHealth().ToString();
-        // GameplayManager.Instance.spawner.ReportedKill += UpdateSlider;
-        // title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
+        title.text = $"Wave {GameplayManager.Instance.waveManager.GetWaveIndex()}";
     }
-    public void UpdateSlider()
+    public void UpdateSlider(int currentKills, int requiredKills, int index)
     {
-        var spawner = GameplayManager.Instance.spawner;
-        // int currentKills = spawner.playerKillCount;
-        // int requiredKills = spawner.waves[spawner.waveNumber].requiredKills;
+        progressSlider.maxValue = requiredKills;
+        progressSlider.value = currentKills;
 
-        // progressSlider.maxValue = requiredKills;
-        // progressSlider.value = currentKills;
-
-        // float percent = (float)currentKills / requiredKills * 100f;
-        // textLabel.text = Mathf.FloorToInt(percent) + "%";
-        // title.text = $"Wave {GameplayManager.Instance.spawner.waveLevel}";
+        float percent = (float)currentKills / requiredKills * 100f;
+        textLabel.text = Mathf.FloorToInt(percent) + "%";
+        title.text = $"Wave {index + 1}";
     }
 }

@@ -27,7 +27,7 @@ public class LootCollect : MonoBehaviour
 
             if (distanceToPlayer < 0.5f)
             {
-                Debug.Log("Loot picked up");
+                GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(data);
                 GameplayManager.Instance.lootManager.UnregisterLoot(this);
                 Destroy(gameObject);
             }

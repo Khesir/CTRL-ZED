@@ -158,4 +158,8 @@ public class GameInitiator : MonoBehaviour
     public GameManager GetGameManager() => _gameManager;
     public GameStateManager GetGameStateManager() => _gameStateManager;
     public InputService GetInputService() => _inputService;
+    public async void SwitchStates(GameState state)
+    {
+        await _gameStateManager.SetState(state);
+    }
 }

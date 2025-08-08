@@ -11,6 +11,7 @@ public class AttackTimer : MonoBehaviour
     public float minAttackTimerDamage = 1;
     public float maxAttackTimerDamage = 10;
     private PlayerService playerInstance;
+    public float timeElapse;
     public void Setup(PlayerService playerInstance)
     {
         this.playerInstance = playerInstance;
@@ -19,7 +20,7 @@ public class AttackTimer : MonoBehaviour
     public void TriggerTimer()
     {
         timer -= Time.deltaTime;
-
+        timeElapse += Time.deltaTime;
         if (timer <= 0f)
         {
             var damage = Random.Range(minAttackTimerDamage, maxAttackTimerDamage);
@@ -29,7 +30,6 @@ public class AttackTimer : MonoBehaviour
                 Debug.Log("Game Over");
                 GameplayManager.Instance.followerManager.ResetTarget();
                 GameplayManager.Instance.gameplayUI.Complete("os", false);
-
             }
             timer = timeLimit;
         }
