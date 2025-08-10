@@ -56,7 +56,7 @@ public class GameplayManager : MonoBehaviour
         gameManager = GameInitiator.Instance.GetGameManager();
         // Initialize data level
         await parallaxBackground.Initialize();
-        squadLevelManager.Setup(100);
+        // squadLevelManager.Setup(100);
         Debug.Log("[GameplayManager] Gameplay Manager Initialized");
         _isInitialized = true;
         await UniTask.CompletedTask;

@@ -5,7 +5,6 @@ using UnityEngine;
 public class SaveData
 {
     public PlayerData playerData;
-    public ResourceData resourceData;
     public List<CharacterData> ownedCharacters;
     public List<Team> teams;
     public int antiVirusLevel;

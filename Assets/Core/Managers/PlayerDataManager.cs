@@ -5,20 +5,25 @@ using UnityEngine;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    public SaveData data; // OBject data base for now, will change to persistent database
-    public string filePath;
-    public async UniTask<SaveData> Initialize()
+    public SaveData[] loadedSlots = new SaveData[3];
+    public void Initialize()
     {
-        Debug.Log($"[PlayerDataManager] Save Location {filePath}");
-        // filePath = Application.persistentDataPath + "/playerData.json";
-        return await LoadPlayerData();
+        LoadSlotData();
     }
-    public async UniTask<SaveData> LoadPlayerData()
+    public void LoadSlotData()
     {
-        data = new SaveData();
-        // Initial Base values
-        // Just simulating
-        await UniTask.Yield();
-        return data;
+        for (int i = 0; i < loadedSlots.Length; i++)
+        {
+            loadedSlots[i] = SaveSystem.LoadFromSlot(i + 1);
+        }
+    }
+    public SaveData LoadPlayerData(int slotIndex)
+    {
+        return SaveSystem.LoadFromSlot(slotIndex + 1);
+    }
+    public void SaveToSlot(int slotIndex, SaveData data)
+    {
+        SaveSystem.SaveToSlot(slotIndex + 1, data);
+        LoadSlotData();
     }
 }

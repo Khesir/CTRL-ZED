@@ -27,14 +27,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (rb == null) return;
-        if (rb.bodyType == RigidbodyType2D.Static)
-            return;
+        if (rb == null || rb.bodyType == RigidbodyType2D.Static) return;
+
         // Move
         rb.velocity = inputDirection * moveSpeed;
 
         // Rotate Toward mouse
-        if (rotateToMouse)
+        if (rotateToMouse && aimDirection.sqrMagnitude > 0.0001f)
         {
             float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
             rb.rotation = aimAngle;

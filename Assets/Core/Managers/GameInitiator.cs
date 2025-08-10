@@ -19,6 +19,7 @@ public class GameInitiator : MonoBehaviour
     public bool isDevelopment = true;
     public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
     public bool isFinished = false;
+    public bool generateTestData = false;
     [Header("Gameplay Settings - Dev Settings")]
     [SerializeField] private LevelData currentLevel;
     ////////////////////////////////////////////////////
@@ -43,8 +44,10 @@ public class GameInitiator : MonoBehaviour
         await BindObjects();
         Debug.Log("[GameInitiator] Initializing Objects");
         await Initialize();
-        Debug.Log("[GameInitiator] Preparing Game");
-        await PrepareGame();
+        Debug.Log("[GameInitiator] Preparing Core Systems");
+        PrepareCoreSystems();
+        // Debug.Log("[GameInitiator] Preparing Game");
+        // await PrepareGame();
         // Start of the game
         isGenerated = true;
     }
@@ -97,20 +100,12 @@ public class GameInitiator : MonoBehaviour
         await _gameStateManager.Intialize();
         await _inputService.Initialize();
     }
-    private async UniTask PrepareGame()
+    public async UniTask PrepareCoreSystems()
     {
-        var saveData = await GameManager.Instance.PlayerDataManager.Initialize();
+        GameManager.Instance.PlayerDataManager.Initialize();
 
-        await GameManager.Instance.PlayerManager.Initialize(saveData.playerData);
-        await GameManager.Instance.CharacterManager.Initialize(saveData.ownedCharacters);
-        await GameManager.Instance.TeamManager.Initialize(saveData.teams);
-        await GameManager.Instance.AntiVirusManager.Initialize();
-        await GameManager.Instance.LevelManager.Initialize();
+        if (generateTestData) GenerateTestData();
 
-        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
-        GenerateTestData();
-
-        // Game Preparation
         if (isDevelopment)
         {
             Debug.Log("[GameInitiator] Development Environment Detected");
@@ -119,10 +114,19 @@ public class GameInitiator : MonoBehaviour
             GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
             await _gameStateManager.SetState(devState);
         }
-        else
-        {
-            await _gameStateManager.SetState(initialState);
-        }
+
+
+    }
+    public async UniTask PrepareGame(SaveData saveData)
+    {
+        await GameManager.Instance.PlayerManager.Initialize(saveData.playerData);
+        await GameManager.Instance.CharacterManager.Initialize(saveData.ownedCharacters);
+        await GameManager.Instance.TeamManager.Initialize(saveData.teams);
+        await GameManager.Instance.AntiVirusManager.Initialize();
+        await GameManager.Instance.LevelManager.Initialize();
+
+        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
+        if (generateTestData) GenerateTestData();
 
         Debug.Log("[GameInitiator] Game preparation (player State) complete.");
         isFinished = true;
