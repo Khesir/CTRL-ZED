@@ -104,6 +104,7 @@ public class LevelInformationModal : MonoBehaviour
         resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
 
         LevelManager.Instance.activeLevel = data;
+        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Activate);
         await LevelManager.Instance.LoadScene(GameState.Gameplay);
     }
 }

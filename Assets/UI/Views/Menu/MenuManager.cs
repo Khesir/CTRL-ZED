@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour
     }
     private async void Start()
     {
-        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isGenerated);
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
         await Initialize();
     }
     public async UniTask Initialize()
@@ -37,6 +37,7 @@ public class MenuManager : MonoBehaviour
         Debug.Log("[MenuManager] Initializing Menu Manager");
         isGameActive = false;
         Setup();
+        PlayMusic();
         _isInitialized = true;
         Debug.Log("[MenuManager ] Menu Manager Initialized");
         await UniTask.CompletedTask;
@@ -48,5 +49,9 @@ public class MenuManager : MonoBehaviour
         resourceUI.Setup();
         repairComponent.Setup();
         drivesMenuComponent.Setup();
+    }
+    private void PlayMusic()
+    {
+        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_MainMenu, 0.5f);
     }
 }

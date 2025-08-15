@@ -10,7 +10,7 @@ public static class SceneLoader
     public static async UniTask LoadScene(string sceneName, GameObject canvas)
     {
         Debug.Log($"[SceneLoader] Loading scene: {sceneName}");
-
+        await SoundManager.FadeOutCategory(SoundCategory.BGM);
         canvas.SetActive(true);
 
         var loadOperation = SceneManager.LoadSceneAsync(sceneName);

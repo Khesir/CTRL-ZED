@@ -68,16 +68,19 @@ public class SaveContainer : MonoBehaviour
 
     private async void OnActionButtonClicked()
     {
+        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_OnTransition);
+
         if (data == null)
         {
             var saveData = new SaveData();
             GameManager.Instance.PlayerDataManager.SaveToSlot(index, saveData);
             await GameInitiator.Instance.PrepareGame(saveData);
-            return;
+        }
+        else
+        {
+            await GameInitiator.Instance.PrepareGame(data);
+            GameInitiator.Instance.SwitchStates(GameState.MainMenu);
         }
 
-        // Load existing save
-        await GameInitiator.Instance.PrepareGame(data);
-        GameInitiator.Instance.SwitchStates(GameState.MainMenu);
     }
 }

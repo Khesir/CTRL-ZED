@@ -69,12 +69,14 @@ public class TeamContainer : MonoBehaviour
         Debug.Log($"Deploy {instance.teamID}");
         GameManager.Instance.TeamManager.SetActiveTeam(instance.teamID);
         IsActive();
+        SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_Deploy);
     }
     public void UnDeployAction()
     {
         GameManager.Instance.TeamManager.RemoveActiveTeam(instance.teamID);
         Debug.Log($"UnDeploy {instance.teamID}");
         IsActive();
+        SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_UnDeploy);
     }
     public void IsActive()
     {

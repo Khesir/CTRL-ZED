@@ -46,6 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStateManager: {fileID: 6285907055683387484, guid: e623a50ae7586b043b7efa3161378000, type: 3}
   gameManager: {fileID: 0}
-  initialState: 1
+  inputService: {fileID: 0}
+  soundManager: {fileID: 0}
   isDevelopment: 1
   isGenerated: 0
+  isFinished: 0
+  generateTestData: 1
+  currentLevel: {fileID: 0}

@@ -13,8 +13,9 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private InputService inputService;
+    [SerializeField] private SoundManager soundManager;
     [Header("Environment Setup")]
-    [SerializeField] private GameState initialState = GameState.Initial;
+    // [SerializeField] private GameState initialState = GameState.Initial;
     [Header("Flags")]
     public bool isDevelopment = true;
     public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
@@ -26,6 +27,7 @@ public class GameInitiator : MonoBehaviour
     private GameStateManager _gameStateManager;
     private GameManager _gameManager;
     private InputService _inputService;
+    private SoundManager _soundManager;
     private void Awake()
     {
         // Singleton pattern
@@ -45,10 +47,12 @@ public class GameInitiator : MonoBehaviour
         Debug.Log("[GameInitiator] Initializing Objects");
         await Initialize();
         Debug.Log("[GameInitiator] Preparing Core Systems");
-        PrepareCoreSystems();
-        // Debug.Log("[GameInitiator] Preparing Game");
-        // await PrepareGame();
-        // Start of the game
+        await PrepareCoreSystems();
+        if (isDevelopment)
+        {
+            Debug.Log("[GameInitiator] Preparing Game");
+            await PrepareGame(new SaveData());
+        }
         isGenerated = true;
     }
     private async UniTask BindObjects()
@@ -91,6 +95,18 @@ public class GameInitiator : MonoBehaviour
                 _inputService = Instantiate(inputService);
             }
         }
+        if (_soundManager == null)
+        {
+            _soundManager = FindObjectOfType<SoundManager>();
+            if (_soundManager == null)
+            {
+                if (_soundManager == null)
+                {
+                    throw new System.Exception("Sound Manager reference is missing in GameInitiator. Please assign it in the inspector.");
+                }
+                _soundManager = Instantiate(soundManager);
+            }
+        }
         await UniTask.CompletedTask;
     }
     private async UniTask Initialize()
@@ -99,12 +115,11 @@ public class GameInitiator : MonoBehaviour
         await _gameManager.Initialize();
         await _gameStateManager.Intialize();
         await _inputService.Initialize();
+        await _soundManager.Initialize();
     }
     public async UniTask PrepareCoreSystems()
     {
         GameManager.Instance.PlayerDataManager.Initialize();
-
-        if (generateTestData) GenerateTestData();
 
         if (isDevelopment)
         {
@@ -114,7 +129,6 @@ public class GameInitiator : MonoBehaviour
             GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
             await _gameStateManager.SetState(devState);
         }
-
 
     }
     public async UniTask PrepareGame(SaveData saveData)
@@ -130,6 +144,7 @@ public class GameInitiator : MonoBehaviour
 
         Debug.Log("[GameInitiator] Game preparation (player State) complete.");
         isFinished = true;
+
         await UniTask.CompletedTask;
     }
     private void GenerateTestData()

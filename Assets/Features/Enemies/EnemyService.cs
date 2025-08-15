@@ -33,8 +33,8 @@ public class EnemyService : MonoBehaviour, IStatHandler
     }
     public void TakeDamage(float damage)
     {
+        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
         currentHP -= damage;
-
         if (currentHP <= 0)
         {
             Die();
@@ -55,6 +55,8 @@ public class EnemyService : MonoBehaviour, IStatHandler
             GameplayManager.Instance.waveManager.ReportKill();
 
         if (!isSilent) InstantiateLoot(transform.position);
+
+        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Explosion);
         Destroy(gameObject);
     }
     private LootDropData GetDropItem()

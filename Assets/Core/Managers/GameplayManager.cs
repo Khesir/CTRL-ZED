@@ -76,9 +76,13 @@ public class GameplayManager : MonoBehaviour
         waveManager.Initialize(GameManager.Instance.LevelManager.activeLevel);
         followerManager.SwitchTo(0);
         gameplayUI.Initialize(battleStates);
-
+        PlayMusic();
         isGameActive = true;
 
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");
+    }
+    private void PlayMusic()
+    {
+        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
     }
 }

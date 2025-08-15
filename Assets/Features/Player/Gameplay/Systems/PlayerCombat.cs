@@ -56,6 +56,7 @@ public class PlayerCombat : MonoBehaviour
     private void HandleImmunity()
     {
         if (!isImmune) return;
+        _ = SoundManager.PlayLoopUntil(SoundCategory.Gameplay, SoundType.Gameplay_Immune, immunityDuration);
 
         immunityTimer -= Time.deltaTime;
         if (immunityTimer <= 0f)
@@ -70,6 +71,7 @@ public class PlayerCombat : MonoBehaviour
         isImmune = true;
         immunityTimer = immunityDuration;
         characterData.TakeDamage(damage);
+        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
+        _ = SoundManager.PlayLoopUntil(SoundCategory.Gameplay, SoundType.Gameplay_Immune, immunityDuration);
     }
-
 }

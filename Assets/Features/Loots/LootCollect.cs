@@ -27,6 +27,7 @@ public class LootCollect : MonoBehaviour
 
             if (distanceToPlayer < 0.5f)
             {
+                SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Collect);
                 GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(data);
                 GameplayManager.Instance.lootManager.UnregisterLoot(this);
                 Destroy(gameObject);

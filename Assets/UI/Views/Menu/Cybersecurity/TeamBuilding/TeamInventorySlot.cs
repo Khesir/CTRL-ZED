@@ -19,12 +19,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
             if (!manager.isCharacterInTeam(teamService.teamID, transferredCharacter).IsSuccess) return;
 
             manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
-
-            // GameObject newDraggableGO = Instantiate(draggableItemPrefab, transform);
-            // DraggableItem newDraggable = newDraggableGO.GetComponent<DraggableItem>();
-            // newDraggable.Setup(transferredCharacter);
-
-            // Debug.Log("Transferred: " + transferredCharacter.GetName());
         }
         else
         {
@@ -35,5 +29,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
 
             originalDraggable.parentAfterDrag = transform;
         }
+        SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_OnDrop);
     }
 }

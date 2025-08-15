@@ -29,6 +29,7 @@ public class Weapon : MonoBehaviour, IWeapon
             }
             bullet.transform.up = firepoint.up;
             nextFireTime = Time.time + (1f / fireRate);
+            SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Shoot);
         }
     }
 }

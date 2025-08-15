@@ -61,5 +61,6 @@ public class ResourceSystemModal : MonoBehaviour
     {
         // Currently set as 1
         playerService.SpendDrives(1);
+        SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
     }
 }
