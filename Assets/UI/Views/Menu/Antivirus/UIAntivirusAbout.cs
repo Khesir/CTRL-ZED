@@ -12,24 +12,40 @@ public class UIAntivirusAbout : MonoBehaviour
     public TMP_Text price;
     public TMP_Text description;
     public Button purchaseButon;
-    private AntiVirus instance;
-    public void Setup(AntiVirus effect)
+    private StatusEffectData instance;
+    public void Setup(StatusEffectData effect)
     {
         instance = effect;
-        title.text = effect.effectName;
-        price.text = effect.cost.ToString();
+        title.text = effect.title;
+        price.text = effect.price.ToString();
         description.text = effect.description;
         icon.sprite = effect.icon;
-        purchaseButon.onClick.RemoveAllListeners();
-        purchaseButon.onClick.AddListener(ActionButton);
+        var exists = GameManager.Instance.StatusEffectManager.IsThereExisitingBuffType(instance);
+
+        if (exists)
+        {
+            purchaseButon.interactable = false;
+        }
+        else
+        {
+            purchaseButon.interactable = true;
+            purchaseButon.onClick.RemoveAllListeners();
+            purchaseButon.onClick.AddListener(ActionButton);
+        }
+
+
     }
     public void ActionButton()
     {
-        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(instance.cost);
+        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(instance.price);
         if (res)
         {
-            Debug.Log("Activate Buff");
-            // instance.Apply();
+            SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
+            GameManager.Instance.StatusEffectManager.AddBuff(instance);
+        }
+        else
+        {
+            SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Error);
         }
     }
 }

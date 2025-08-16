@@ -5,14 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AntivirusDebuffEffect", menuName = "Status Effects/Antivirus/Enemy Debuff")]
 public class AntiVirusDebuffEffect : StatusEffect, IStatProvider
 {
-    [Header("Basic Info")]
-    public string buffID = "antivirus_id_000";
-    public string effectName = "Basic";
-    public string description = "-5% enemy speed, +5 HP/sec, +2 Dex";
-    public int cost = 500;
-    public float duration = 10f;
+    public override TargetType Target => TargetType.AllEnemies;
+
     [Header("Stat Modifiers")]
     [SerializeField] private List<StatModifierData> modifiers;
+
 
     public IEnumerable<StatModifier> GetModifiers()
     {

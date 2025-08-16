@@ -21,7 +21,7 @@ public class PlayerCombat : MonoBehaviour
         this.characterData = characterData;
 
         weaponHolder = GetComponentInChildren<WeaponHolder>();
-        weaponHolder.EquipWeapon(baseConfig.weapon);
+        weaponHolder.EquipWeapon(baseConfig.weapon, gameObject, SourceType.Player);
 
         skillHolder = GetComponentInChildren<SkillHolder>();
         skillHolder.skillUser = gameObject;

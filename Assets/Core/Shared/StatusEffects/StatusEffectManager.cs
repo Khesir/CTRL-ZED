@@ -1,16 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class StatusEffectManager : MonoBehaviour
 {
-    private readonly List<StatusEffectInstance> activeBuffs = new();
-
+    public List<StatusEffectInstance> activeBuffs;
+    public event Action onBuffChange;
+    public async UniTask Initialize()
+    {
+        activeBuffs = new();
+        await UniTask.CompletedTask;
+    }
     public void AddBuff(StatusEffectData data)
     {
-        StatusEffectInstance instance = new StatusEffectInstance(data, gameObject);
-        instance.Apply();
+        // Currently lacking a target to apply
+        StatusEffectInstance instance = new StatusEffectInstance(data);
         activeBuffs.Add(instance);
+        onBuffChange?.Invoke();
     }
     private void Update()
     {
@@ -23,6 +31,7 @@ public class StatusEffectManager : MonoBehaviour
                 activeBuffs.RemoveAt(i);
             }
         }
+        onBuffChange?.Invoke();
     }
     public void ClearAllBuffs()
     {
@@ -31,5 +40,32 @@ public class StatusEffectManager : MonoBehaviour
             buff.Remove();
         }
         activeBuffs.Clear();
+        onBuffChange.Invoke();
+    }
+    public List<StatusEffectInstance> GetAllStatusInstances()
+    {
+        return activeBuffs;
+    }
+    public bool IsStatusEffectAdded(StatusEffectData data)
+    {
+        foreach (var instance in activeBuffs)
+        {
+            if (instance.data.id == data.id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool IsThereExisitingBuffType(StatusEffectData data)
+    {
+        foreach (var instance in activeBuffs)
+        {
+            if (instance.data.buffType == data.buffType)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

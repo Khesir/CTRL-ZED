@@ -10,10 +10,11 @@ public class UIAntiVirusSection : MonoBehaviour
   [SerializeField] private UIAntivirusSelector uIAntivirusSelector;
   private void OnEnable()
   {
-    List<AntiVirus> antivirus = GameManager.Instance.AntiVirusManager.allBuffs;
+    List<StatusEffectData> antivirus = GameManager.Instance.AntiVirusManager.GetAllBuffs();
     uIAntivirusAbout.Setup(antivirus[0]);
     uIAntivirusSelector.Setup(uIAntivirusAbout, antivirus);
   }
+
   private void OnDisable()
   {
     uIAntivirusSelector.Clear();

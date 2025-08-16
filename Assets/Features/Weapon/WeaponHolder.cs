@@ -12,7 +12,7 @@ public class WeaponHolder : MonoBehaviour
     /// Instantiates the prefab, parents it to this transform, and initializes it.
     /// </summary>
     /// <param name="config">WeaponConfig containing prefab and stats</param>
-    public void EquipWeapon(WeaponConfig config)
+    public void EquipWeapon(WeaponConfig config, GameObject holder, SourceType type)
     {
         if (config == null || config.weaponPrefab == null)
         {
@@ -37,7 +37,7 @@ public class WeaponHolder : MonoBehaviour
             Destroy(weaponGO);
             return;
         }
-        currentWeapon.Initialize(config);
+        currentWeapon.Initialize(config, holder, type);
     }
     public void Fire()
     {

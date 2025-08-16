@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public CharacterManager CharacterManager { get; private set; }
     public AntiVirusManager AntiVirusManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
+    public StatusEffectManager StatusEffectManager;
+
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
     [SerializeField] private PlayerManager playerManager;
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerDataManager playerDataManager;
     [SerializeField] private AntiVirusManager antiVirusManager;
     [SerializeField] private LevelManager levelManager;
+    [SerializeField] private StatusEffectManager statusEffectManager;
     public bool isGameActive;
     public bool _isInitialized = false;
 
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
         TeamManager = teamManager;
         AntiVirusManager = antiVirusManager;
         LevelManager = levelManager;
+        StatusEffectManager = statusEffectManager;
         // Set Initial game state
         isGameActive = false;
 
@@ -56,4 +60,6 @@ public class GameManager : MonoBehaviour
         _isInitialized = true;
         await UniTask.CompletedTask;
     }
+    // Add a data processing on load for all systems
+    // Currently doing this in game initiator
 }

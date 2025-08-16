@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     public float lifetime = 5f;
     public float speed = 5;
     private Vector2 moveDirection;
+    public int damage;
     private void Awake()
     {
         if (rb == null)
@@ -34,7 +35,7 @@ public class Bullet : MonoBehaviour
 
         Destroy(gameObject);
 
-        var enemy = collision.gameObject.GetComponent<EnemyService>();
-        if (enemy != null) enemy.TakeDamage(100);
+        // var enemy = collision.gameObject.GetComponent<EnemyService>();
+        // if (enemy != null) enemy.TakeDamage();
     }
 }

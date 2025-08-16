@@ -97,7 +97,7 @@ public class EnemyService : MonoBehaviour, IStatHandler
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var player = collision.gameObject.GetComponent<PlayerGameplayService>();
-        if (player != null)
+        if (player != null && player.isControlled)
         {
             Debug.Log($"Enemy Dealt Damage to player {config.damage}");
             player.TakeDamage(config.damage);

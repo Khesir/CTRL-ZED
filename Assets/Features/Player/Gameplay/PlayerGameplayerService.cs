@@ -12,6 +12,7 @@ public class PlayerGameplayService : MonoBehaviour
     private PlayerCombat playerCombat;
     [SerializeField] private bool inputEnabled = false;
     [SerializeField] private bool isDead = false;
+    public bool isControlled = false;
 
     // Setting Dependencies
     public void SetCharacterData(CharacterBattleState data)
@@ -44,7 +45,9 @@ public class PlayerGameplayService : MonoBehaviour
     }
     public void SetInputEnabled(bool enabled)
     {
+        // This differenciates the controlled player and the manager
         inputEnabled = enabled;
+        isControlled = enabled;
     }
     void Update()
     {

@@ -10,17 +10,18 @@ public class VirusItem : MonoBehaviour
     public TMP_Text price;
     public Button button;
     public UIAntivirusAbout target;
-    private AntiVirus antiVirus;
-    public void Setup(AntiVirus effect)
+    private StatusEffectData antiVirus;
+    public void Setup(StatusEffectData effect)
     {
         antiVirus = effect;
-        plan.text = effect.effectName;
-        price.text = effect.cost.ToString();
+        plan.text = effect.title;
+        price.text = effect.price.ToString();
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ActionButton);
     }
     public void ActionButton()
     {
+        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Button);
         target.Setup(antiVirus);
     }
 

@@ -129,6 +129,7 @@ public class GameInitiator : MonoBehaviour
             GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
             await _gameStateManager.SetState(devState);
         }
+        Debug.Log("[GameInitiator] Game preparation (player State) complete.");
 
     }
     public async UniTask PrepareGame(SaveData saveData)
@@ -138,11 +139,11 @@ public class GameInitiator : MonoBehaviour
         await GameManager.Instance.TeamManager.Initialize(saveData.teams);
         await GameManager.Instance.AntiVirusManager.Initialize();
         await GameManager.Instance.LevelManager.Initialize();
+        await GameManager.Instance.StatusEffectManager.Initialize();
 
-        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
         if (generateTestData) GenerateTestData();
+        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
 
-        Debug.Log("[GameInitiator] Game preparation (player State) complete.");
         isFinished = true;
 
         await UniTask.CompletedTask;

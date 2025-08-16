@@ -1,17 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class StatusEffectInstance
 {
     public StatusEffectData data;
     public GameObject target;
     public float remainingTime;
 
-    public StatusEffectInstance(StatusEffectData data, GameObject target)
+    public StatusEffectInstance(StatusEffectData data)
     {
         this.data = data;
-        this.target = target;
         remainingTime = data.duration;
     }
     public void Apply()

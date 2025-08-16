@@ -7,10 +7,11 @@ using UnityEngine;
 public class AntiVirusManager : MonoBehaviour
 {
     public static AntiVirusManager Instance { get; private set; }
+
     [Header("Assigned via Inspector or Resources.Load")]
-    public List<AntiVirus> allBuffs = new();
-    public List<AntiVirus> items;
-    private Dictionary<string, AntiVirus> buffLookup;
+    [SerializeField] private List<StatusEffectData> allBuffs = new();
+
+    private Dictionary<string, StatusEffectData> buffLookup;
 
     private void Awake()
     {
@@ -22,17 +23,16 @@ public class AntiVirusManager : MonoBehaviour
     public async UniTask Initialize(int level = -1)
     {
         if (allBuffs.Count == 0)
-            allBuffs.AddRange(Resources.LoadAll<AntiVirus>("AntiVirusBuffs"));
+            allBuffs.AddRange(Resources.LoadAll<StatusEffectData>("StatusEffects/AntiVirusBuffs"));
 
         // Build lookup from filtered list
-        buffLookup = allBuffs.ToDictionary(buff => buff.buffID);
-
+        buffLookup = allBuffs.ToDictionary(buff => buff.id.ToString());
         Debug.Log("[AntiVirusManager] Anti-Virus Manager Initialized");
         await UniTask.CompletedTask;
     }
-    public AntiVirus GetBuffByID(string id)
+    public StatusEffectData GetBuffByID(string id)
     {
         return buffLookup.TryGetValue(id, out var data) ? data : null;
     }
-    public List<AntiVirus> GetAllBuffs() => allBuffs;
+    public List<StatusEffectData> GetAllBuffs() => allBuffs;
 }
