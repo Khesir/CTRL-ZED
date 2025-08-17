@@ -97,6 +97,21 @@ MonoBehaviour:
   - category: 3
     soundType: 17
     clip: {fileID: 8300000, guid: 97802e14e13ad8a458542df2d52a8b5f, type: 3}
+  - category: 4
+    soundType: 18
+    clip: {fileID: 8300000, guid: 7433286780d89a146ab4facdf9e46515, type: 3}
+  - category: 4
+    soundType: 22
+    clip: {fileID: 8300000, guid: 8049dd253cd3f4744a885a6368f1868b, type: 3}
+  - category: 4
+    soundType: 19
+    clip: {fileID: 8300000, guid: 6c0973a929450154bbf28c2d85b00733, type: 3}
+  - category: 4
+    soundType: 20
+    clip: {fileID: 8300000, guid: 2dab5d6d2376a2344814caf6e1338065, type: 3}
+  - category: 4
+    soundType: 21
+    clip: {fileID: 8300000, guid: 621095ee9b22c0e429078fcee3201987, type: 3}
 --- !u!82 &9146803516718525499
 AudioSource:
   m_ObjectHideFlags: 0

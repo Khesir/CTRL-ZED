@@ -17,6 +17,7 @@ public class OsExpTop : MonoBehaviour
 
         UpdateSlider();
         service.OnExpGained += UpdateSlider;
+        service.OnLevelUp += UpdateText;
     }
     public void UpdateSlider()
     {

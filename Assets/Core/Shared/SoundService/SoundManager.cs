@@ -90,13 +90,13 @@ public class SoundManager : MonoBehaviour
             src.volume = startVolume; // Reset for next use
         }
     }
-    public static async UniTask PlayLoopUntil(SoundCategory category, SoundType type, float duration)
+    public static async UniTask PlayLoopUntil(SoundCategory category, SoundType type, float duration, float volume = 0.3f)
     {
         // Lock category so nothing overrides it
         Instance.lockedCategories.Add(category);
 
         // Play music
-        PlaySound(category, type);
+        PlaySound(category, type, volume);
 
         // Wait for the duration
         await UniTask.Delay((int)(duration * 1000));

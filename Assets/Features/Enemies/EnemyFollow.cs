@@ -26,13 +26,13 @@ public class EnemyFollow : MonoBehaviour
     private Vector2 m_SeparationFore = Vector2.zero;
     public LayerMask ignoreLayer;
 
-    private EnemyConfig config;
+    private EnemyService service;
 
-    public void Initialize(EnemyConfig config)
+    public void Initialize(EnemyService service)
     {
-        this.config = config;
-
-        m_Speed = config.movementSpeed;
+        this.service = service;
+        var config = service.GetConfig();
+        m_Speed = service.GetSpeed();
         m_StopDistance = config.stopDistance;
         m_DetectionDistance = config.detectionRange;
 
@@ -130,20 +130,20 @@ public class EnemyFollow : MonoBehaviour
 
     private void MoveTowardsTarget()
     {
-        float effectiveSpeed = m_Speed * m_SlowMultiplier;
+        float effectiveSpeed = service.GetSpeed() * m_SlowMultiplier;
 
         m_direction = m_direction.normalized;
         var combinedDirection = (m_direction + m_SeparationFore).normalized;
-        Vector2 movement = combinedDirection * m_Speed * Time.deltaTime;
+        Vector2 movement = combinedDirection * effectiveSpeed * Time.deltaTime;
         rb.MovePosition(rb.position + movement);
 
-        m_MovementSpeedBlend = Mathf.Lerp(m_MovementSpeedBlend, 1, Time.deltaTime * m_Speed);
+        m_MovementSpeedBlend = Mathf.Lerp(m_MovementSpeedBlend, 1, Time.deltaTime * effectiveSpeed);
         // Animator blending here (optional)
     }
 
     private void StopMove()
     {
-        m_MovementSpeedBlend = Mathf.Lerp(m_MovementSpeedBlend, 0, Time.deltaTime * m_Speed);
+        m_MovementSpeedBlend = Mathf.Lerp(m_MovementSpeedBlend, 0, Time.deltaTime * service.GetSpeed());
         // Animator blending here (optional)
     }
 

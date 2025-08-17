@@ -5,14 +5,19 @@ using System.Collections.Generic;
 using System.Numerics;
 using Unity.VisualScripting;
 using Vector2 = UnityEngine.Vector2;
+using System.Linq;
 
-public class EnemyService : MonoBehaviour, IStatHandler
+public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
 {
     [SerializeField] private EnemyConfig config;
     [SerializeField] private GameObject lootDropPrefab;
     private float currentHP;
     private EnemyFollow follow;
     public bool isInitialized;
+
+    public bool isDead => currentHP <= 0;
+    private readonly List<IStatProvider> statProviders = new();
+
     public void Initialize(EnemyConfig config)
     {
         this.config = config;
@@ -26,16 +31,18 @@ public class EnemyService : MonoBehaviour, IStatHandler
         }
 
         follow = gameObject.GetComponent<EnemyFollow>();
-        follow.Initialize(config);
+        follow.Initialize(this);
         follow.target = GameplayManager.Instance.followerManager.GetCurrentTarget();
         GameplayManager.Instance.enemyManager.RegisterEnemy(this);
         isInitialized = true;
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, GameObject source = null)
     {
         SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
+        if (damage != -1) GameplayManager.Instance.damageNumberController.CreateNumber(damage, transform.position);
+
         currentHP -= damage;
-        if (currentHP <= 0)
+        if (isDead)
         {
             Die();
         }
@@ -99,18 +106,69 @@ public class EnemyService : MonoBehaviour, IStatHandler
         var player = collision.gameObject.GetComponent<PlayerGameplayService>();
         if (player != null && player.isControlled)
         {
-            Debug.Log($"Enemy Dealt Damage to player {config.damage}");
-            player.TakeDamage(config.damage);
+            Debug.Log($"Enemy Dealt Damage to player {GetAttack()}");
+            player.TakeDamage(GetAttack());
         }
     }
     // Appy Buffs and Debuff
-    public void AddStatProvider(IStatProvider provider)
+    // -- IStatHanlder
+    public void AddStatProvider(IStatProvider provider) => statProviders.Add(provider);
+    public void RemoveStatProvider(IStatProvider provider) => statProviders.Remove(provider);
+    private float ApplyModifiers(string statId, float basevalue)
     {
-        throw new System.NotImplementedException();
-    }
+        var modifiers = new List<StatModifier>();
+        foreach (var provider in statProviders)
+        {
+            modifiers.AddRange(provider.GetModifiers().Where(m => m.statId == statId));
+        }
+        modifiers.Sort((a, b) => a.priority.CompareTo(b.priority));
 
-    public void RemoveStatProvider(IStatProvider provider)
-    {
-        throw new System.NotImplementedException();
+        float flat = 0;
+        float percentAdd = 0;
+        float percentMult = 1f;
+
+        foreach (var mod in modifiers)
+        {
+            switch (mod.type)
+            {
+                case ModifierType.Flat: flat += mod.value; break;
+                case ModifierType.PercentAdd: percentAdd += mod.value; break;
+                case ModifierType.PercentMult: percentMult *= 1 + mod.value; break;
+            }
+        }
+        return (basevalue + flat) * (1 + percentAdd) * percentMult;
     }
+    // Derived Stats
+    public int GetAttack() => Mathf.RoundToInt(ApplyModifiers("ATK", config.baseDamage + (config.difficultyMultiplier * 2)));
+    public int GetDefense() => Mathf.RoundToInt(ApplyModifiers("DEF", config.defense + (config.difficultyMultiplier * 1.5f)));
+    public int GetDexterity() => Mathf.RoundToInt(ApplyModifiers("DEX", config.dex));
+    public int GetMaxHealth() => Mathf.RoundToInt(ApplyModifiers("HP", config.maxHealth + (config.difficultyMultiplier * 10)));
+    public int GetSpeed() => Mathf.RoundToInt(ApplyModifiers("SPD", config.dex));
+    public Dictionary<string, int> GetStatMap()
+    {
+        return new()
+        {
+            { "ATK", GetAttack() },
+            { "DEF", GetDefense() },
+            { "DEX", GetDexterity() },
+            { "HP", GetMaxHealth() },
+            { "SPD", GetSpeed() }
+        };
+    }
+    public float GetStat(string id)
+    {
+        switch (id)
+        {
+            case "ATK":
+                return GetAttack();
+            case "DEF":
+                return GetDefense();
+            case "DEX":
+                return GetDexterity();
+            case "HP":
+                return GetMaxHealth();
+        }
+        return -1;
+    }
+    public EnemyConfig GetConfig() => config;
 }

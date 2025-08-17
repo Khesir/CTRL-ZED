@@ -23,17 +23,9 @@ public class Enemy : MonoBehaviour
     }
     public void TakeDamage(float damage = -1, bool notPlayer = false)
     {
-        // Add damage logic
-        // hp -= damage;
-        if (damage != -1) GameplayManager.Instance.damageNumberController.CreateNumber(damage, transform.position);
         Destroy(gameObject);
         GameplayManager.Instance.squadLevelManager.GetExperience(experienceToGive);
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
-        // if (!notPlayer) GameplayManager.Instance.spawner.ReportKill(1);
-        // if (hp <= 0 || damage == -1)
-        // {
-
-        // }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {

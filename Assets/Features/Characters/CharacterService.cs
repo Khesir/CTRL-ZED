@@ -10,6 +10,9 @@ public class CharacterService : IStatHandler
     private readonly List<IStatProvider> statProviders = new();
     public event Action onLevelUp;
     public event Action onStatChange;
+    // (Optional) dictionary if you want expandable stat system
+    private Dictionary<int, float> baseStats = new Dictionary<int, float>();
+
     public CharacterService(CharacterData character)
     {
         _data = character;
@@ -20,6 +23,8 @@ public class CharacterService : IStatHandler
     public int GetLevel() => _data.currentLevel;
     public string GetID() => _data.id;
     public CharacterConfig GetInstance() => _data.baseData;
+
+    // modifier effects not for gameplay effect
     public void AddStatProvider(IStatProvider provider)
     {
         statProviders.Add(provider);
@@ -94,6 +99,21 @@ public class CharacterService : IStatHandler
             { "HP", GetMaxHealth() }
         };
     }
+    public float GetStat(string id)
+    {
+        switch (id)
+        {
+            case "ATK":
+                return GetAttack();
+            case "DEF":
+                return GetDefense();
+            case "DEX":
+                return GetDexterity();
+            case "HP":
+                return GetMaxHealth();
+        }
+        return -1;
+    }
     public Dictionary<string, float> GetDeploymentCost()
     {
         // Deployment cost multipler change
@@ -132,6 +152,8 @@ public class CharacterService : IStatHandler
     {
         return _data.assignedTeam.Contains(teamIndex);
     }
+
+
     #endregion
 
 }

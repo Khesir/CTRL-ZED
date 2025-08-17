@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGameplayService : MonoBehaviour
+public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
 {
     [SerializeField] private CharacterBattleState characterData;
     [SerializeField] private Rigidbody2D rb;
@@ -11,19 +11,10 @@ public class PlayerGameplayService : MonoBehaviour
     private PlayerDash playerDash;
     private PlayerCombat playerCombat;
     [SerializeField] private bool inputEnabled = false;
-    [SerializeField] private bool isDead = false;
     public bool isControlled = false;
 
-    // Setting Dependencies
-    public void SetCharacterData(CharacterBattleState data)
-    {
-        characterData = data;
-    }
-    public void SetInputService(IInputService data)
-    {
-        // We can now change input Service based on scene
-        inputService = data;
-    }
+    public bool isDead => characterData.isDead;
+
     public void Initialize()
     {
         // For now Its we'll pass the characterGameState rather than passing just the needed value.
@@ -63,6 +54,17 @@ public class PlayerGameplayService : MonoBehaviour
         playerCombat.TickUpdate();
         playerCombat.HandleSkillInput();
     }
+
+    // Setting Dependencies
+    public void SetCharacterData(CharacterBattleState data)
+    {
+        characterData = data;
+    }
+    public void SetInputService(IInputService data)
+    {
+        // We can now change input Service based on scene
+        inputService = data;
+    }
     public void TakeDamage(float val, GameObject source = null) => playerCombat.TakeDamage(val, source);
     public void HandleDeath()
     {
@@ -76,7 +78,6 @@ public class PlayerGameplayService : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Static;
         }
 
-        isDead = true;
         gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
         gameObject.layer = LayerMask.NameToLayer("Dead");
         // Character Switching Logic
@@ -103,4 +104,11 @@ public class PlayerGameplayService : MonoBehaviour
     public bool IsDead() => isDead;
     public string GetCharacterID() => characterData.data.GetID();
     public CharacterBattleState GetCharacterState() => characterData;
+
+    public void AddStatProvider(IStatProvider provider) =>
+        characterData.AddStatProvider(provider);
+
+    public void RemoveStatProvider(IStatProvider provider) =>
+        characterData.RemoveStatProvider(provider);
+    public float GetStat(string statId) => characterData.GetStat(statId);
 }

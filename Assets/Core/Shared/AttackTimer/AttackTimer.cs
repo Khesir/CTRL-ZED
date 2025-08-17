@@ -46,7 +46,7 @@ public class AttackTimer : MonoBehaviour
     }
     public void SetupTimer(float timeLimit)
     {
-        timer = timeLimit;
+        this.timeLimit = timeLimit;
     }
     public void SetupAttackTimerDmaage(float min, float max)
     {

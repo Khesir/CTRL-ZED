@@ -18,8 +18,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
     - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
     spawntTimer: 10
-    spawnInterval: 0.2
-    attackTimer: 50
+    spawnInterval: 2
+    attackTimer: 10
     minAttackTimerDamage: 10
     maxAttackTimerDamage: 50
     requiredKills: 50
@@ -44,7 +44,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
     - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
     spawntTimer: 10
-    spawnInterval: 0.01
+    spawnInterval: 2
     attackTimer: 50
     minAttackTimerDamage: 10
     maxAttackTimerDamage: 50

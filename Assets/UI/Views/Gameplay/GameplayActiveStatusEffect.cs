@@ -25,7 +25,7 @@ public class GameplayActiveStatusEffect : MonoBehaviour
     }
     private void Clear()
     {
-        foreach (Transform child in this.gameObject.transform)
+        foreach (Transform child in gameObject.transform)
         {
             Destroy(child.gameObject);
         }

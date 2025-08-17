@@ -25,11 +25,11 @@ public class Weapon : MonoBehaviour, IWeapon
     {
         if (Time.time >= nextFireTime && bulletPrefab != null && firepoint != null)
         {
-
             GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
             // Damage Calculation
+            var mod = source.GetComponent<IStatHandler>();
             var bulletConfig = bullet.GetComponent<Bullet>();
-
+            bulletConfig.damage = mod.GetStat("ATK");
 
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)

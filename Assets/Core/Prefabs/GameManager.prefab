@@ -36,6 +36,7 @@ Transform:
   - {fileID: 8349123654043826930}
   - {fileID: 6538682494236106910}
   - {fileID: 2158705226252471680}
+  - {fileID: 3124444537822032983}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8634881365983257610
@@ -50,14 +51,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f15968111cd2a46a5b38d196c725d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StatusEffectManager: {fileID: 0}
   characterManager: {fileID: 6092448247830112212}
   playerManager: {fileID: 4763567265307021909}
   teamManager: {fileID: 1943364294108916775}
   playerDataManager: {fileID: 8233345103251920072}
   antiVirusManager: {fileID: 6569857886064796666}
   levelManager: {fileID: 5983524649365789482}
+  statusEffectManager: {fileID: 2408354721527269700}
   isGameActive: 0
   _isInitialized: 0
+--- !u!1 &2502258062086066290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3124444537822032983}
+  - component: {fileID: 2408354721527269700}
+  m_Layer: 0
+  m_Name: StatusEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3124444537822032983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502258062086066290}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -673.4248, y: -269.55496, z: 3.2150764}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5085772519395795836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2408354721527269700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502258062086066290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb7cef220c84ee4a9884d60cd32edcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeBuffs: []
 --- !u!1 &2705661482474968949
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allBuffs: []
-  items: []
 --- !u!1 &6478655527155264144
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +499,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bd766963e62d04da1788b55a77d025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: /save/player
 --- !u!1 &7565599978997459261
 GameObject:
   m_ObjectHideFlags: 0
