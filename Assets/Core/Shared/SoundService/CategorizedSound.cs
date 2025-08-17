@@ -25,9 +25,9 @@ public enum SoundType
     Gameplay_Collect,
     Gameplay_Damage,
     Gameplay_Explosion,
-    Gameplay_Immune,
+    Status_Immune,
 }
-public enum SoundCategory { UI, Coins, Team, BGM, Gameplay }
+public enum SoundCategory { UI, Coins, Team, BGM, Gameplay, Status, Effects }
 [System.Serializable]
 public struct CategorizedSound
 {

@@ -52,16 +52,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public static void PlaySound(SoundCategory category, SoundType type, float volume = 1f)
+    public static void PlaySound(SoundCategory category, SoundType type, float volume = 1f, bool loop = false)
     {
         if (Instance.categoryMap.TryGetValue(category, out var typeDict) &&
             typeDict.TryGetValue(type, out var clip) && clip != null)
         {
             AudioSource src = Instance.categorySources[category];
 
-            if (category == SoundCategory.BGM)
+            if (category == SoundCategory.BGM || category == SoundCategory.Status || loop)
             {
                 src.clip = clip;
+                src.loop = loop;
                 src.volume = volume;
                 src.Play();
             }
@@ -92,19 +93,13 @@ public class SoundManager : MonoBehaviour
     }
     public static async UniTask PlayLoopUntil(SoundCategory category, SoundType type, float duration, float volume = 0.3f)
     {
-        // Lock category so nothing overrides it
-        Instance.lockedCategories.Add(category);
-
-        // Play music
-        PlaySound(category, type, volume);
+        // Play loop
+        PlaySound(category, type, volume, loop: true);
 
         // Wait for the duration
         await UniTask.Delay((int)(duration * 1000));
 
-        // Unlock category
-        Instance.lockedCategories.Remove(category);
-
-        // Fade out now that lock is released
+        // Fade out
         await FadeOutCategory(category, 1f);
     }
 }

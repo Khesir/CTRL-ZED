@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     public ResourceUI resourceUI;
     public RepairComponent repairComponent;
     public DrivesMenuComponent drivesMenuComponent;
+    public DeployTeamController deployTeamController;
     public bool isGameActive;
     public bool _isInitialized = false;
     private void Awake()
@@ -49,6 +50,7 @@ public class MenuManager : MonoBehaviour
         resourceUI.Setup();
         repairComponent.Setup();
         drivesMenuComponent.Setup();
+        deployTeamController.Setup();
     }
     private void PlayMusic()
     {
