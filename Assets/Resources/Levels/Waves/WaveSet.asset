@@ -17,12 +17,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 86bab569df7e65a4b8245d62901e35a8, type: 2}
     - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
     - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
-    spawntTimer: 10
-    spawnInterval: 2
+    spawntTimer: 100
+    spawnInterval: 0.5
     attackTimer: 10
-    minAttackTimerDamage: 10
-    maxAttackTimerDamage: 50
-    requiredKills: 5
+    minAttackTimerDamage: 5
+    maxAttackTimerDamage: 10
+    requiredKills: 50
     waveRewards:
     - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
       amount: 1000
@@ -43,12 +43,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 86bab569df7e65a4b8245d62901e35a8, type: 2}
     - {fileID: 11400000, guid: 14903e3a44006c4468cfcb9bc83a85ea, type: 2}
     - {fileID: 11400000, guid: 67eb4629d31d5724e8b03fe0bdf3cf53, type: 2}
-    spawntTimer: 10
-    spawnInterval: 2
+    spawntTimer: 100
+    spawnInterval: 0.5
     attackTimer: 50
-    minAttackTimerDamage: 10
-    maxAttackTimerDamage: 50
-    requiredKills: 5
+    minAttackTimerDamage: 5
+    maxAttackTimerDamage: 10
+    requiredKills: 50
     waveRewards:
     - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
       amount: 500

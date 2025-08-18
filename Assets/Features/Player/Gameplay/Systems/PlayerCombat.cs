@@ -39,8 +39,13 @@ public class PlayerCombat : MonoBehaviour
         HandleImmunity();
         if (input != null && input.IsFirePressed())
         {
-            weaponHolder.Fire();
+            HandleTrigger();
         }
+    }
+    public void HandleTrigger()
+    {
+        weaponHolder.Fire();
+
     }
     public void HandleSkillInput()
     {

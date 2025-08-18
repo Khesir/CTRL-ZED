@@ -49,6 +49,7 @@ public class FollowerSpawn : MonoBehaviour
             // Injects character data to player service
             instance.GetComponent<PlayerGameplayService>().SetCharacterData(data);
             followers.Add(follower);
+            follower.Initialize();
         }
         Debug.Log($"[FollowerSpawn] Successfully Spawned over {followers.Count + 1} followers");
         return followers;

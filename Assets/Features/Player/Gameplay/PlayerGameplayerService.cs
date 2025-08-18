@@ -111,4 +111,8 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
     public void RemoveStatProvider(IStatProvider provider) =>
         characterData.RemoveStatProvider(provider);
     public float GetStat(string statId) => characterData.GetStat(statId);
+    public void Fire()
+    {
+        playerCombat.HandleTrigger();
+    }
 }
