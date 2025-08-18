@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
+[Serializable]
 public class CharacterData
 {
     public string id;

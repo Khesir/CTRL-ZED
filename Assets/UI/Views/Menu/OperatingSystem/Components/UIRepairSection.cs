@@ -22,6 +22,10 @@ public class UIRepairSection : MonoBehaviour
         UpdateData();
         instance.OnHealthChanged += UpdateData;
     }
+    public void OnDisable()
+    {
+        instance.OnHealthChanged -= UpdateData;
+    }
     public void UpdateData()
     {
         float healthPerCoin = instance.GetHealthPerCoin();

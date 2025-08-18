@@ -29,6 +29,7 @@ public class WaveManager : MonoBehaviour
     {
         if (waveIndex >= waveConfigs.Count)
         {
+            GameplayManager.Instance.enemyManager.KillAllEnemies(true);
             Debug.Log("[WaveManager] All waves completed.");
             GameplayManager.Instance.gameplayUI.PushMessage("All Waves Cleared!");
             return;

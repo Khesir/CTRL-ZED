@@ -26,7 +26,7 @@ public class DeployedTeamComponent : MonoBehaviour
             }
             else
             {
-                icons[i].GetComponent<Image>().sprite = members[i].GetInstance().ship;
+                icons[i].GetComponent<Image>().sprite = members[i].baseData.ship;
             }
         }
         title.text = service.GetTeamName();

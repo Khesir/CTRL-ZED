@@ -23,6 +23,10 @@ public class GameplayActiveStatusEffect : MonoBehaviour
             img.sprite = buff.data.icon;
         }
     }
+    public void OnDestroy()
+    {
+        GameManager.Instance.StatusEffectManager.onBuffChange -= UpdateUI;
+    }
     private void Clear()
     {
         foreach (Transform child in gameObject.transform)

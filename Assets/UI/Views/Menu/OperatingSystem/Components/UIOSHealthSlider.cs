@@ -16,6 +16,10 @@ public class UIOSHealthSlider : MonoBehaviour
         UpdateSlider();
         instance.OnExpGained += UpdateSlider;
     }
+    public void OnDisable()
+    {
+        instance.OnExpGained -= UpdateSlider;
+    }
     public void UpdateSlider()
     {
         hpslider.maxValue = instance.GetMaxHealth();

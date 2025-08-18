@@ -11,7 +11,7 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
 
         GameObject dropped = eventData.pointerDrag;
         DraggableItem originalDraggable = dropped.GetComponent<DraggableItem>();
-        CharacterService transferredCharacter = originalDraggable.instance;
+        CharacterData transferredCharacter = originalDraggable.instance;
         var manager = GameManager.Instance.TeamManager;
         if (originalDraggable.isExternal)
         {

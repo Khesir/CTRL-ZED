@@ -9,16 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22ba0142519ab5042bb90a229a816e78, type: 3}
-  m_Name: Debuff
+  m_Script: {fileID: 11500000, guid: 9c99027f406d54941a98d8b7e3de61ee, type: 3}
+  m_Name: Effect
   m_EditorClassIdentifier: 
-  buffID: antivirus_id_000
-  effectName: Basic
-  description: -5% enemy speed, +5 HP/sec, +2 Dex
-  cost: 500
-  duration: 10
   modifiers:
-  - statId: enemy speed
-    value: -0.05
-    type: 1
+  - statId: HPRGN
+    targetStat: 2
+    value: 10
+    type: 0
+    priority: 100
+  - statId: DEX
+    targetStat: 2
+    value: 4
+    type: 0
+    priority: 100
+  - statId: SPD
+    targetStat: 0
+    value: -0.1
+    type: 0
     priority: 100

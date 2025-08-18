@@ -16,6 +16,10 @@ public class ResourceSection : MonoBehaviour
         UpdateText();
         service.OnResourceChange += UpdateText;
     }
+    public void OnDestroy()
+    {
+        service.OnResourceChange -= UpdateText;
+    }
     private void UpdateText()
     {
         ResourceFood.text = service.GetFood().ToString();

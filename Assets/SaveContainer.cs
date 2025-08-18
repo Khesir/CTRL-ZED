@@ -9,11 +9,14 @@ public class SaveContainer : MonoBehaviour
 {
     public GameObject nullState;
     public GameObject normalState;
-    private SaveData data;
-    private int index;
+    [SerializeField] private SaveData data;
+    [SerializeField] private int index;
+    [SerializeField] private Button deleteButton;
 
     [Header("Debug GO -- Don't Touch")]
     [SerializeField] private TMP_Text information;
+
+    [SerializeField] private TMP_Text title;
     [SerializeField] private Button actionButton;
     public void Initialize(SaveData data, int index)
     {
@@ -36,6 +39,9 @@ public class SaveContainer : MonoBehaviour
             information = normalState
                 .GetComponentsInChildren<TMP_Text>(true)
                 .FirstOrDefault(t => t.gameObject.name == "Information");
+            title = normalState
+                           .GetComponentsInChildren<TMP_Text>(true)
+                           .FirstOrDefault(t => t.gameObject.name == "Title");
 
             if (information != null)
             {
@@ -52,7 +58,14 @@ public class SaveContainer : MonoBehaviour
             {
                 Debug.LogWarning("No TMP_Text found with tag 'MyTextTag'.");
             }
-
+            if (title != null)
+            {
+                title.text = $"Save {index + 1}";
+            }
+            else
+            {
+                Debug.LogWarning("No TMP_Text found with tag 'MyTextTag'.");
+            }
             actionButton = normalState.GetComponentInChildren<Button>(true);
         }
 
@@ -64,6 +77,11 @@ public class SaveContainer : MonoBehaviour
         }
 
         Debug.Log("Save Slots Container Generated");
+        if (data != null)
+        {
+            deleteButton.onClick.RemoveAllListeners();
+            deleteButton.onClick.AddListener(DeleteSlot);
+        }
     }
 
     private async void OnActionButtonClicked()
@@ -73,14 +91,19 @@ public class SaveContainer : MonoBehaviour
         if (data == null)
         {
             var saveData = new SaveData();
+            GameManager.Instance.PlayerDataManager.LoadPlayerData(index, saveData);
             GameManager.Instance.PlayerDataManager.SaveToSlot(index, saveData);
             await GameInitiator.Instance.PrepareGame(saveData);
         }
         else
         {
+            GameManager.Instance.PlayerDataManager.LoadPlayerData(index, data);
             await GameInitiator.Instance.PrepareGame(data);
-            GameInitiator.Instance.SwitchStates(GameState.MainMenu);
         }
-
+        GameInitiator.Instance.SwitchStates(GameState.MainMenu);
+    }
+    public void DeleteSlot()
+    {
+        GameManager.Instance.PlayerDataManager.DeleteSlot(index);
     }
 }

@@ -15,6 +15,10 @@ public class RepairComponent : MonoBehaviour
         UpdateSlider();
         service.OnHealthChanged += UpdateSlider;
     }
+    public void OnDisable()
+    {
+        service.OnHealthChanged -= UpdateSlider;
+    }
     public void UpdateSlider()
     {
         int maxValue = (int)service.GetMaxHealth();

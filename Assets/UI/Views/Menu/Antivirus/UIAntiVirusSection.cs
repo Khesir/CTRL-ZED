@@ -21,6 +21,7 @@ public class UIAntiVirusSection : MonoBehaviour
 
   private void OnDisable()
   {
+    GameManager.Instance.PlayerManager.playerService.OnCoinsChange -= UpdateCurrency;
     uIAntivirusSelector.Clear();
   }
   private void UpdateCurrency()

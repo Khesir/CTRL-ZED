@@ -19,6 +19,11 @@ public class OsExpTop : MonoBehaviour
         service.OnExpGained += UpdateSlider;
         service.OnLevelUp += UpdateText;
     }
+    public void OnDestroy()
+    {
+        service.OnExpGained -= UpdateSlider;
+        service.OnLevelUp -= UpdateText;
+    }
     public void UpdateSlider()
     {
         int maxValue = (int)service.GetRequiredExp();

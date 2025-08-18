@@ -11,14 +11,22 @@ public class TeamManager : MonoBehaviour
     [SerializeField] private int maxSize;
     public int increaseSizePrice;
     public event Action onTeamChange;
-
+    public List<Team> ownedTeam;
     public async UniTask Initialize(List<Team> teams, int maxSize = 1, int increaseSizePrice = 10000)
     {
+        ownedTeam = teams;
         this.maxSize = maxSize;
         this.increaseSizePrice = increaseSizePrice;
         foreach (var team in teams)
         {
             this.teams.Add(new TeamService(team));
+        }
+        foreach (var team in this.teams)
+        {
+            if (team.GetData().isActiveTeam)
+            {
+                activeTeam.Add(team);
+            }
         }
         Debug.Log("[TeamManager] Player Manager Initialized");
         await UniTask.CompletedTask;
@@ -42,6 +50,7 @@ public class TeamManager : MonoBehaviour
         {
             var newTeam = new TeamService();
             teams.Add(newTeam);
+            ownedTeam.Add(newTeam.GetData()); // Save to SaveData reference for saving
             onTeamChange?.Invoke();
             return newTeam.teamID;
         }
@@ -74,6 +83,7 @@ public class TeamManager : MonoBehaviour
                 return;
             }
         }
+        selectedTeam.GetData().isActiveTeam = true;
         activeTeam.Add(selectedTeam);
         onTeamChange?.Invoke();
         Debug.Log($"{selectedTeam.teamID} Team set as active team");
@@ -92,6 +102,7 @@ public class TeamManager : MonoBehaviour
         if (exists)
         {
             activeTeam.Remove(selectedTeam);
+            selectedTeam.GetData().isActiveTeam = false;
             onTeamChange?.Invoke();
             Debug.Log($"{selectedTeam.teamID} Team set as active team");
         }
@@ -111,7 +122,7 @@ public class TeamManager : MonoBehaviour
         }
         return null;
     }
-    public Response<object> isCharacterInTeam(string teamId, CharacterService character)
+    public Response<object> isCharacterInTeam(string teamId, CharacterData character)
     {
         var team = GetTeam(teamId);
         if (team.GetMembers().Contains(character))
@@ -120,7 +131,7 @@ public class TeamManager : MonoBehaviour
         }
         return Response.Success("Character Available");
     }
-    public void AssignedCharacterToSlot(string teamId, int slotIndex, CharacterService character)
+    public void AssignedCharacterToSlot(string teamId, int slotIndex, CharacterData character)
     {
         if (character == null || !GameManager.Instance.CharacterManager.GetCharacters().Contains(character))
         {
@@ -161,7 +172,7 @@ public class TeamManager : MonoBehaviour
             return Response.Fail("Something went wrong clearly");
         }
     }
-    public bool RemoveCharacterFromTeamByReference(string teamId, CharacterService character)
+    public bool RemoveCharacterFromTeamByReference(string teamId, CharacterData character)
     {
         var team = GetTeam(teamId);
         if (team == null)

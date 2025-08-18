@@ -90,10 +90,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4e9c488033df92d489e54e2562a7c3d8, type: 3}
   - category: 3
     soundType: 15
-    clip: {fileID: 8300000, guid: 8383abfbe5aed5543bbe1313aecc042f, type: 3}
+    clip: {fileID: 8300000, guid: 360cbc837ae576b4480389fbc4a16e20, type: 3}
   - category: 3
     soundType: 16
-    clip: {fileID: 8300000, guid: 355984b4a699ffd49b112363d4f3ba1d, type: 3}
+    clip: {fileID: 8300000, guid: bd37c2fe623bcda488d994f4f2b4e5c0, type: 3}
   - category: 3
     soundType: 17
     clip: {fileID: 8300000, guid: 97802e14e13ad8a458542df2d52a8b5f, type: 3}

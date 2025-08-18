@@ -22,7 +22,7 @@ MonoBehaviour:
     attackTimer: 10
     minAttackTimerDamage: 10
     maxAttackTimerDamage: 50
-    requiredKills: 50
+    requiredKills: 5
     waveRewards:
     - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
       amount: 1000
@@ -48,7 +48,7 @@ MonoBehaviour:
     attackTimer: 50
     minAttackTimerDamage: 10
     maxAttackTimerDamage: 50
-    requiredKills: 50
+    requiredKills: 5
     waveRewards:
     - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
       amount: 500

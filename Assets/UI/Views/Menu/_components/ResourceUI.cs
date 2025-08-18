@@ -16,6 +16,10 @@ public class ResourceUI : MonoBehaviour
         UpdateText();
         service.OnResourceChange += UpdateText;
     }
+    public void OnDisable()
+    {
+        service.OnResourceChange -= UpdateText;
+    }
     private void UpdateText()
     {
         ResourceFood.text = service.GetFood().ToString();

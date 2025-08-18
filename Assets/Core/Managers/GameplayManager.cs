@@ -65,8 +65,8 @@ public class GameplayManager : MonoBehaviour
     public async UniTask Setup()
     {
         List<TeamService> team = GameManager.Instance.TeamManager.GetActiveTeam();
-        List<CharacterService> members = team[0].GetMembers();
-        List<CharacterBattleState> battleStates = members.Select(m => new CharacterBattleState(m)).ToList();
+        List<CharacterData> members = team[0].GetMembers();
+        List<CharacterBattleState> battleStates = members.Select(m => new CharacterBattleState(new CharacterService(m))).ToList();
 
         List<GameObject> GO = followerManager.Initialize(battleStates);
         playerGameplayManager.Initialize(GO, inputService);

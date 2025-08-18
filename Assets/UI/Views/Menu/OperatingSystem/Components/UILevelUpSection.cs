@@ -22,6 +22,10 @@ public class UILevelUpSection : MonoBehaviour
         button.onClick.AddListener(Levelup);
         instance.OnExpGained += UpdateData;
     }
+    public void OnDisable()
+    {
+        instance.OnExpGained -= UpdateData;
+    }
     private void UpdateData()
     {
         int currentExp = instance.GetCurrentExp();

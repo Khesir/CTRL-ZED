@@ -83,9 +83,17 @@ public class LevelInformationModal : MonoBehaviour
         var members = activeTeam[0].GetMembers();
         var totalDeploymentCost = new Dictionary<string, float>();
 
-        foreach (CharacterService character in members)
+        foreach (CharacterData character in members)
         {
-            var cost = character.GetDeploymentCost();
+            float multiplier = Mathf.Pow(1.2f, character.currentLevel - 1);
+
+            var cost = new Dictionary<string, float>{
+                    {"Food", character.baseData.food * multiplier },
+                    {"Technology", character.baseData.technology * multiplier},
+                    {"Energy", character.baseData.energy * multiplier},
+                    {"Intelligence", character.baseData.intelligence* multiplier}
+                };
+
             foreach (var kvp in cost)
             {
                 if (totalDeploymentCost.ContainsKey(kvp.Key))

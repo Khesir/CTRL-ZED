@@ -8,6 +8,15 @@ public class SaveLoader : MonoBehaviour
     public Transform container;
     void OnEnable()
     {
+        Refresh();
+        SaveSystem.onSaveAction += Refresh;
+    }
+    void OnDisable()
+    {
+        SaveSystem.onSaveAction -= Refresh;
+    }
+    private void Refresh()
+    {
         ClearContainer();
 
         var saves = GameManager.Instance.PlayerDataManager.loadedSlots;
@@ -20,7 +29,6 @@ public class SaveLoader : MonoBehaviour
             saveContainer.Initialize(saves[i], i);
         }
     }
-
     private void ClearContainer()
     {
         foreach (Transform child in container)

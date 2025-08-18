@@ -17,9 +17,12 @@ public class CompleteScreenUI : MonoBehaviour
     public TMP_Text ResourceIntelligence;
 
     public TMP_Text ResourceCoins;
+    public bool isTriggered = false;
     // Include resources plundered during battle
     public void Complete(string type, bool complete, string team = "")
     {
+        // Pause the world
+
         switch (type)
         {
             case "os":
@@ -50,9 +53,11 @@ public class CompleteScreenUI : MonoBehaviour
         manager.AddCoins(lootHolder.GetLoot(ItemType.Coins));
 
         animator.SetTrigger("Complete");
+        isTriggered = true;
     }
     public void BackToMainMenu()
     {
+        if (!isTriggered) return;
         Debug.Log("Going Back to mainmenu");
         GameInitiator.Instance.SwitchStates(GameState.MainMenu);
     }

@@ -15,6 +15,10 @@ public class OSExpSlider : MonoBehaviour
         UpdateSlider();
         instance.OnExpGained += UpdateSlider;
     }
+    public void OnDisable()
+    {
+        instance.OnExpGained -= UpdateSlider;
+    }
     public void UpdateSlider()
     {
         int maxValue = (int)instance.GetRequiredExp();

@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a5d17ce192b7da4582f18912dbf130f, type: 3}
-  m_Name: StatusEffect_AntiVirus_Basic
+  m_Name: StatusEffect_AntiVirus_Enchanced
   m_EditorClassIdentifier: 
-  id: 0
-  icon: {fileID: 21300000, guid: 7a01d41ad1c480941824218ce6322db5, type: 3}
-  title: Basic
-  description: -5% enemy speed, +5 HP/sec, +2 Dex
-  price: 500
+  id: 1
+  icon: {fileID: 21300000, guid: 2716310a21fcc6647bc162393486181b, type: 3}
+  title: Enchanced
+  description: -10% enemy speed, +10 HP/sec, +4 Dex
+  price: 1500
   sourceType: 0
   durationType: 2
   duration: 0
   effects:
-  - {fileID: 11400000, guid: 5d60ccf3c37b8b14f97ab177e5ed4788, type: 2}
-  - {fileID: 11400000, guid: 959931befa8330546847cd8dfc31c528, type: 2}
+  - {fileID: 11400000, guid: 78259aec2219e4741b03ad4312b1b06c, type: 2}
   effectScope: 0
   buffType: 0

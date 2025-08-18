@@ -35,7 +35,7 @@ public class ResourceSystemModal : MonoBehaviour
     private void OnDisable()
     {
         playerService.OnCoinsChange -= UpdateText;
-        playerService.OnSpendDrives += UpdateCost;
+        playerService.OnSpendDrives -= UpdateCost;
     }
     private void UpdateText()
     {

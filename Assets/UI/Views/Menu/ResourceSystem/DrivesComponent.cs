@@ -15,6 +15,10 @@ public class DrivesComponent : MonoBehaviour
         UpdateText();
         service.OnSpendDrives += UpdateText;
     }
+    public void OnDisable()
+    {
+        service.OnSpendDrives -= UpdateText;
+    }
     public void UpdateText()
     {
         usable.text = service.GetDrives().ToString();

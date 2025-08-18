@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a5d17ce192b7da4582f18912dbf130f, type: 3}
-  m_Name: StatusEffect_AntiVirus_Enchanced
+  m_Name: StatusEffect_AntiVirus_Advance
   m_EditorClassIdentifier: 
   id: 2
-  icon: {fileID: 21300000, guid: 2716310a21fcc6647bc162393486181b, type: 3}
-  title: Enchanced
-  description: -5% enemy speed, +5 HP/sec, +2 Dex
-  price: 500
+  icon: {fileID: 21300000, guid: 45fd7eeb8f206e9438aeecf30d491d55, type: 3}
+  title: Advance
+  description: -15% enemy speed, +15 HP/sec, +6 Dex
+  price: 3000
   sourceType: 0
   durationType: 2
   duration: 0
   effects:
-  - {fileID: 11400000, guid: 0f008ccc0e1d7c84c89c9a5653f0f5ae, type: 2}
+  - {fileID: 11400000, guid: e9875828d27a684448b04940df35da2e, type: 2}
   effectScope: 0
+  buffType: 0

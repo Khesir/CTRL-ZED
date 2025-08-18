@@ -47,6 +47,8 @@ public class GameStateManager : MonoBehaviour
     }
     public async UniTask SetState(GameState newState)
     {
+        GameManager.Instance.PlayerDataManager.AutoSaveTrigger();
+
         if (newState == Currentstate)
         {
             Debug.LogWarning($"[GameStateManager] Tried to set state to {newState}, but it was already the current state. Scene load skipped.");

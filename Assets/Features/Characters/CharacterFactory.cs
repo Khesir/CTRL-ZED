@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class CharacterFactory
 {
-    public static CharacterService CreateFromShop(CharacterConfig config)
+    public static CharacterData CreateFromShop(CharacterConfig config)
     {
         var data = new CharacterData
         {
@@ -18,9 +18,9 @@ public static class CharacterFactory
             assignedTeam = new List<int>()
         };
 
-        return new CharacterService(data);
+        return data;
     }
-    public static CharacterService CreateTestCharacter()
+    public static CharacterData CreateTestCharacter()
     {
         List<CharacterConfig> possibleConfigs = GameManager.Instance.CharacterManager.characterTemplates;
         if (possibleConfigs == null || possibleConfigs.Count == 0)
@@ -43,7 +43,7 @@ public static class CharacterFactory
             assignedTeam = new List<int>()
         };
 
-        return new CharacterService(data);
+        return data;
     }
     // We can add test characters in case
     // We can add tutorial characters

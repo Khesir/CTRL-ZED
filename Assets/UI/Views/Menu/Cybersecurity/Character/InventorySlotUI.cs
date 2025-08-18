@@ -9,17 +9,17 @@ public class InventorySlotUI : MonoBehaviour
     public TMP_Text className;
     public TMP_Text nameText;
     public TMP_Text level;
-    public CharacterService instance;
+    public CharacterData instance;
     public DraggableItem draggableItem;
     public Button actionButton;
     [Header("Dont touch below, Handled automatically")]
     public DetailsController detailsController;
     public GameObject noCharacterDetailsSection;
-    public void Setup(CharacterService data)
+    public void Setup(CharacterData data)
     {
-        var character = data.GetInstance();
+        var character = data;
         instance = data;
-        className.text = character.className;
+        className.text = character.baseData.className;
         nameText.text = character.name;
         level.text = $"Lvl. {character.level}";
         draggableItem.Setup(data, true);

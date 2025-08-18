@@ -30,7 +30,14 @@ public class TeamDetails : MonoBehaviour
             {
                 go[i].SetToState(true); // This changes the go to true / visible
                 go[i].Initialize(team[i]);
-                var cost = team[i].GetDeploymentCost();
+                float multiplier = Mathf.Pow(1.2f, team[i].currentLevel - 1);
+
+                var cost = new Dictionary<string, float>{
+                    {"Food", team[i].baseData.food * multiplier },
+                    {"Technology", team[i].baseData.technology * multiplier},
+                    {"Energy", team[i].baseData.energy * multiplier},
+                    {"Intelligence", team[i].baseData.intelligence* multiplier}
+                };
 
                 foreach (var kvp in cost)
                 {

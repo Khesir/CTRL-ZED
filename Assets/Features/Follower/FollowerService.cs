@@ -8,7 +8,7 @@ public class FollowerService
 {
     [Header("Followers")]
     [SerializeField] private List<Follower> followers = new();
-    private int currentIndex = 0;
+    [SerializeField] private int currentIndex = 0;
 
     public event Action OnFollowerSwitch;
     public void Initialize(List<Follower> followers)

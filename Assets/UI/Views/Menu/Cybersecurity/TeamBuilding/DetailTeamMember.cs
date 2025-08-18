@@ -13,8 +13,8 @@ public class DetailTeamMember : MonoBehaviour
     public Button removeInstanceFromTeam;
     public DetailsController detailsController;
     public int index;
-    private CharacterService instance;
-    public void Initialize(CharacterService instance)
+    private CharacterData instance;
+    public void Initialize(CharacterData instance)
     {
         this.instance = instance;
         UpdateData();
@@ -34,11 +34,11 @@ public class DetailTeamMember : MonoBehaviour
     }
     public void UpdateData()
     {
-        var character = instance.GetInstance();
+        var character = instance;
 
-        icon.sprite = character.icon;
+        icon.sprite = character.baseData.icon;
         icon.color = new Color32(255, 255, 255, 255);
-        className.text = character.className;
+        className.text = character.baseData.className;
         characterName.text = character.name;
         level.text = $"Lvl. {character.level}";
 

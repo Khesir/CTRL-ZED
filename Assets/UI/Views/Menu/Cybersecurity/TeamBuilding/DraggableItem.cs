@@ -10,18 +10,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
-    [HideInInspector] public CharacterService instance;
+    [HideInInspector] public CharacterData instance;
     public bool isExternal;
 
     public TMP_Text characterName;
     public TMP_Text className;
     public TMP_Text level;
-    public void Setup(CharacterService data, bool external = false)
+    public void Setup(CharacterData data, bool external = false)
     {
         instance = data;
-        var character = data.GetInstance();
+        var character = data;
         isExternal = external;
-        image.sprite = character.ship;
+        image.sprite = character.baseData.ship;
         if (!external)
             setDetails(data);
     }
@@ -43,10 +43,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
     }
-    private void setDetails(CharacterService data)
+    private void setDetails(CharacterData data)
     {
-        characterName.text = data.GetName();
-        className.text = data.GetInstance().className;
-        level.text = $"Lvl. {data.GetLevel()}";
+        characterName.text = data.baseData.charactername;
+        className.text = data.baseData.className;
+        level.text = $"Lvl. {data.currentLevel}";
     }
 }

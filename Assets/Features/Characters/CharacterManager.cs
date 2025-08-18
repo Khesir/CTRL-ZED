@@ -6,27 +6,23 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    [SerializeField] private List<CharacterService> characters = new();
     [SerializeField] public event Action onInventoryChange;
     public List<CharacterConfig> characterTemplates;
-
+    public List<CharacterData> ownedCharacters;
     public async UniTask Initialize(List<CharacterData> characters)
     {
+        ownedCharacters = characters;
         Debug.Log("[CharacterManager] Generating Character Templates");
         if (characterTemplates.Count == 0)
             characterTemplates.AddRange(Resources.LoadAll<CharacterConfig>("Characters"));
 
         Debug.Log("[CharacterManager] Loading saved characters");
-        foreach (var character in characters)
-        {
-            this.characters.Add(new CharacterService(character));
-        }
         Debug.Log("[CharacterManager] Character Manager Initialized");
         await UniTask.CompletedTask;
     }
-    public List<CharacterService> GetCharacters()
+    public List<CharacterData> GetCharacters()
     {
-        return characters;
+        return ownedCharacters;
     }
 
     public void CreateCharacter(CharacterConfig instance = null)
@@ -34,8 +30,7 @@ public class CharacterManager : MonoBehaviour
         if (instance == null) return;
         var character = CharacterFactory.CreateFromShop(instance);
 
-        characters.Add(character);
-
+        ownedCharacters.Add(character);
         onInventoryChange?.Invoke();
         Debug.Log("Created Character Services");
     }

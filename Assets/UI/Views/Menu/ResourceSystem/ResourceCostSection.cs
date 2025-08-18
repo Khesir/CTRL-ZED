@@ -13,6 +13,10 @@ public class ResourceCostSection : MonoBehaviour
         UpdateText();
         service.OnResourceChange += UpdateText;
     }
+    public void OnDisable()
+    {
+        service.OnResourceChange -= UpdateText;
+    }
     private void UpdateText()
     {
         var x = service.GetResourceChargePerDrives();

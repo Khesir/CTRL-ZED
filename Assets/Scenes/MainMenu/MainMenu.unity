@@ -4763,6 +4763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uIAntivirusAbout: {fileID: 1624331026}
   uIAntivirusSelector: {fileID: 596334558}
+  currency: {fileID: 1454413015}
 --- !u!114 &197240571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15428,7 +15429,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1678449274}
   m_HandleRect: {fileID: 1678449273}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -35387,8 +35388,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 872365729}
   m_HandleRect: {fileID: 872365728}
   m_Direction: 3
-  m_Value: 0.000007396377
-  m_Size: 0.98417246
+  m_Value: 0.0000073964134
+  m_Size: 0.9841725
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36244,6 +36245,10 @@ PrefabInstance:
     - target: {fileID: 1363277466446923832, guid: 48dbeaca32f0e954f97d31be2adf0832, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138905610604231703, guid: 48dbeaca32f0e954f97d31be2adf0832, type: 3}
+      propertyPath: soundEntries.Array.data[18].category
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

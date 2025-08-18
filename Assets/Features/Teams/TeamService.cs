@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class TeamService
 {
     private Team data;
@@ -19,7 +20,7 @@ public class TeamService
             this.data = new Team("Team x");
         }
     }
-
+    public Team GetData() => data;
     public void SetTeamName(string name)
     {
         data.teamName = name;
@@ -28,7 +29,7 @@ public class TeamService
     {
         return data.teamName;
     }
-    public void AddCharacter(int slotIndex, CharacterService data)
+    public void AddCharacter(int slotIndex, CharacterData data)
     {
         if (slotIndex < 0 || slotIndex >= maxSize)
         {
@@ -55,13 +56,13 @@ public class TeamService
             }
             else
             {
-                CharacterService temp = this.data.characters[slotIndex];
+                CharacterData temp = this.data.characters[slotIndex];
                 this.data.characters[slotIndex] = data;
                 this.data.characters[currentIndex] = temp;
             }
         }
     }
-    public void RemoveCharacter(CharacterService character)
+    public void RemoveCharacter(CharacterData character)
     {
         int index = data.characters.IndexOf(character);
         if (index != -1)
@@ -74,11 +75,11 @@ public class TeamService
             Debug.LogWarning("Character not found in team.");
         }
     }
-    public bool isCharacterInTeam(CharacterService data)
+    public bool isCharacterInTeam(CharacterData data)
     {
         return this.data.characters.IndexOf(data) != -1;
     }
-    public List<CharacterService> GetMembers()
+    public List<CharacterData> GetMembers()
     {
         return data.characters;
     }

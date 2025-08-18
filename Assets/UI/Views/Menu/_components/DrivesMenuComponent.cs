@@ -13,6 +13,11 @@ public class DrivesMenuComponent : MonoBehaviour
         UpdateText();
         service.OnSpendDrives += UpdateText;
     }
+    public void OnDestroy()
+    {
+        service.OnSpendDrives -= UpdateText;
+
+    }
     public void UpdateText()
     {
         content.text = service.GetDrives().ToString() + " / " + service.GetChargedDrives().ToString();

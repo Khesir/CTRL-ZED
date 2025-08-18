@@ -16,6 +16,10 @@ public class UIAntivirusSelector : MonoBehaviour
         Refresh();
         GameManager.Instance.PlayerManager.playerService.OnCoinsChange += Refresh;
     }
+    public void OnDisable()
+    {
+        GameManager.Instance.PlayerManager.playerService.OnCoinsChange -= Refresh;
+    }
     private void Refresh()
     {
         Clear();
@@ -33,9 +37,12 @@ public class UIAntivirusSelector : MonoBehaviour
     }
     public void Clear()
     {
-        foreach (Transform child in content)
+        if (content.childCount > 0)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in content)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

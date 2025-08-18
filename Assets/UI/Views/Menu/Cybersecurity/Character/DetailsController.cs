@@ -14,20 +14,27 @@ public class DetailsController : MonoBehaviour
     public TMP_Text characterName;
     public Image characterIcon;
     public Image characterShip;
-    public void Intialize(CharacterService data)
+    public void Intialize(CharacterData data)
     {
         Debug.Log(data);
         Populate(data);
     }
-    public void Populate(CharacterService data)
+    public void Populate(CharacterData data)
     {
-        var character = data.GetInstance();
+        var character = data;
         characterName.text = character.name;
-        className.text = $"{character.className} - Lvl {character.level}";
-        characterIcon.sprite = character.icon;
-        characterShip.sprite = character.ship;
+        className.text = $"{character.baseData.className} - Lvl {character.level}";
+        characterIcon.sprite = character.baseData.icon;
+        characterShip.sprite = character.baseData.ship;
         Clear();
-        var statsMap = data.GetDeploymentCost();
+        float multiplier = Mathf.Pow(1.2f, data.currentLevel - 1);
+
+        var statsMap = new Dictionary<string, float>{
+            {"Food", data.baseData.food * multiplier },
+            {"Technology", data.baseData.technology * multiplier},
+            {"Energy", data.baseData.energy * multiplier},
+            {"Intelligence", data.baseData.intelligence* multiplier}
+        };
         foreach (var instance in statsMap)
         {
             var statCard = Instantiate(prefab, content);
