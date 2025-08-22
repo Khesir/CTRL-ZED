@@ -42,22 +42,22 @@ public class AreaWeaponPrefab : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
-        {
-            enemiesInRange.Add(collision.GetComponent<Enemy>());
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (collision.CompareTag("Enemy"))
+    //     {
+    //         enemiesInRange.Add(collision.GetComponent<Enemy>());
 
-            collision.GetComponent<EnemyFollow>().ApplySlow(weapon.stats[weapon.weaponLevel].slowRate);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
+    //         collision.GetComponent<EnemyFollow>().ApplySlow(weapon.stats[weapon.weaponLevel].slowRate);
+    //     }
+    // }
+    // private void OnTriggerExit2D(Collider2D collision)
+    // {
 
-        if (collision.CompareTag("Enemy"))
-        {
-            enemiesInRange.Remove(collision.GetComponent<Enemy>());
-            collision.GetComponent<EnemyFollow>().ClearSlow();
-        }
-    }
+    //     if (collision.CompareTag("Enemy"))
+    //     {
+    //         enemiesInRange.Remove(collision.GetComponent<Enemy>());
+    //         collision.GetComponent<EnemyFollow>().ClearSlow();
+    //     }
+    // }
 }

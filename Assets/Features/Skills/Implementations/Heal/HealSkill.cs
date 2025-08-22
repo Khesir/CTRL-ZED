@@ -37,7 +37,7 @@ public class HealSkill : MonoBehaviour, ISkill
         if (config.vfxPrefab != null)
         {
             GameObject vfx = Instantiate(config.vfxPrefab, user.transform.position, Quaternion.identity);
-            Destroy(vfx, config.vfxLifetime);
+            Destroy(vfx, config.skillLifetime);
         }
 
         Debug.Log($"{user.name} used {config.skillName}");

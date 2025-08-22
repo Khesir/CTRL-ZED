@@ -15,7 +15,7 @@ public class CharacterBattleState : IStatHandler, IDamageable
 
     public bool isDead => currentHealth == 0;
     // Stat providers
-
+    public bool isDisabled = false;
     public CharacterBattleState(CharacterService service)
     {
         data = service;
@@ -69,7 +69,7 @@ public class CharacterBattleState : IStatHandler, IDamageable
 
     public void TakeDamage(float dmg, GameObject source = null)
     {
-        if (isDead)
+        if (isDead || isDisabled)
             return;
         float defense = GetStat("DEF");
         // (guarantee at least 1 damage so super tanky units don’t become invincible)

@@ -27,12 +27,11 @@ public class EnemyFollow : MonoBehaviour
     public LayerMask ignoreLayer;
 
     private EnemyService service;
-
+    private bool isStunned = false;
     public void Initialize(EnemyService service)
     {
         this.service = service;
         var config = service.GetConfig();
-        m_Speed = service.GetSpeed();
         m_StopDistance = config.stopDistance;
         m_DetectionDistance = config.detectionRange;
 
@@ -45,7 +44,7 @@ public class EnemyFollow : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (target != null && !isStunned)
         {
             FollowTarget();
         }
@@ -170,5 +169,27 @@ public class EnemyFollow : MonoBehaviour
     public void ClearSlow()
     {
         m_SlowMultiplier = 1f;
+    }
+    public void ApplyStun(float slowMultiplier)
+    {
+        isStunned = true;
+        var sr = gameObject.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            Color c = sr.color;
+            c.a = 0.5f;
+            sr.color = c;
+        }
+    }
+    public void ClearStun()
+    {
+        isStunned = false;
+        var sr = gameObject.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            Color c = sr.color;
+            c.a = 1f;
+            sr.color = c;
+        }
     }
 }

@@ -23,14 +23,14 @@ public class AntiVirusBuffEffect : StatusEffect, IStatProvider
 
     public override void Apply(GameObject target)
     {
-        var service = target.GetComponent<CharacterService>();
+        var service = target.GetComponent<CharacterBattleState>();
         if (service != null)
             service.AddStatProvider(this);
     }
 
     public override void Remove(GameObject target)
     {
-        var service = target.GetComponent<CharacterService>();
+        var service = target.GetComponent<CharacterBattleState>();
         if (service != null)
             service.RemoveStatProvider(this);
     }

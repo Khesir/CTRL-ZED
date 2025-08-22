@@ -9,11 +9,11 @@ public class SkillConfig : ScriptableObject
     public string description;
     public Sprite icon;
     public float cooldown;
+    public float skillLifetime = 2f;
 
     [Tooltip("Must have a component that implements ISkill")]
     public GameObject skillPrefab;
 
     [Header("Visuals")]
     public GameObject vfxPrefab;
-    public float vfxLifetime = 2f;
 }

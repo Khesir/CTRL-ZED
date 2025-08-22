@@ -54,11 +54,11 @@ MonoBehaviour:
   isGameActive: 1
   _isInitialized: 0
   gameManager: {fileID: 0}
+  gameplayUI: {fileID: 4035268777878427305}
   followerManager: {fileID: 7850368718434146567}
   playerGameplayManager: {fileID: 4847832720207668489}
   parallaxBackground: {fileID: 0}
   spawn: {fileID: 0}
-  gameplayUI: {fileID: 4035268777878427305}
   squadLevelManager: {fileID: 1772367184815221831}
   damageNumberController: {fileID: 0}
   spawner: {fileID: 0}
@@ -114,6 +114,7 @@ MonoBehaviour:
   followerSpawn: {fileID: 0}
   service:
     followers: []
+    currentIndex: 0
 --- !u!1 &4154918508699622063
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +304,8 @@ MonoBehaviour:
   waveUI: {fileID: 0}
   announcementUI: {fileID: 0}
   completeScreenUI: {fileID: 0}
-  squadLevelUI: {fileID: 0}
+  lootHolder: {fileID: 0}
+  activeStatusEffect: {fileID: 0}
   starWaveButton: {fileID: 0}
 --- !u!1 &7862667196828465748
 GameObject:
@@ -349,6 +351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7665baf61c6d07a4a9ecb46ee0d4dbbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeLoots: []
+  player: {fileID: 0}
 --- !u!1 &8237023318716642558
 GameObject:
   m_ObjectHideFlags: 0
