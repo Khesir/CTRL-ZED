@@ -67,4 +67,6 @@ public class Stealth : MonoBehaviour, ISkill, IStatProvider
             }
         }
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }

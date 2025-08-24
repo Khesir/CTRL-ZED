@@ -80,4 +80,6 @@ public class HealSkill : MonoBehaviour, ISkill
 
         renderer.color = originalColor; // Ensure it finishes at the original
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }

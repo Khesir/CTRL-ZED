@@ -16,6 +16,7 @@ public class GameplayUIController : MonoBehaviour
     public CompleteScreenUI completeScreenUI;
     public LootHolder lootHolder;
     public GameplayActiveStatusEffect activeStatusEffect;
+    public UISkillSlots skillSlots;
     [Header("GameObject Controls")]
     public GameObject starWaveButton;
     public void Initialize(List<CharacterBattleState> characters)
@@ -28,6 +29,7 @@ public class GameplayUIController : MonoBehaviour
         timer.Setup(playerService);
         lootHolder.Setup();
         activeStatusEffect.Setup();
+        skillSlots.Initialize();
     }
 
     public void PushMessage(string message)

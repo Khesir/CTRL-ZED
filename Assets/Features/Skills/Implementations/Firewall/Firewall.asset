@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Firewall
   description: Creates a wall of fire that damage enemies and slows down given the
     area
-  icon: {fileID: 0}
+  icon: {fileID: -187832263, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
   cooldown: 1
   skillLifetime: 10
   skillPrefab: {fileID: 4479242341609726399, guid: 0b687d1c5fcbb9e42b9af5ca16505004, type: 3}

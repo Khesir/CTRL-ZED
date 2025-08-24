@@ -56,4 +56,5 @@ public class Frenzy : MonoBehaviour, ISkill, IStatProvider
             }
         }
     }
+    public SkillConfig GetSkillConfig() => config;
 }

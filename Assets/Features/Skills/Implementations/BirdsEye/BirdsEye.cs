@@ -68,4 +68,6 @@ public class BirdsEye : MonoBehaviour, ISkill, IStatProvider
             }
         }
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }

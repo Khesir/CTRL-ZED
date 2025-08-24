@@ -94,4 +94,6 @@ public class Block : MonoBehaviour, ISkill, IStatProvider
         // Gizmos.color = Color.yellow;
         // Gizmos.DrawWireSphere(transform.position, pushForce);
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }

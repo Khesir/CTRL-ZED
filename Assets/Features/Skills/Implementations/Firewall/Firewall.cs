@@ -151,4 +151,6 @@ public class Firewall : MonoBehaviour, ISkill, IStatProvider
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }

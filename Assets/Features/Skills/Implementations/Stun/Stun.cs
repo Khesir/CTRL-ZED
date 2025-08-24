@@ -104,4 +104,5 @@ public class Stun : MonoBehaviour, ISkill, IStatProvider
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stunRadius);
     }
+    public SkillConfig GetSkillConfig() => config;
 }

@@ -126,4 +126,6 @@ public class Disable : MonoBehaviour, ISkill, IStatProvider
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, slowRadius);
     }
+    public SkillConfig GetSkillConfig() => config;
+
 }
