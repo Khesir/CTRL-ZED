@@ -31,15 +31,27 @@ public class EnemyFollow : MonoBehaviour
     public void Initialize(EnemyService service)
     {
         this.service = service;
+        target = null;
         var config = service.GetConfig();
         m_StopDistance = config.stopDistance;
         m_DetectionDistance = config.detectionRange;
 
+        Refresh();
+
         GameplayManager.Instance.followerManager.OnSwitch += Refresh;
     }
-    private void Refresh()
+    public void Refresh()
     {
-        target = GameplayManager.Instance.followerManager.GetCurrentTarget();
+        var inStealth = GameplayManager.Instance.enemyManager.inStealth;
+
+        if (!inStealth)
+        {
+            target = GameplayManager.Instance.followerManager.GetCurrentTarget();
+        }
+        else
+        {
+            target = null;
+        }
     }
 
     private void Update()

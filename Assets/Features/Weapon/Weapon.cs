@@ -41,4 +41,10 @@ public class Weapon : MonoBehaviour, IWeapon
             SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Shoot);
         }
     }
+    public void UpdateFirerate(float rate)
+    {
+        fireRate = rate;
+    }
+    public float GetFirerate() => fireRate;
+
 }

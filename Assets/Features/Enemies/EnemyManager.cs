@@ -5,7 +5,11 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private readonly List<EnemyService> activeEnemies = new();
-
+    public bool inStealth = false;
+    public void Initialize()
+    {
+        inStealth = false;
+    }
     public void RegisterEnemy(EnemyService enemy)
     {
         if (!activeEnemies.Contains(enemy)) activeEnemies.Add(enemy);
@@ -28,4 +32,12 @@ public class EnemyManager : MonoBehaviour
     }
 
     public int ActiveEnemyCount => activeEnemies.Count;
+    public void SetStealth(bool val)
+    {
+        inStealth = val;
+        foreach (var enemy in new List<EnemyService>(activeEnemies))
+        {
+            enemy.GetComponent<EnemyFollow>().Refresh();
+        }
+    }
 }

@@ -51,4 +51,10 @@ public class WeaponHolder : MonoBehaviour
             currentWeapon = null;
         }
     }
+    public void UpdateFirerate(float rate)
+    {
+        currentWeapon.UpdateFirerate(rate);
+    }
+    public float GetFirerate() => currentWeapon.GetFirerate();
+
 }

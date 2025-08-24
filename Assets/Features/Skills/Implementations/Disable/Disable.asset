@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Disable
   description: Applied Slow on Enemy, and vulnerability
-  icon: {fileID: 0}
+  icon: {fileID: 1469945764, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
   cooldown: 2
   skillLifetime: 5
   skillPrefab: {fileID: 8924205095010850215, guid: fdf88250efbf79c449922843ec28cb4c, type: 3}

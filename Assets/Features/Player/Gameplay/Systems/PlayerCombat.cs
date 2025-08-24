@@ -79,4 +79,11 @@ public class PlayerCombat : MonoBehaviour
 
         SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
     }
+
+    // Temporary Change on weapon effects
+    public void UpdateFireRate(float rate)
+    {
+        weaponHolder.UpdateFirerate(rate);
+    }
+    public float GetFirerate() => weaponHolder.GetFirerate();
 }

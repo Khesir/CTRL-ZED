@@ -78,7 +78,7 @@ public class GameplayManager : MonoBehaviour
         gameplayUI.Initialize(battleStates);
         PlayMusic();
         isGameActive = true;
-
+        enemyManager.Initialize();
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");
     }
     private void PlayMusic()

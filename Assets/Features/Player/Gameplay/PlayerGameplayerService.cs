@@ -115,4 +115,10 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
     {
         playerCombat.HandleTrigger();
     }
+    // Temporary Change on weapon effects
+    public void UpdateFireRate(float rate)
+    {
+        playerCombat.UpdateFireRate(rate);
+    }
+    public float GetFirerate() => playerCombat.GetFirerate();
 }

@@ -32,7 +32,6 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
 
         follow = gameObject.GetComponent<EnemyFollow>();
         follow.Initialize(this);
-        follow.target = GameplayManager.Instance.followerManager.GetCurrentTarget();
         GameplayManager.Instance.enemyManager.RegisterEnemy(this);
         isInitialized = true;
     }

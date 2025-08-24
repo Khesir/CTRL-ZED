@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3960aa2da8b50478fb6f0982175401, type: 3}
+  m_Name: Frenzy
+  m_EditorClassIdentifier: 
+  skillName: Frenzy
+  description: Increases ATK and Shoot Speed
+  icon: {fileID: 808722547, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
+  cooldown: 1
+  skillLifetime: 2
+  skillPrefab: {fileID: 8089907415401129806, guid: 789b2efdce66f144385c19cb88403485, type: 3}
+  vfxPrefab: {fileID: 2159294031496849838, guid: 19404a235cc95da40bf299f59bccad4c, type: 3}

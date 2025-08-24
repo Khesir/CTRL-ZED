@@ -10,4 +10,8 @@ public interface IWeapon
 {
     void Fire();
     void Initialize(WeaponConfig weaponConfig, GameObject holder, SourceType type);
+
+    // Temporary Add
+    public void UpdateFirerate(float rate);
+    public float GetFirerate();
 }
