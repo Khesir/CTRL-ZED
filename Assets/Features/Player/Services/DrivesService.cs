@@ -31,6 +31,12 @@ public class DrivesService : IDrivesService
         OnSpendDrives?.Invoke();
         return true;
     }
+    public bool SpendChargeDrives(int val)
+    {
+        data.chargedDrives -= val;
+        OnSpendDrives?.Invoke();
+        return true;
+    }
 
     public int GetChargedDrives() => data.chargedDrives;
     public bool SpendRemainingCharge(int val = 1)

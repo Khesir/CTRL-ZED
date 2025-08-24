@@ -14,32 +14,59 @@ public class DetailsController : MonoBehaviour
     public TMP_Text characterName;
     public Image characterIcon;
     public Image characterShip;
+    public Detailskills detailskills;
+    public Button upgradeButton;
+    public TMP_Text buttonText;
+    public CharacterData character;
+    public int nextLevelCost = 0;
     public void Intialize(CharacterData data)
     {
         Debug.Log(data);
-        Populate(data);
+        character = data;
+
+        Populate();
+        GameManager.Instance.PlayerManager.playerService.OnSpendDrives += Populate;
     }
-    public void Populate(CharacterData data)
+    public void Populate()
     {
-        var character = data;
         characterName.text = character.name;
-        className.text = $"{character.baseData.className} - Lvl {character.level}";
+        className.text = $"{character.baseData.className} - Lvl {character.currentLevel}";
         characterIcon.sprite = character.baseData.icon;
         characterShip.sprite = character.baseData.ship;
         Clear();
-        float multiplier = Mathf.Pow(1.2f, data.currentLevel - 1);
+        float multiplier = Mathf.Pow(1.2f, character.currentLevel - 1);
 
         var statsMap = new Dictionary<string, float>{
-            {"Food", data.baseData.food * multiplier },
-            {"Technology", data.baseData.technology * multiplier},
-            {"Energy", data.baseData.energy * multiplier},
-            {"Intelligence", data.baseData.intelligence* multiplier}
+            {"Food", character.baseData.food * multiplier },
+            {"Technology", character.baseData.technology * multiplier},
+            {"Energy", character.baseData.energy * multiplier},
+            {"Intelligence", character.baseData.intelligence* multiplier}
         };
         foreach (var instance in statsMap)
         {
             var statCard = Instantiate(prefab, content);
             var card = statCard.GetComponent<StatSlotUI>();
             card.Setup(instance);
+        }
+        detailskills.Initialize(
+            new List<SkillConfig>
+            {
+                character.baseData.skill1,
+                character.baseData.skill2
+            }
+        );
+        buttonText.text = LevelingSystem.CharacterCurve.GetCostCurve(character.currentLevel + 1).ToString();
+        nextLevelCost = LevelingSystem.CharacterCurve.GetCostCurve(character.currentLevel + 1);
+        upgradeButton.onClick.RemoveAllListeners();
+        upgradeButton.onClick.AddListener(Upgrade);
+        // Disabled incase it doesnt require the given requirement
+        if (GameManager.Instance.PlayerManager.playerService.GetChargedDrives() >= nextLevelCost)
+        {
+            upgradeButton.interactable = true;
+        }
+        else
+        {
+            upgradeButton.interactable = false;
         }
     }
 
@@ -48,6 +75,15 @@ public class DetailsController : MonoBehaviour
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
+        }
+    }
+    private void Upgrade()
+    {
+        if (nextLevelCost > 0)
+        {
+            GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(nextLevelCost);
+            character.currentLevel++;
+            SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
         }
     }
 }

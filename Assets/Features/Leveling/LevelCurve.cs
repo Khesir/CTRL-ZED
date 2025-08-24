@@ -11,6 +11,7 @@ public interface ILevelCurve
 public class LevelCurve : ILevelCurve
 {
     private readonly List<int> xpTable = new();
+    private readonly List<int> costCurve = new();
     public int MaxLevel { get; }
 
     public LevelCurve(int maxLevel, int baseXP, float growthRate)
@@ -21,9 +22,23 @@ public class LevelCurve : ILevelCurve
         {
             xpTable.Add(Mathf.CeilToInt(xpTable[i - 1] * growthRate));
         }
+        // Cost Curve -- temporary solution for drives
+        int baseCost = xpTable[1];
+
+        for (int i = 1; i < xpTable.Count; i++)
+        {
+            int cost = xpTable[i] / baseCost;
+            costCurve.Add(cost == 0 ? 1 : cost);
+        }
     }
     public int GetRequiredExp(int level)
     {
         return xpTable[Mathf.Clamp(level, 0, MaxLevel - 1)];
+    }
+    // Optional
+    public int GetCostCurve(int level)
+    {
+
+        return costCurve[Mathf.Clamp(level, 1, MaxLevel - 1)];
     }
 }
