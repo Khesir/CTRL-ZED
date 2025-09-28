@@ -71,6 +71,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         Debug.Log("Handling Character Death!");
 
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
+
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
@@ -80,6 +81,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
 
         gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
         gameObject.layer = LayerMask.NameToLayer("Dead");
+
         // Character Switching Logic
         var followerManager = GameplayManager.Instance.followerManager;
         int nextIndex = followerManager.GetAvailableFollower();
@@ -92,13 +94,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         {
             // No available characters, trigger game over or team defeat
             GameplayManager.Instance.followerManager.ResetTarget();
-
-            var team = GameManager.Instance.TeamManager.GetActiveTeam();
-            GameplayManager.Instance.gameplayUI.Complete(
-                type: "character",
-                complete: false,
-                team[0].GetTeamName()
-            );
+            GameplayManager.Instance.gameplayUI.HandleGameOver();
         }
     }
     public bool IsDead() => isDead;

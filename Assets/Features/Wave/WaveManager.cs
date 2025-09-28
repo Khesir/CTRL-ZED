@@ -65,7 +65,7 @@ public class WaveManager : MonoBehaviour
         GameplayManager.Instance.enemyManager.KillAllEnemies(true);
 
         waveIndex++;
-
+        // Conditional checks if level has reach the wave index or tthere is next level
         if (waveIndex >= waveConfigs.Count)
         {
             var loots = currentWave.GetConfig().waveRewards;
@@ -74,6 +74,7 @@ public class WaveManager : MonoBehaviour
                 GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
             }
             var team = GameManager.Instance.TeamManager.GetActiveTeam();
+            // This gets triggered to send a ui to say level complete
             GameplayManager.Instance.gameplayUI.Complete("character", true, team[0].GetTeamName());
         }
         else

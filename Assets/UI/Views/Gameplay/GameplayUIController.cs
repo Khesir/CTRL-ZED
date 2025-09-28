@@ -44,4 +44,9 @@ public class GameplayUIController : MonoBehaviour
     {
         lootHolder.AddAmount(data);
     }
+    public void HandleGameOver()
+    {
+        // Places a UI that allow the user to pick deployed team or choose game over.
+        // Maybe use certain amount of drive to revive
+    }
 }
