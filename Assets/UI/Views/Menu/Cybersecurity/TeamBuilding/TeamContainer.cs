@@ -66,21 +66,21 @@ public class TeamContainer : MonoBehaviour
     }
     public void DeployAction()
     {
-        Debug.Log($"Deploy {instance.teamID}");
-        GameManager.Instance.TeamManager.SetActiveTeam(instance.teamID);
+        Debug.Log($"Deploy {instance.GetData().teamID}");
+        GameManager.Instance.TeamManager.SetActiveTeam(instance.GetData().teamID);
         IsActive();
         SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_Deploy);
     }
     public void UnDeployAction()
     {
-        GameManager.Instance.TeamManager.RemoveActiveTeam(instance.teamID);
-        Debug.Log($"UnDeploy {instance.teamID}");
+        GameManager.Instance.TeamManager.RemoveActiveTeam(instance.GetData().teamID);
+        Debug.Log($"UnDeploy {instance.GetData().teamID}");
         IsActive();
         SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_UnDeploy);
     }
     public void IsActive()
     {
-        var isActive = GameManager.Instance.TeamManager.isTeamActive(instance.teamID);
+        var isActive = GameManager.Instance.TeamManager.isTeamActive(instance.GetData().teamID);
         if (isActive)
         {
             activeAction.SetActive(true);

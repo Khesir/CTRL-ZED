@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
-    public static async UniTask LoadScene(string sceneName, GameObject canvas)
+    public static async UniTask LoadScene(string sceneName, UIManager canvas)
     {
         Debug.Log($"[SceneLoader] Loading scene: {sceneName}");
         await SoundManager.FadeOutCategory(SoundCategory.BGM);
-        canvas.SetActive(true);
+        canvas.ShowLoading(true);
 
         var loadOperation = SceneManager.LoadSceneAsync(sceneName);
         loadOperation.allowSceneActivation = false;
@@ -29,7 +29,7 @@ public static class SceneLoader
         loadOperation.allowSceneActivation = true;
         // Optionally wait one more frame to let it finish
         await UniTask.Yield();
-        canvas.SetActive(false);
+        canvas.ShowLoading(false);
         Debug.Log($"[SceneLoader] Scene {sceneName} loaded successfully.");
 
     }

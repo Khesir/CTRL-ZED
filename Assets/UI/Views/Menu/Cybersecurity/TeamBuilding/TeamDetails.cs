@@ -72,11 +72,11 @@ public class TeamDetails : MonoBehaviour
     }
     public void ActionButton()
     {
-        GameManager.Instance.TeamManager.SetActiveTeam(instance.teamID);
+        GameManager.Instance.TeamManager.SetActiveTeam(instance.GetData().teamID);
         SetButton();
     }
     public void SetButton()
     {
-        setActive.interactable = !GameManager.Instance.TeamManager.isTeamActive(instance.teamID);
+        setActive.interactable = !GameManager.Instance.TeamManager.isTeamActive(instance.GetData().teamID);
     }
 }

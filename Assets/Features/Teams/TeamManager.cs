@@ -37,7 +37,7 @@ public class TeamManager : MonoBehaviour
             return false;
         foreach (TeamService team in activeTeam)
         {
-            if (team.teamID == teadID)
+            if (team.GetData().teamID == teadID)
             {
                 return true;
             }
@@ -52,7 +52,7 @@ public class TeamManager : MonoBehaviour
             teams.Add(newTeam);
             ownedTeam.Add(newTeam.GetData()); // Save to SaveData reference for saving
             onTeamChange?.Invoke();
-            return newTeam.teamID;
+            return newTeam.GetData().teamID;
         }
         else
         {
@@ -68,7 +68,7 @@ public class TeamManager : MonoBehaviour
     {
         foreach (var team in activeTeam)
         {
-            Debug.Log($"Active Team: {team.teamID}");
+            Debug.Log($"Active Team: {team.GetData().teamID}");
         }
         return activeTeam;
     }
@@ -77,7 +77,7 @@ public class TeamManager : MonoBehaviour
         var selectedTeam = GetTeam(teadID);
         foreach (TeamService team in activeTeam)
         {
-            if (team.teamID == selectedTeam.teamID)
+            if (team.GetData().teamID == selectedTeam.GetData().teamID)
             {
                 Debug.Log("This team is already in the active list");
                 return;
@@ -86,7 +86,7 @@ public class TeamManager : MonoBehaviour
         selectedTeam.GetData().isActiveTeam = true;
         activeTeam.Add(selectedTeam);
         onTeamChange?.Invoke();
-        Debug.Log($"{selectedTeam.teamID} Team set as active team");
+        Debug.Log($"{selectedTeam.GetData().teamID} Team set as active team");
     }
     public void RemoveActiveTeam(string teamId)
     {
@@ -94,7 +94,7 @@ public class TeamManager : MonoBehaviour
         var exists = false;
         foreach (TeamService team in activeTeam)
         {
-            if (team.teamID == selectedTeam.teamID)
+            if (team.GetData().teamID == selectedTeam.GetData().teamID)
             {
                 exists = true;
             }
@@ -104,7 +104,7 @@ public class TeamManager : MonoBehaviour
             activeTeam.Remove(selectedTeam);
             selectedTeam.GetData().isActiveTeam = false;
             onTeamChange?.Invoke();
-            Debug.Log($"{selectedTeam.teamID} Team set as active team");
+            Debug.Log($"{selectedTeam.GetData().teamID} Team set as active team");
         }
     }
     public List<TeamService> GetTeams()
@@ -115,7 +115,7 @@ public class TeamManager : MonoBehaviour
     {
         foreach (TeamService team in teams)
         {
-            if (team.teamID == index)
+            if (team.GetData().teamID == index)
             {
                 return team;
             }

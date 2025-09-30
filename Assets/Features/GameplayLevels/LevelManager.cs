@@ -16,7 +16,6 @@ public class LevelManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
     public async UniTask Initialize()
     {
@@ -38,7 +37,7 @@ public class LevelManager : MonoBehaviour
     public async UniTask LoadScene(GameState gameState)
     {
         Debug.Log("[LevelManager] Preparing for the mission");
-        await GameInitiator.Instance.GetGameStateManager().SetState(gameState);
+        await GameInitiator.Instance.GameStateManager.SetState(gameState);
         Debug.Log("[LevelManager] Preparation Complete!");
     }
 }

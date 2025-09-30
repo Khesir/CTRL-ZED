@@ -18,7 +18,9 @@ public class OSHPUI : MonoBehaviour
     }
     public void OnDisable()
     {
-        instance.OnHealthChanged -= UpdateSlider;
+        if (instance != null)
+            instance.OnHealthChanged -= UpdateSlider;
+
     }
     public void UpdateSlider()
     {

@@ -9,7 +9,7 @@ public class ParallaxBackground : MonoBehaviour
     public ParallaxCamera parallaxCamera;
     public List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
 
-    public async UniTask Initialize()
+    public void Initialize()
     {
         if (parallaxCamera == null)
             parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
@@ -17,11 +17,9 @@ public class ParallaxBackground : MonoBehaviour
         if (parallaxCamera != null)
             parallaxCamera.onCameraTranslate += Move;
 
-        SetLayers();
-        await UniTask.CompletedTask;
     }
 
-    void SetLayers()
+    public void SetLayers()
     {
         parallaxLayers.Clear();
 

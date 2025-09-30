@@ -7,10 +7,8 @@ public class TeamService
 {
     private Team data;
     private int maxSize = 4;
-    public string teamID;
     public TeamService(Team data = null)
     {
-        teamID = TeamUtils.GenerateTeamID();
         if (data != null)
         {
             this.data = data;
@@ -18,6 +16,7 @@ public class TeamService
         else
         {
             this.data = new Team("Team x");
+            this.data.teamID = TeamUtils.GenerateTeamID();
         }
     }
     public Team GetData() => data;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,25 +10,31 @@ using UnityEngine.EventSystems;
 public class GameInitiator : MonoBehaviour
 {
     public static GameInitiator Instance { get; private set; }
-    [Header("Bindable Objects")]
-    [SerializeField] private GameStateManager gameStateManager;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private InputService inputService;
-    [SerializeField] private SoundManager soundManager;
-    [Header("Environment Setup")]
-    // [SerializeField] private GameState initialState = GameState.Initial;
-    [Header("Flags")]
+    [Header("Core Managers (Prefab Fallbacks)")]
+    [SerializeField] private GameStateManager gameStateManagerPrefab;
+    [SerializeField] private GameManager gameManagerPrefab;
+    [SerializeField] private InputService inputServicePrefab;
+    [SerializeField] private SoundManager soundManagerPrefab;
+    [SerializeField] private UIManager uIManager;
+
+    [Header("Development Flags")]
     public bool isDevelopment = true;
+    public bool generateTestData = false;
+
+    [Header("Gameplay Settings (Dev Only)")]
+    [SerializeField] private LevelData currentLevel;
+
+    [Header("Flags")]
     public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
     public bool isFinished = false;
-    public bool generateTestData = false;
-    [Header("Gameplay Settings - Dev Settings")]
-    [SerializeField] private LevelData currentLevel;
     ////////////////////////////////////////////////////
-    private GameStateManager _gameStateManager;
-    private GameManager _gameManager;
-    private InputService _inputService;
-    private SoundManager _soundManager;
+    // Runtime references
+    public GameStateManager GameStateManager { get; private set; }
+    public GameManager GameManager { get; private set; }
+    public InputService InputService { get; private set; }
+    public SoundManager SoundManager { get; private set; }
+    public UIManager UIManager { get; private set; }
+
     private void Awake()
     {
         // Singleton pattern
@@ -40,146 +47,108 @@ public class GameInitiator : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    private async void Start()
+    private async UniTaskVoid Start()
     {
-        Debug.Log("[GameInitiator] Generating Bindable Objects");
+        Debug.Log("[GameInitiator] Starting...");
+
         await BindObjects();
-        Debug.Log("[GameInitiator] Initializing Objects");
         await Initialize();
-        Debug.Log("[GameInitiator] Preparing Core Systems");
         await PrepareCoreSystems();
-        if (isDevelopment)
-        {
-            Debug.Log("[GameInitiator] Preparing Game");
-            await PrepareGame(new SaveData());
-        }
+
+        await PrepareGame(new SaveData());
+
+
         isGenerated = true;
     }
     private async UniTask BindObjects()
     {
-        // This handles shared managers that has yet to exists or already on the scene to ensure loading
-        if (_gameStateManager == null)
-        {
-            _gameStateManager = FindObjectOfType<GameStateManager>();
-            if (_gameStateManager == null)
-            {
-                if (gameStateManager == null)
-                {
-                    throw new System.Exception("GameStateManager reference is missing in GameInitiator. Please assign it in the inspector.");
-                }
-                _gameStateManager = Instantiate(gameStateManager);
-            }
-        }
+        Debug.Log("[GameInitiator] Binding managers...");
 
-        if (_gameManager == null)
-        {
-            _gameManager = FindAnyObjectByType<GameManager>();
-            if (_gameManager == null)
-            {
-                if (gameManager == null)
-                {
-                    throw new System.Exception("GameManager reference is missing in GameInitiator. Please assign it in the inspector.");
-                }
-                _gameManager = Instantiate(gameManager);
-            }
-        }
-        if (_inputService == null)
-        {
-            _inputService = FindObjectOfType<InputService>();
-            if (_inputService == null)
-            {
-                if (inputService == null)
-                {
-                    throw new System.Exception("InputService reference is missing in GameInitiator. Please assign it in the inspector.");
-                }
-                _inputService = Instantiate(inputService);
-            }
-        }
-        if (_soundManager == null)
-        {
-            _soundManager = FindObjectOfType<SoundManager>();
-            if (_soundManager == null)
-            {
-                if (_soundManager == null)
-                {
-                    throw new System.Exception("Sound Manager reference is missing in GameInitiator. Please assign it in the inspector.");
-                }
-                _soundManager = Instantiate(soundManager);
-            }
-        }
+        GameStateManager = EnsureExists(GameStateManager, gameStateManagerPrefab);
+        GameManager = EnsureExists(GameManager, gameManagerPrefab);
+        InputService = EnsureExists(InputService, inputServicePrefab);
+        SoundManager = EnsureExists(SoundManager, soundManagerPrefab);
+        UIManager = EnsureExists(UIManager, uIManager);
+
         await UniTask.CompletedTask;
+    }
+
+    private T EnsureExists<T>(T existing, T prefab) where T : MonoBehaviour
+    {
+        if (existing != null) return existing;
+
+        var found = FindAnyObjectByType<T>();
+        if (found != null) return found;
+
+        if (prefab == null)
+            throw new Exception($"{typeof(T).Name} is missing in GameInitiator. Please assign a prefab.");
+
+        return Instantiate(prefab);
     }
     private async UniTask Initialize()
     {
-        // Initialize global Systems
-        await _gameManager.Initialize();
-        await _gameStateManager.Intialize();
-        await _inputService.Initialize();
-        await _soundManager.Initialize();
+        Debug.Log("[GameInitiator] Initializing managers...");
+
+        await GameManager.Initialize();
+        await GameStateManager.Intialize();
+        await InputService.Initialize();
+        await SoundManager.Initialize();
     }
+
     public async UniTask PrepareCoreSystems()
     {
-        GameManager.Instance.PlayerDataManager.Initialize();
+        GameManager.PlayerDataManager.Initialize();
 
         if (isDevelopment)
         {
-            Debug.Log("[GameInitiator] Development Environment Detected");
-            // Don't load initial scene, just sync current scene to GameStateManager
+            Debug.Log("[GameInitiator] Dev environment detected.");
             var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            GameState devState = GameStateUtils.GetStateFromSceneName(currentScene);
-            await _gameStateManager.SetState(devState);
+            var devState = GameStateUtils.GetStateFromSceneName(currentScene);
+            await GameStateManager.SetState(devState);
         }
-        Debug.Log("[GameInitiator] Game preparation (player State) complete.");
 
+        Debug.Log("[GameInitiator] Core systems prepared.");
     }
     public async UniTask PrepareGame(SaveData saveData)
     {
-        await GameManager.Instance.PlayerManager.Initialize(saveData.playerData);
-        await GameManager.Instance.CharacterManager.Initialize(saveData.ownedCharacters);
-        await GameManager.Instance.TeamManager.Initialize(saveData.teams);
-        await GameManager.Instance.AntiVirusManager.Initialize();
-        await GameManager.Instance.LevelManager.Initialize();
-        await GameManager.Instance.StatusEffectManager.Initialize();
+        await GameManager.PlayerManager.Initialize(saveData.playerData);
+        await GameManager.CharacterManager.Initialize(saveData.ownedCharacters);
+        await GameManager.TeamManager.Initialize(saveData.teams);
+        await GameManager.AntiVirusManager.Initialize();
+        await GameManager.LevelManager.Initialize();
+        await GameManager.StatusEffectManager.Initialize();
 
+        await UniTask.Yield();
         if (generateTestData) GenerateTestData();
-        Debug.Log("[GameInitiator] Game preparation (player data) complete.");
 
         isFinished = true;
-
-        await UniTask.CompletedTask;
+        Debug.Log("[GameInitiator] Game preparation complete.");
     }
     private void GenerateTestData()
     {
-        Debug.Log("[GameInitiator] Generating Test usable Data");
-        var teamManager = GameManager.Instance.TeamManager;
+        Debug.Log("[GameInitiator] Generating test data...");
+
+        var teamManager = GameManager.TeamManager;
         var teamID = teamManager.CreateTeam();
-        var character = GameManager.Instance.CharacterManager.GetCharacters();
 
-        var character1 = CharacterFactory.CreateTestCharacter();
-        var character2 = CharacterFactory.CreateTestCharacter();
-        var character3 = CharacterFactory.CreateTestCharacter();
-        var character4 = CharacterFactory.CreateTestCharacter();
+        var c1 = CharacterFactory.CreateTestCharacter();
+        var c2 = CharacterFactory.CreateTestCharacter();
+        var c3 = CharacterFactory.CreateTestCharacter();
+        var c4 = CharacterFactory.CreateTestCharacter();
 
-        // Just to ensure we owned the character
-        character.Add(character1);
-        character.Add(character2);
-        character.Add(character3);
-        character.Add(character4);
-        // Assigned owned character to slot
-        teamManager.AssignedCharacterToSlot(teamID, 0, character1);
-        teamManager.AssignedCharacterToSlot(teamID, 1, character2);
-        teamManager.AssignedCharacterToSlot(teamID, 2, character3);
-        teamManager.AssignedCharacterToSlot(teamID, 3, character4);
+        var characters = GameManager.CharacterManager.ownedCharacters;
+        characters.AddRange(new[] { c1, c2, c3, c4 });
+        teamManager.AssignedCharacterToSlot(teamID, 0, c1);
+        teamManager.AssignedCharacterToSlot(teamID, 1, c2);
+        teamManager.AssignedCharacterToSlot(teamID, 2, c3);
+        teamManager.AssignedCharacterToSlot(teamID, 3, c4);
         teamManager.SetActiveTeam(teamID);
-        GameManager.Instance.LevelManager.activeLevel = currentLevel;
 
-        Debug.Log("[GameInitiator] Generating Data Successfull");
+        GameManager.LevelManager.activeLevel = currentLevel;
     }
-    public GameManager GetGameManager() => _gameManager;
-    public GameStateManager GetGameStateManager() => _gameStateManager;
-    public InputService GetInputService() => _inputService;
+
     public async void SwitchStates(GameState state)
     {
-        await _gameStateManager.SetState(state);
+        await GameStateManager.SetState(state);
     }
 }

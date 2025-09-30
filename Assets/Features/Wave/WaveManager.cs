@@ -5,21 +5,24 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private LevelData currentLevelData;
+    [Header("Debug Log : Don't touch")]
     [SerializeField] private EnemySpawner spawner;
 
     private int waveIndex = 0;
     private WaveService currentWave;
     private List<WaveConfig> waveConfigs;
 
-    public void Initialize(LevelData levelData)
+    public void Initialize()
     {
-        currentLevelData = levelData;
-        waveConfigs = levelData.waveSet.waves;
+        waveConfigs = null;
         waveIndex = 0;
         currentWave = null;
         // Add controls if its a campaign or endless here
-        Debug.Log("[WaveManager] Initialized with level: " + currentLevelData.levelName);
+        Debug.Log("[WaveManager] Initialized");
+    }
+    public void SetWaveConfig(List<WaveConfig> waveConfigs)
+    {
+        this.waveConfigs = waveConfigs;
     }
     private void Update()
     {

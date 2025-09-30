@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public enum GameState
 {
     None,
@@ -21,17 +22,17 @@ public class GameStateManager : MonoBehaviour
     public event Action<GameState> OnStateChanged;
     private string _sceneToLoadAfterLoading;
     public bool _isInitialize = false;
-    public GameObject loaderCanvas;
+    public UIManager uIManager;
     public async UniTask Intialize()
     {
         if (_isInitialize) return;
 
         Debug.Log("[GameStateManager] Waiting for loaderCanva...");
-        Debug.Log($"[GSM] GameManager.Instance: {GameManager.Instance}");
-        Debug.Log($"[GSM] GameManager.LevelManager: {GameManager.Instance?.LevelManager}");
-        Debug.Log($"[GSM] loaderCanva: {GameManager.Instance?.LevelManager?.loaderCanva}");
+        Debug.Log($"[GameStateManager] GameManager.Instance: {GameManager.Instance}");
+        Debug.Log($"[GameStateManager] GameManager.LevelManager: {GameManager.Instance?.LevelManager}");
+        Debug.Log($"[GameStateManager] loaderCanva: {GameManager.Instance?.LevelManager?.loaderCanva}");
 
-        loaderCanvas = GameManager.Instance.LevelManager.loaderCanva;
+        uIManager = GameInitiator.Instance.UIManager;
         _isInitialize = true;
         await UniTask.CompletedTask;
     }
@@ -47,28 +48,39 @@ public class GameStateManager : MonoBehaviour
     }
     public async UniTask SetState(GameState newState)
     {
-        GameManager.Instance.PlayerDataManager.AutoSaveTrigger();
+        if (GameInitiator.Instance.isDevelopment)
+            GameManager.Instance.PlayerDataManager.AutoSaveTrigger();
 
         if (newState == Currentstate)
         {
             Debug.LogWarning($"[GameStateManager] Tried to set state to {newState}, but it was already the current state. Scene load skipped.");
             return;
         }
+
+        string targetScene = GameStateUtils.GetSceneNameFromState(newState);
+        if (SceneManager.GetActiveScene().name == targetScene)
+        {
+            Debug.Log($"[GameStateManager] Already in {targetScene}, skipping scene load.");
+            Currentstate = newState;
+            OnStateChanged?.Invoke(newState);
+            return;
+        }
+
         Currentstate = newState;
         Debug.Log($"[GameStateManager] State changed to: {newState}");
         OnStateChanged?.Invoke(newState);
         switch (newState)
         {
             case GameState.MainMenu:
-                await SceneLoader.LoadScene("MainMenu", loaderCanvas);
+                await SceneLoader.LoadScene("MainMenu", uIManager);
                 break;
 
             case GameState.Gameplay:
-                await SceneLoader.LoadScene("Gameplay", loaderCanvas);
+                await SceneLoader.LoadScene("Gameplay", uIManager);
                 break;
 
             case GameState.Credits:
-                await SceneLoader.LoadScene("Credits", loaderCanvas);
+                await SceneLoader.LoadScene("Credits", uIManager);
                 break;
 
             case GameState.Loading:

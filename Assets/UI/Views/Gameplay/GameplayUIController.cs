@@ -6,24 +6,36 @@ using UnityEngine;
 
 public class GameplayUIController : MonoBehaviour
 {
+    [Header("Core UI Panels")]
     public CharacterListUI characterListUI;
     public CharacterListIconUI characterIcons;
     public OSHPUI baseOSHP;
-    private PlayerService playerService;
-    public AttackTimer timer;
     public WaveUIController waveUI;
     public AnnouncementUI announcementUI;
     public CompleteScreenUI completeScreenUI;
-    public LootHolder lootHolder;
     public GameplayActiveStatusEffect activeStatusEffect;
+
+    [Header("Gameplay Services")]
+    private PlayerService playerService;
+    public AttackTimer timer;
     public UISkillSlots skillSlots;
-    [Header("GameObject Controls")]
+
+    [Header("Rewards & Progressions")]
+    public LootHolder lootHolder;
+
+    [Header("Controls")]
     public GameObject starWaveButton;
-    public void Initialize(List<CharacterBattleState> characters)
+    public void Initialize(PlayerService playerService)
     {
-        playerService = GameManager.Instance.PlayerManager.playerService;
+        this.playerService = playerService;
+    }
+    public void SetupCharacterUI(List<CharacterBattleState> characters)
+    {
         characterListUI.Initialize(characters);
         characterIcons.Initialize(characters);
+    }
+    public void StartStateSetup()
+    {
         baseOSHP.Setup(playerService);
         waveUI.Setup();
         timer.Setup(playerService);
@@ -31,7 +43,6 @@ public class GameplayUIController : MonoBehaviour
         activeStatusEffect.Setup();
         skillSlots.Initialize();
     }
-
     public void PushMessage(string message)
     {
         announcementUI.PushMessage(message);

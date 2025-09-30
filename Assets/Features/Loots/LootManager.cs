@@ -10,14 +10,22 @@ public class LootManager : MonoBehaviour
     void Update()
     {
         var currentTarget = GameplayManager.Instance.followerManager.GetCurrentTarget();
+
         if (player != currentTarget)
             player = currentTarget;
 
-        if (player == null) return;
+        if (player == null || activeLoots == null || activeLoots.Count == 0)
+            return;
 
-        foreach (var loot in new List<LootCollect>(activeLoots))
+        for (int i = activeLoots.Count - 1; i >= 0; i--)
         {
-            if (loot == null) continue;
+            var loot = activeLoots[i];
+            if (loot == null)
+            {
+                activeLoots.RemoveAt(i);
+                continue;
+            }
+
             loot.TryAttract(player);
         }
     }

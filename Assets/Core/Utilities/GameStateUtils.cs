@@ -14,4 +14,17 @@ public static class GameStateUtils
             _ => GameState.Initial
         };
     }
+    // New: GameState -> scene name
+    public static string GetSceneNameFromState(GameState state)
+    {
+        return state switch
+        {
+            GameState.MainMenu => "MainMenu",
+            GameState.Gameplay => "Gameplay",
+            GameState.TitleScreen => "Title",
+            GameState.Credits => "Credits",
+            GameState.Initial => "InitialScene",
+            _ => string.Empty
+        };
+    }
 }

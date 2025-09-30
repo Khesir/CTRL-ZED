@@ -16,16 +16,16 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
         if (originalDraggable.isExternal)
         {
             // Validate if character is not duplicate
-            if (!manager.isCharacterInTeam(teamService.teamID, transferredCharacter).IsSuccess) return;
+            if (!manager.isCharacterInTeam(teamService.GetData().teamID, transferredCharacter).IsSuccess) return;
 
-            manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
+            manager.AssignedCharacterToSlot(teamService.GetData().teamID, slotIndex, transferredCharacter);
         }
         else
         {
             TeamInventorySlot originalSlot = originalDraggable.parentAfterDrag.GetComponent<TeamInventorySlot>();
-            if (teamService.teamID != originalSlot.teamService.teamID) return;
-            manager.AssignedCharacterToSlot(teamService.teamID, slotIndex, transferredCharacter);
-            manager.RemoveCharacterFromSlot(originalSlot.teamService.teamID, originalSlot.slotIndex);
+            if (teamService.GetData().teamID != originalSlot.teamService.GetData().teamID) return;
+            manager.AssignedCharacterToSlot(teamService.GetData().teamID, slotIndex, transferredCharacter);
+            manager.RemoveCharacterFromSlot(originalSlot.teamService.GetData().teamID, originalSlot.slotIndex);
 
             originalDraggable.parentAfterDrag = transform;
         }

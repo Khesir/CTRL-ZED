@@ -10,6 +10,7 @@ public class Team
   public bool isActiveTeam;
   public List<CharacterData> characters = new();
   public int maxSize = 4;
+  public string teamID = "Not Set";
   public Team(string name)
   {
     teamName = name;

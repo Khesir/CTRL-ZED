@@ -18,7 +18,7 @@ public class CharacterListUI : MonoBehaviour
     var hotbars = new List<GameObject>
         {
             hotbar1,
-           hotbar2,
+            hotbar2,
             hotbar3,
             hotbar4
         };
