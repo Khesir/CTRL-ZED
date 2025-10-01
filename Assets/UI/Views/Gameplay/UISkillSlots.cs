@@ -7,10 +7,9 @@ public class UISkillSlots : MonoBehaviour
     [SerializeField] private List<UISkillSlot> skillSlots;
     public void Initialize()
     {
-        Refersh();
-        GameplayManager.Instance.followerManager.OnSwitch += Refersh;
+        GameplayManager.Instance.followerManager.OnSwitch += Refresh;
     }
-    private void Refersh()
+    private void Refresh()
     {
         var x = GameplayManager.Instance.followerManager.GetCurrentTargetBattleState().data.GetData();
         skillSlots[0].Initialize(x.baseData.skill1);

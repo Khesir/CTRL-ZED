@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameplayUIController : MonoBehaviour
 {
-    [Header("Core UI Panels")]
+    [Header("Core UI")]
     public CharacterListUI characterListUI;
     public CharacterListIconUI characterIcons;
     public OSHPUI baseOSHP;
@@ -14,7 +14,7 @@ public class GameplayUIController : MonoBehaviour
     public AnnouncementUI announcementUI;
     public CompleteScreenUI completeScreenUI;
     public GameplayActiveStatusEffect activeStatusEffect;
-
+    public StartButton startButton;
     [Header("Gameplay Services")]
     private PlayerService playerService;
     public AttackTimer timer;
@@ -43,6 +43,21 @@ public class GameplayUIController : MonoBehaviour
         activeStatusEffect.Setup();
         skillSlots.Initialize();
     }
+    public async UniTask StartStateUIAnimation()
+    {
+        var hotbarTask = characterListUI.AnimateHotbarsInAndOut();
+        var startButtonTask = startButton.AnimateIn();
+
+        // Wait until both are finished
+        await UniTask.WhenAll(hotbarTask, startButtonTask);
+    }
+    public async UniTask PlayingStateUIAnimation()
+    {
+        var startButtonTask = startButton.AnimateOut();
+
+        // To handle animation Concurrently
+        await UniTask.WhenAll(startButtonTask);
+    }
     public void PushMessage(string message)
     {
         announcementUI.PushMessage(message);
@@ -55,9 +70,10 @@ public class GameplayUIController : MonoBehaviour
     {
         lootHolder.AddAmount(data);
     }
-    public void HandleGameOver()
+    public async void HandleGameOver()
     {
         // Places a UI that allow the user to pick deployed team or choose game over.
         // Maybe use certain amount of drive to revive
+        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
     }
 }

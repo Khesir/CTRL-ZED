@@ -71,7 +71,7 @@ public class GameplayManager : MonoBehaviour
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
         Debug.Log("[GameplayManager] Passed");
         Initialize();
-        SetState(GameplayState.Start);
+        await SetState(GameplayState.Start);
     }
     public void Initialize()
     {
@@ -91,7 +91,7 @@ public class GameplayManager : MonoBehaviour
         Debug.Log("[GameplayManager] Gameplay Manager Initialized");
         _isInitialized = true;
     }
-    public void SetState(GameplayState newState)
+    public async UniTask SetState(GameplayState newState)
     {
         if (currentState == newState) return;
 
@@ -119,10 +119,13 @@ public class GameplayManager : MonoBehaviour
         switch (currentState)
         {
             case GameplayState.Start:
-                HandleStart();
-                isGameActive = true;
+                HandleStart(); // Gameplay logics
+                await gameplayUI.StartStateUIAnimation();
+                isGameActive = true; // Control Flag
                 break;
             case GameplayState.Playing:
+                await gameplayUI.PlayingStateUIAnimation();
+                waveManager.StartNextWave();
                 break;
             case GameplayState.End:
                 HandleEndGame();
@@ -132,6 +135,21 @@ public class GameplayManager : MonoBehaviour
 
     public void HandleStart()
     {
+        // LevelData
+        LevelData currentLevel = GameManager.Instance.LevelManager.activeLevel;
+
+        // Environments        
+        parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
+
+        // Waves
+        waveManager.SetWaveConfig(currentLevel.waveSet.waves);
+
+        // Sound
+        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
+
+        // UI
+        gameplayUI.StartStateSetup();
+
         // Get list of active team and set team 0 as first deployed team
         List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
         List<CharacterData> members = teams[0].GetMembers();
@@ -150,16 +168,10 @@ public class GameplayManager : MonoBehaviour
         // Handling characters
         List<GameObject> GO = followerManager.Initialize(battleStates);
         playerGameplayManager.Initialize(GO, inputService);
-
-        // setting Waves
-        LevelData currentLevel = GameManager.Instance.LevelManager.activeLevel;
-        waveManager.SetWaveConfig(currentLevel.waveSet.waves);
+        gameplayUI.SetupCharacterUI(battleStates);
 
         followerManager.SwitchTo(0);
-        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
-        gameplayUI.StartStateSetup();
-        gameplayUI.SetupCharacterUI(battleStates);
-        parallaxBackground.SetLayers();
+
         Debug.Log("[GameplayManager] Gameplay Manager is now Active");
     }
     private void HandleEndGame()

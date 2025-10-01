@@ -7,14 +7,12 @@ using UnityEngine;
 public class AnnouncementUI : MonoBehaviour
 {
     public TMP_Text message;
-    public Animator animator;
     public int duration = 3;
     public async void PushMessage(string message)
     {
         this.message.text = message;
-
-        animator.SetTrigger("Close");
+        gameObject.SetActive(true); // this should trigger the panelAnimator-- AnimateOut
         await UniTask.Delay(duration * 1000);
-        animator.SetTrigger("Close");
+        gameObject.SetActive(false); // this should trigger the panelAnimator-- AnimateOut
     }
 }

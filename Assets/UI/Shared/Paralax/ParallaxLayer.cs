@@ -11,6 +11,6 @@ public class ParallaxLayer : MonoBehaviour
         Vector3 newPos = transform.localPosition; // Ensure customRenderer is used instead of renderer
         newPos.x -= delta * parallaxFactor;
 
-        transform.localPosition = newPos;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, newPos, 0.1f);
     }
 }

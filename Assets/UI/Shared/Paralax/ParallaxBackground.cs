@@ -16,7 +16,7 @@ public class ParallaxBackground : MonoBehaviour
 
         if (parallaxCamera != null)
             parallaxCamera.onCameraTranslate += Move;
-
+        SetLayers();
     }
 
     public void SetLayers()
