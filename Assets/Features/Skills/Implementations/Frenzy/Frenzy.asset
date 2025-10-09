@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Frenzy
   description: Increases ATK and Shoot Speed
   icon: {fileID: 808722547, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
-  cooldown: 1
+  cooldown: 2
   skillLifetime: 2
   skillPrefab: {fileID: 8089907415401129806, guid: 789b2efdce66f144385c19cb88403485, type: 3}
   vfxPrefab: {fileID: 2159294031496849838, guid: 19404a235cc95da40bf299f59bccad4c, type: 3}

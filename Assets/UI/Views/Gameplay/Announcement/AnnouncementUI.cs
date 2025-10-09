@@ -11,8 +11,9 @@ public class AnnouncementUI : MonoBehaviour
     public async void PushMessage(string message)
     {
         this.message.text = message;
-        gameObject.SetActive(true); // this should trigger the panelAnimator-- AnimateOut
+        gameObject.SetActive(true); // Essentically this should be handled in show() but due to many panels are using this, adding this now can cause error.
+        await gameObject.GetComponent<PanelAnimator>().Show();
         await UniTask.Delay(duration * 1000);
-        gameObject.SetActive(false); // this should trigger the panelAnimator-- AnimateOut
+        await gameObject.GetComponent<PanelAnimator>().Hide(gameObject);
     }
 }

@@ -5,8 +5,10 @@ using UnityEngine;
 public class SkillHolder : MonoBehaviour
 {
     private ISkill[] skills = new ISkill[2];
-    public GameObject skillUser;
+    public GameObject skillUser; // Reference to the player
 
+    [Header("Add Event Channel From: Assets/Core/Event")]
+    [SerializeField] private SkillEventChannel skillEventChannel;
     public void EquipSkills(SkillConfig skill1, SkillConfig skill2)
     {
         EquipSkill(0, skill1);
@@ -35,6 +37,7 @@ public class SkillHolder : MonoBehaviour
         if (skills[index] != null && skills[index].CanActivate())
         {
             skills[index].Activate();
+            skillEventChannel.OnSkillUsed?.Invoke(index, skills[index].GetSkillConfig().cooldown);
         }
     }
 }

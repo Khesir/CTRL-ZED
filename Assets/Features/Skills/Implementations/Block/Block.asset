@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Block
   description: Block and pushes backenemy
   icon: {fileID: 1418486917, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
-  cooldown: 1
+  cooldown: 5
   skillLifetime: 5
   skillPrefab: {fileID: 6178643051368472165, guid: f55276a0e43f6c54f83ca324508e382a, type: 3}
   vfxPrefab: {fileID: 1821401117849128597, guid: 30186b5f815dbe845a785eede7415d14, type: 3}

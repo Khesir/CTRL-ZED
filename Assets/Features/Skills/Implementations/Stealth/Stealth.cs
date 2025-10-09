@@ -24,6 +24,7 @@ public class Stealth : MonoBehaviour, ISkill, IStatProvider
     public void Activate()
     {
         if (!CanActivate()) return;
+        lastUsedTime = Time.time;
         GameplayManager.Instance.enemyManager.SetStealth(true);
 
         if (config.vfxPrefab != null)
@@ -55,6 +56,7 @@ public class Stealth : MonoBehaviour, ISkill, IStatProvider
     }
     public bool CanActivate()
     {
+        if (lastUsedTime == 0) return true;
         return Time.time >= lastUsedTime + config.cooldown;
     }
     public IEnumerable<StatModifier> GetModifiers()

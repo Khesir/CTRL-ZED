@@ -276,7 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   inputEnabled: 0
-  isDead: 0
+  isControlled: 0
 --- !u!114 &2083579790593172461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,3 +424,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillUser: {fileID: 0}
+  skillEventChannel: {fileID: 11400000, guid: b51e94f35075888429747cee3351c8c9, type: 2}

@@ -66,6 +66,8 @@ public class Block : MonoBehaviour, ISkill, IStatProvider
     }
     public bool CanActivate()
     {
+        if (lastUsedTime == 0) return true;
+
         return Time.time >= lastUsedTime + config.cooldown;
     }
 

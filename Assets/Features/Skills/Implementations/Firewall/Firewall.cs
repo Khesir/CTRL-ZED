@@ -54,7 +54,7 @@ public class Firewall : MonoBehaviour, ISkill, IStatProvider
         activated = true;
         targetSize = Vector3.one * range;
         transform.localScale = Vector3.zero;
-
+        lastUsedTime = Time.time;
         // Spawn VFX and scale it to match range
         if (config.vfxPrefab != null)
         {
@@ -133,6 +133,7 @@ public class Firewall : MonoBehaviour, ISkill, IStatProvider
 
     public bool CanActivate()
     {
+        if (lastUsedTime == 0) return true;
         return Time.time >= lastUsedTime + config.cooldown;
     }
 

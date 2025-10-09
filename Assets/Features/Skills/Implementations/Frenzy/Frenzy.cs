@@ -27,6 +27,7 @@ public class Frenzy : MonoBehaviour, ISkill, IStatProvider
     {
         if (!CanActivate()) return;
         var state = user.GetComponent<PlayerGameplayService>();
+        lastUsedTime = Time.time;
         var prevRate = state.GetFirerate();
         state.UpdateFireRate(increasedRate);
         if (config.vfxPrefab != null)
@@ -44,6 +45,7 @@ public class Frenzy : MonoBehaviour, ISkill, IStatProvider
     }
     public bool CanActivate()
     {
+        if (lastUsedTime == 0) return true;
         return Time.time >= lastUsedTime + config.cooldown;
     }
     public IEnumerable<StatModifier> GetModifiers()

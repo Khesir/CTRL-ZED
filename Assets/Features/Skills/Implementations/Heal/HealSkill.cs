@@ -17,6 +17,7 @@ public class HealSkill : MonoBehaviour, ISkill
 
     public bool CanActivate()
     {
+        if (lastUsedTime == 0) return true;
         return Time.time >= lastUsedTime + config.cooldown;
     }
     public void Activate()
