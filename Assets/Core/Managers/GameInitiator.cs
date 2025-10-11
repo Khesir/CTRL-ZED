@@ -129,20 +129,37 @@ public class GameInitiator : MonoBehaviour
         Debug.Log("[GameInitiator] Generating test data...");
 
         var teamManager = GameManager.TeamManager;
+        teamManager.IncreaseMaxTeam();
+        // Team 1
         var teamID = teamManager.CreateTeam();
+        var characters = GameManager.CharacterManager.ownedCharacters;
 
         var c1 = CharacterFactory.CreateTestCharacter();
         var c2 = CharacterFactory.CreateTestCharacter();
         var c3 = CharacterFactory.CreateTestCharacter();
         var c4 = CharacterFactory.CreateTestCharacter();
 
-        var characters = GameManager.CharacterManager.ownedCharacters;
         characters.AddRange(new[] { c1, c2, c3, c4 });
         teamManager.AssignedCharacterToSlot(teamID, 0, c1);
         teamManager.AssignedCharacterToSlot(teamID, 1, c2);
         teamManager.AssignedCharacterToSlot(teamID, 2, c3);
         teamManager.AssignedCharacterToSlot(teamID, 3, c4);
         teamManager.SetActiveTeam(teamID);
+
+        // Team 2
+        var teamID2 = teamManager.CreateTeam();
+
+        var c5 = CharacterFactory.CreateTestCharacter();
+        var c6 = CharacterFactory.CreateTestCharacter();
+        var c7 = CharacterFactory.CreateTestCharacter();
+        var c8 = CharacterFactory.CreateTestCharacter();
+
+        characters.AddRange(new[] { c5, c6, c7, c8 });
+        teamManager.AssignedCharacterToSlot(teamID2, 0, c5);
+        teamManager.AssignedCharacterToSlot(teamID2, 1, c6);
+        teamManager.AssignedCharacterToSlot(teamID2, 2, c7);
+        teamManager.AssignedCharacterToSlot(teamID2, 3, c8);
+        teamManager.SetActiveTeam(teamID2);
 
         GameManager.LevelManager.activeLevel = currentLevel;
     }

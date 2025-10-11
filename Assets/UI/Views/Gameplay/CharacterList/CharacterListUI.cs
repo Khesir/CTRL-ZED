@@ -5,6 +5,8 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 public class CharacterListUI : MonoBehaviour
 {
+    [SerializeField] private bool animateOnce = true;
+    [SerializeField] private bool isAnimated = false;
     public GameObject CharacterIcons;
     public GameObject hotbar1;
     public GameObject hotbar2;
@@ -49,6 +51,8 @@ public class CharacterListUI : MonoBehaviour
     }
     public async UniTask AnimateHotbarsInAndOut()
     {
+        if (isAnimated) return;
+        isAnimated = true;
         float speed = 1.2f;
         float delaySpeed = 1;
         Vector2 startOffset = new Vector2(-200, 0); // start off-screen left
@@ -84,6 +88,10 @@ public class CharacterListUI : MonoBehaviour
 
             rect.DOAnchorPosX(rect.anchoredPosition.x - 200, 0.4f * speed).SetEase(Ease.InOutBack).SetDelay(i * stagger * delaySpeed);
             canvasGroup.DOFade(0, 0.4f * speed).SetDelay(i * stagger * delaySpeed).OnComplete(() => hotbar.SetActive(false));
+        }
+        if (!animateOnce)
+        {
+            isAnimated = false;
         }
     }
     public void UpdateHotbar1()

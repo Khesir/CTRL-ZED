@@ -462,6 +462,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c51a16f8cbfb346b2aa586b156b03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundImage: {fileID: 8535483569103763202}
+  teamName: {fileID: 8698286687975124469}
+  icons:
+  - {fileID: 3434268990363156994}
+  - {fileID: 1672299836500105976}
+  - {fileID: 8939725936483244741}
+  - {fileID: 7965388645281990737}
+  reviveButton: {fileID: 1868294680039217868}
+  deployButton: {fileID: 2514441196167195907}
+  deadTeamColor: '#FF4C4C'
 --- !u!1 &2348595411237913610
 GameObject:
   m_ObjectHideFlags: 0

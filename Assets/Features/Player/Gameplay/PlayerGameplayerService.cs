@@ -93,6 +93,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         else
         {
             // No available characters, trigger game over or team defeat
+            GameplayManager.Instance.SetDeadTeam(GameplayManager.Instance.activeTeamID, true);
             GameplayManager.Instance.followerManager.ResetTarget();
             GameplayManager.Instance.gameplayUI.HandleGameOver();
         }

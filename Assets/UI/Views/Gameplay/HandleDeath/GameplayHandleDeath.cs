@@ -11,26 +11,26 @@ public class GameplayHandleDeath : MonoBehaviour
     [SerializeField] private Transform container;
     [SerializeField] private Button giveupButton;
     [SerializeField] private TMP_Text driveCounter;
-    private GameplayManager gameplayManager;
-    public void SetDisplay(bool flag = true)
+    [SerializeField] private PanelAnimator panelAnimator;
+    public async void SetDisplay(bool flag = true)
     {
-        this.gameObject.SetActive(flag);
+        gameObject.SetActive(flag);
         if (flag)
         {
+            await panelAnimator.Show();
             GameplayManager.Instance.onUpdateDeadTeam += UpdateDeployedTeam;
             Setup();
         }
         else
         {
-            GameplayManager.Instance.onUpdateDeadTeam -= UpdateDeployedTeam;
             // Disconnect external dependencies
+            await panelAnimator.Hide();
+            GameplayManager.Instance.onUpdateDeadTeam -= UpdateDeployedTeam;
         }
     }
     private void Setup()
     {
-        gameplayManager = GameplayManager.Instance;
         UpdateDeployedTeam();
-        // Give up Button
         SetupGiveUpButton();
     }
 
@@ -49,18 +49,27 @@ public class GameplayHandleDeath : MonoBehaviour
             var go = Instantiate(card, container);
             var component = go.GetComponent<GamplayTeamCompCard>();
             component.Setup(team);
+            component.onDeploySelected += OnDeploySelected;
         }
     }
-    private void SetupGiveUpButton()
+    private async void SetupGiveUpButton()
     {
         driveCounter.text = GameManager.Instance.PlayerManager
                         .playerService.GetChargedDrives().ToString();
 
         giveupButton.onClick.RemoveAllListeners();
-        giveupButton.onClick.AddListener(() =>
+        giveupButton.onClick.AddListener(async () =>
         {
-            // Close Game,
+            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
         });
+    }
+    private async void OnDeploySelected(GamplayTeamCompCard card)
+    {
+        // Hide the death panel
+        SetDisplay(false);
+
+        // Start the round
+        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Playing);
     }
     private void Clear()
     {

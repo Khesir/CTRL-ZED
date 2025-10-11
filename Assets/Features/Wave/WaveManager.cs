@@ -9,7 +9,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private EnemySpawner spawner;
 
     private int waveIndex = 0;
-    private WaveService currentWave;
+    public WaveService currentWave;
     private List<WaveConfig> waveConfigs;
 
     public void Initialize()
@@ -35,6 +35,7 @@ public class WaveManager : MonoBehaviour
             GameplayManager.Instance.enemyManager.KillAllEnemies(true);
             Debug.Log("[WaveManager] All waves completed.");
             GameplayManager.Instance.gameplayUI.PushMessage("All Waves Cleared!");
+            currentWave = null;
             return;
         }
 
@@ -90,5 +91,16 @@ public class WaveManager : MonoBehaviour
             GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(true);
         }
         currentWave = null;
+    }
+    public void PauseWave(bool flag)
+    {
+        if (flag)
+        {
+            currentWave.StopWave();
+        }
+        else
+        {
+            currentWave.ResumeWave();
+        }
     }
 }

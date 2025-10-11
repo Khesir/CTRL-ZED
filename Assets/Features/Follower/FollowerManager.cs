@@ -25,7 +25,10 @@ public class FollowerManager : MonoBehaviour
         Debug.Log("[FollowerManager] Successfully Initilized all followers");
         return followerObjects;
     }
-
+    public List<GameObject> HandleSwitchTeam()
+    {
+        return new List<GameObject>();
+    }
     private void Update()
     {
         for (int i = 0; i < 9; i++)

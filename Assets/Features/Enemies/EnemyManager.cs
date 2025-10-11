@@ -40,4 +40,11 @@ public class EnemyManager : MonoBehaviour
             enemy.GetComponent<EnemyFollow>().Refresh();
         }
     }
+    public void ResetTargets()
+    {
+        foreach (var enemy in new List<EnemyService>(activeEnemies))
+        {
+            enemy.GetComponent<EnemyFollow>().target = null;
+        }
+    }
 }

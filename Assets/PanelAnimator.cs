@@ -37,13 +37,13 @@ public class PanelAnimator : MonoBehaviour
 
         await currentSequence.AsyncWaitForCompletion().AsUniTask();
     }
-    public async UniTask Hide(GameObject gameObject)
+    public async UniTask Hide(GameObject gameObject = null)
     {
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence()
             .Join(rect.DOAnchorPos(originalPos + slideDirection, duration).SetEase(Ease.InCubic).SetUpdate(true))
             .Join(canvasGroup.DOFade(0, duration).SetUpdate(true))
-            .OnComplete(() => { gameObject.SetActive(false); });
+            .OnComplete(() => { if (gameObject != null) gameObject.SetActive(false); });
 
         await currentSequence.AsyncWaitForCompletion().AsUniTask();
     }

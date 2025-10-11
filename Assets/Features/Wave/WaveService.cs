@@ -55,6 +55,7 @@ public class WaveService
     }
 
     public void StopWave() => isActive = false;
+    public void ResumeWave() => isActive = true;
     public WaveConfig GetConfig() => config;
     public int GetKillCount() => killCount;
     public int GetRequiredKills() => config.requiredKills;

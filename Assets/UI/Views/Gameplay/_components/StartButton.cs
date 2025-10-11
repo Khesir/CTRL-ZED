@@ -7,6 +7,10 @@ using UnityEngine.EventSystems;
 using Cysharp.Threading.Tasks;
 public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+
+    [Header("Flags")]
+    public bool isActive = false;
+    private bool isVisible = false;
     [HideInInspector] public Button button;
     private RectTransform rect;
     private Vector2 originalPos;
@@ -25,15 +29,23 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public async UniTask Activate()
     {
+        if (isActive) return;
+        isActive = true;
         await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Playing);
     }
     public async UniTask AnimateIn(float slideDistance = 200f, float duration = 0.6f)
     {
+        if (isVisible) return;
+        isVisible = true;
+
+        // Capture true layout position every time
+        originalPos = rect.anchoredPosition;
+
         gameObject.SetActive(true);
         rect.anchoredPosition = originalPos - new Vector2(0, slideDistance);
         rect.localScale = originalScale;
 
-        // Wait for the slide-in to complete
+        // Animate slide-in
         await rect.DOAnchorPosY(originalPos.y, duration)
                   .SetEase(Ease.OutBack)
                   .AsyncWaitForCompletion();
@@ -55,8 +67,12 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public async UniTask AnimateOut(float slideDistance = 200f, float duration = 0.6f)
     {
+        if (!isVisible) return;
+        isVisible = false;
+
         StopWobble();
 
+        // Animate out
         var posTween = rect.DOAnchorPosY(originalPos.y - slideDistance, duration)
             .SetEase(Ease.InBack)
             .AsyncWaitForCompletion()
@@ -67,8 +83,11 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             .AsyncWaitForCompletion()
             .AsUniTask();
 
-        // Wait until both tweens finish
         await UniTask.WhenAll(posTween, scaleTween);
+
+        // Restore state for next reuse
+        rect.localScale = originalScale;
+        rect.anchoredPosition = originalPos;
 
         gameObject.SetActive(false);
     }

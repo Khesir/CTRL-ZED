@@ -14,6 +14,7 @@ public class GameplayManager : MonoBehaviour
     public static GameplayManager Instance { get; private set; }
     public bool isGameActive = false;
     public bool _isInitialized = false;
+
     [Header("Core References")]
     public GameManager gameManager;
     public GameplayUIController gameplayUI;
@@ -38,6 +39,7 @@ public class GameplayManager : MonoBehaviour
     // Gameplay Main Flags & Parameters
     [Header("Gameplay Flags & Parameters")]
     public string activeTeamID;
+    public string previousTeamID;
     public Dictionary<string, bool> deadTeams = new Dictionary<string, bool>();
 
     // Events
@@ -48,6 +50,7 @@ public class GameplayManager : MonoBehaviour
         None,
         Start,
         Playing,
+        Revive,
         End
     }
 
@@ -64,52 +67,55 @@ public class GameplayManager : MonoBehaviour
             Instance = this;
         }
     }
+
     private async void Start()
     {
-        Debug.Log("[GameplayManager] Waiting");
+        Debug.Log("[GameplayManager] Waiting for GameInitiator...");
+        await UniTask.WaitUntil(() =>
+            GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
 
-        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
-        Debug.Log("[GameplayManager] Passed");
+        Debug.Log("[GameplayManager] Initialization Passed");
         Initialize();
+
         await SetState(GameplayState.Start);
     }
     public void Initialize()
     {
         if (_isInitialized) return;
 
-        // Check all core Managers;
+        // Core setup
         inputService = GameInitiator.Instance.InputService;
         gameManager = GameInitiator.Instance.GameManager;
 
-        // Initialize data level
         gameplayUI.Initialize(gameManager.PlayerManager.playerService);
         enemyManager.Initialize();
         waveManager.Initialize();
-
-        // SetEnvironment
         parallaxBackground.Initialize();
-        Debug.Log("[GameplayManager] Gameplay Manager Initialized");
+
+        Debug.Log("[GameplayManager] Initialized");
         _isInitialized = true;
     }
     public async UniTask SetState(GameplayState newState)
     {
-        if (currentState == newState) return;
+        if (currentState == newState)
+        {
+            Debug.Log($"[GameplayManager] State '{newState}' ignored (already active).");
+            return;
+        }
 
-        // Exit previous state
-        // Handles cleaning
+        // Exit old state
         switch (currentState)
         {
             case GameplayState.Start:
-                // Clean up Start state if needed
-                // No usual Setup unless we doig endless mode state transition from end -> start
+                // Cleanup Start state if needed
                 break;
+
             case GameplayState.Playing:
                 // Pause gameplay, stop timers, etc.
                 break;
+
             case GameplayState.End:
                 // Cleanup end screen
-                // Pause Gameplay etc.. 
-                // Remove active ui that is in playing state
                 break;
         }
 
@@ -119,75 +125,107 @@ public class GameplayManager : MonoBehaviour
         switch (currentState)
         {
             case GameplayState.Start:
-                HandleStart(); // Gameplay logics
-                await gameplayUI.StartStateUIAnimation();
-                isGameActive = true; // Control Flag
+                Debug.Log($"[GameplayManager] isGameActive before Start: {isGameActive}");
+                if (!isGameActive) HandleStart();
+                if (gameplayUI != null)
+                    await gameplayUI.StartStateUIAnimation();
+                isGameActive = true;
                 break;
+
             case GameplayState.Playing:
-                await gameplayUI.PlayingStateUIAnimation();
-                waveManager.StartNextWave();
+                HandleTeamChange();
+                if (gameplayUI != null)
+                    await gameplayUI.PlayingStateUIAnimation();
+                StartWave();
                 break;
+
+            case GameplayState.Revive:
+                enemyManager.ResetTargets();
+                waveManager.PauseWave(true);
+                break;
+
             case GameplayState.End:
-                HandleEndGame();
+                enemyManager.KillAllEnemies(true);
+                gameplayUI?.HandleEndGamePanel();
                 break;
         }
     }
 
     public void HandleStart()
     {
-        // LevelData
         LevelData currentLevel = GameManager.Instance.LevelManager.activeLevel;
 
-        // Environments        
+        // Background / Environment
         parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
 
         // Waves
         waveManager.SetWaveConfig(currentLevel.waveSet.waves);
 
-        // Sound
+        // Audio
         SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
 
-        // UI
+        // UI Setup
         gameplayUI.StartStateSetup();
 
-        // Get list of active team and set team 0 as first deployed team
+        // Teams
+        List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
+        foreach (TeamService team in teams)
+        {
+            deadTeams[team.GetData().teamID] = false;
+        }
+
+        // Register initial team
+        activeTeamID = teams[0].GetData().teamID;
+        HandleTeamChange();
+
+        Debug.Log("[GameplayManager] Gameplay Active and Start State Initialized");
+    }
+    public void HandleTeamChange()
+    {
+        // Only refresh if the active team actually changed
+        if (previousTeamID == activeTeamID)
+            return;
+
+        previousTeamID = activeTeamID;
+
         List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
         List<CharacterData> members = teams[0].GetMembers();
 
-        // Add to Dictionary for fast lookup
-        foreach (TeamService team in teams)
-        {
-            deadTeams.Add(team.GetData().teamID, false);
-        }
-        // Register Active tteam
-        activeTeamID = teams[0].GetData().teamID;
+        // Build battle states
+        List<CharacterBattleState> battleStates = members
+            .Select(m => new CharacterBattleState(new CharacterService(m)))
+            .ToList();
 
-        // Registering battlestates of all Characters, player logics
-        List<CharacterBattleState> battleStates = members.Select(m => new CharacterBattleState(new CharacterService(m))).ToList();
+        // Initialize followers + player control
+        List<GameObject> followerObjects = followerManager.Initialize(battleStates);
+        playerGameplayManager.Initialize(followerObjects, inputService);
 
-        // Handling characters
-        List<GameObject> GO = followerManager.Initialize(battleStates);
-        playerGameplayManager.Initialize(GO, inputService);
+        // Setup UI
         gameplayUI.SetupCharacterUI(battleStates);
 
+        // Default focus to first follower
         followerManager.SwitchTo(0);
 
-        Debug.Log("[GameplayManager] Gameplay Manager is now Active");
     }
-    private void HandleEndGame()
+    public async void HandleEndGame()
     {
-        // Show end screen, play sounds, etc.
-        // Destroy gameplay objects if needed
-        Destroy(gameObject);
+        // TODO: Implement end game logic (reward distribution, summary, etc.)
+        Debug.Log("[GameplayManager] End game sequence triggered.");
+        await SetState(GameplayState.End);
     }
-
+    public void StartWave()
+    {
+        if (waveManager.currentWave == null)
+            waveManager.StartNextWave();
+        else
+            waveManager.PauseWave(false);
+    }
     public void SetDeadTeam(string teamID, bool isDead)
     {
-        if (deadTeams.ContainsKey(teamID))
-        {
-            // Register Dead Teams
-            deadTeams[activeTeamID] = isDead;
-            onUpdateDeadTeam?.Invoke();
-        }
+        if (!deadTeams.ContainsKey(teamID))
+            return;
+
+        deadTeams[teamID] = isDead;
+        onUpdateDeadTeam?.Invoke();
     }
 }

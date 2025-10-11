@@ -15,6 +15,7 @@ public class GameplayUIController : MonoBehaviour
     public CompleteScreenUI completeScreenUI;
     public GameplayActiveStatusEffect activeStatusEffect;
     public StartButton startButton;
+    public GameplayHandleDeath gameplayHandleDeath;
     [Header("Gameplay Services")]
     private PlayerService playerService;
     public AttackTimer timer;
@@ -72,8 +73,13 @@ public class GameplayUIController : MonoBehaviour
     }
     public async void HandleGameOver()
     {
-        // Places a UI that allow the user to pick deployed team or choose game over.
-        // Maybe use certain amount of drive to revive
-        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
+        // Shows Game over screen and revive
+        // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
+        gameplayHandleDeath.SetDisplay(true);
+        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Revive);
+    }
+    public async void HandleEndGamePanel()
+    {
+
     }
 }
