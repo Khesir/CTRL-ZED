@@ -22,6 +22,7 @@ public class LevelUIManager : MonoBehaviour
         Clear();
         for (int i = 0; i < levels.Count - 1; i++)
         {
+            if (int.Parse(levels[i].levelID) == 0) continue;
             var go = Instantiate(LevelPrefab, content);
             var lvl = go.GetComponent<LevelPrefab>();
             lvl.Setup(levels[i]);

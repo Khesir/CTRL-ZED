@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -24,8 +25,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AntiVirusManager antiVirusManager;
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private StatusEffectManager statusEffectManager;
+    [SerializeField] private LevelData tutorialLevel;
     public bool isGameActive;
     public bool _isInitialized = false;
+    public bool skipTutorial = true;
 
     [Header("Do not Change Anything")]
     [SerializeField] private SaveData saveData;
@@ -59,6 +62,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Game Manager Initialized");
         _isInitialized = true;
         await UniTask.CompletedTask;
+        if (!skipTutorial)
+            TutorialTrigger().Forget();
+    }
+
+    private async UniTaskVoid TutorialTrigger()
+    {
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
+
+        await UniTask.WaitUntil(() => GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu);
+        if (GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu && !playerManager.playerService.GetPlayerData().completedTutorial)
+        {
+            levelManager.activeLevel = tutorialLevel;
+            GameInitiator.Instance.SwitchStates(GameState.Gameplay);
+        }
     }
     // Add a data processing on load for all systems
     // Currently doing this in game initiator

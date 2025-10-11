@@ -731,17 +731,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec433b5be966b344d9d554fd2c481fab, type: 3}
---- !u!114 &641743842 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8634881365983257610, guid: ec433b5be966b344d9d554fd2c481fab, type: 3}
-  m_PrefabInstance: {fileID: 641743841}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72f15968111cd2a46a5b38d196c725d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &806799563
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,17 +939,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f33d3fe7500122d4aae8cfb87d6b1533, type: 3}
---- !u!114 &855840093 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6192112388295911865, guid: f33d3fe7500122d4aae8cfb87d6b1533, type: 3}
-  m_PrefabInstance: {fileID: 855840092}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca788f7abe4b9d408b8046e0dcd5458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &918697103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1705,18 +1683,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140652181900166657, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 641743842}
-    - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
-      propertyPath: inputService
-      value: 
-      objectReference: {fileID: 855840093}
-    - target: {fileID: 7762684297046556317, guid: ca354fd1ccaf5e34a957a10fd11ae0c1, type: 3}
-      propertyPath: generateTestData
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

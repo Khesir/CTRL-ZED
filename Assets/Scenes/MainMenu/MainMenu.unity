@@ -29013,8 +29013,6 @@ MonoBehaviour:
   teamList: {fileID: 240481326}
   setActive: {fileID: 405055414}
   resourceCost: {fileID: 59158303}
-  instance:
-    teamID: 
   emptyCbaracter: {fileID: 0}
 --- !u!114 &1732601081
 MonoBehaviour:

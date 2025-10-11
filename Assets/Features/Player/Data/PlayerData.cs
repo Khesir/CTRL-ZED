@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
+    [Header("Player Progression")]
+    public bool completedTutorial = false;
     // Configurable properties
     [Header("Configurable Properties")]
     public int maxTeam = 2;

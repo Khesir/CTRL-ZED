@@ -54,10 +54,27 @@ public class SoundManager : MonoBehaviour
 
     public static void PlaySound(SoundCategory category, SoundType type, float volume = 1f, bool loop = false)
     {
+        if (Instance == null)
+        {
+            Debug.LogWarning("SoundManager not yet initialized.");
+            return;
+        }
+
+        if (Instance.categoryMap == null || Instance.categorySources == null)
+        {
+            Debug.LogWarning("SoundManager maps not built yet. Call Initialize() first.");
+            return;
+        }
+
         if (Instance.categoryMap.TryGetValue(category, out var typeDict) &&
             typeDict.TryGetValue(type, out var clip) && clip != null)
         {
             AudioSource src = Instance.categorySources[category];
+            if (src == null)
+            {
+                Debug.LogWarning($"No AudioSource found for category {category}");
+                return;
+            }
 
             if (category == SoundCategory.BGM || category == SoundCategory.Status || loop)
             {
@@ -72,6 +89,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+
 
     public static async UniTask FadeOutCategory(SoundCategory category, float duration = 1f)
     {

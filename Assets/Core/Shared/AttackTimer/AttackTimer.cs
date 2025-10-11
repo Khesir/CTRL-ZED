@@ -17,7 +17,7 @@ public class AttackTimer : MonoBehaviour
         this.playerInstance = playerInstance;
         timer = timeLimit;
     }
-    public void TriggerTimer()
+    public async void TriggerTimer()
     {
         timer -= Time.deltaTime;
         timeElapse += Time.deltaTime;
@@ -29,7 +29,8 @@ public class AttackTimer : MonoBehaviour
             {
                 Debug.Log("Game Over");
                 GameplayManager.Instance.followerManager.ResetTarget();
-                GameplayManager.Instance.gameplayUI.Complete("os", false);
+                GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.DeathOnTimer;
+                await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
             }
             timer = timeLimit;
         }

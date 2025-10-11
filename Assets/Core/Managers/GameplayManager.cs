@@ -40,11 +40,18 @@ public class GameplayManager : MonoBehaviour
     [Header("Gameplay Flags & Parameters")]
     public string activeTeamID;
     public string previousTeamID;
+    public LevelData tutorialLevel;
     public Dictionary<string, bool> deadTeams = new Dictionary<string, bool>();
 
     // Events
     public event Action onUpdateDeadTeam;
 
+    public GameplayEndGameState endGameState;
+    public enum GameplayEndGameState
+    {
+        DeathOnTimer,
+        LevelComplete,
+    }
     public enum GameplayState
     {
         None,
@@ -82,7 +89,10 @@ public class GameplayManager : MonoBehaviour
     public void Initialize()
     {
         if (_isInitialized) return;
-
+        if (!GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial)
+        {
+            GenerateTutorialCharacters();
+        }
         // Core setup
         inputService = GameInitiator.Instance.InputService;
         gameManager = GameInitiator.Instance.GameManager;
@@ -146,7 +156,8 @@ public class GameplayManager : MonoBehaviour
 
             case GameplayState.End:
                 enemyManager.KillAllEnemies(true);
-                gameplayUI?.HandleEndGamePanel();
+                gameplayUI?.HandleEndGamePanel(endGameState);
+                HandleEndGame();
                 break;
         }
     }
@@ -209,6 +220,11 @@ public class GameplayManager : MonoBehaviour
     }
     public async void HandleEndGame()
     {
+        // Tutorial Flag
+        if (!GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial)
+        {
+            GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial = true;
+        }
         // TODO: Implement end game logic (reward distribution, summary, etc.)
         Debug.Log("[GameplayManager] End game sequence triggered.");
         await SetState(GameplayState.End);
@@ -227,5 +243,47 @@ public class GameplayManager : MonoBehaviour
 
         deadTeams[teamID] = isDead;
         onUpdateDeadTeam?.Invoke();
+    }
+    private void GenerateTutorialCharacters()
+    {
+        Debug.Log("[GameInitiator] Generating test data...");
+
+        var teamManager = GameManager.Instance.TeamManager;
+        teamManager.IncreaseMaxTeam();
+        // Team 1
+        var teamID = teamManager.CreateTeam();
+        var characters = GameManager.Instance.CharacterManager.ownedCharacters;
+
+        var c1 = CharacterFactory.CreateTestCharacter();
+        var c2 = CharacterFactory.CreateTestCharacter();
+        var c3 = CharacterFactory.CreateTestCharacter();
+        var c4 = CharacterFactory.CreateTestCharacter();
+
+        characters.AddRange(new[] { c1, c2, c3, c4 });
+        teamManager.AssignedCharacterToSlot(teamID, 0, c1);
+        teamManager.AssignedCharacterToSlot(teamID, 1, c2);
+        teamManager.AssignedCharacterToSlot(teamID, 2, c3);
+        teamManager.AssignedCharacterToSlot(teamID, 3, c4);
+        teamManager.SetActiveTeam(teamID);
+
+        // Team 2
+        var teamID2 = teamManager.CreateTeam();
+
+        var c5 = CharacterFactory.CreateTestCharacter();
+        var c6 = CharacterFactory.CreateTestCharacter();
+        var c7 = CharacterFactory.CreateTestCharacter();
+        var c8 = CharacterFactory.CreateTestCharacter();
+
+        characters.AddRange(new[] { c5, c6, c7, c8 });
+        teamManager.AssignedCharacterToSlot(teamID2, 0, c5);
+        teamManager.AssignedCharacterToSlot(teamID2, 1, c6);
+        teamManager.AssignedCharacterToSlot(teamID2, 2, c7);
+        teamManager.AssignedCharacterToSlot(teamID2, 3, c8);
+        teamManager.SetActiveTeam(teamID2);
+
+        if (GameInitiator.Instance.isDevelopment)
+        {
+            GameManager.Instance.LevelManager.activeLevel = tutorialLevel;
+        }
     }
 }

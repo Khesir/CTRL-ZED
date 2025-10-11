@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CompleteScreenUI : MonoBehaviour
 {
-    public Animator animator;
     public TMP_Text title;
     public TMP_Text message;
     public TMP_Text ResourceFood;
@@ -17,12 +19,16 @@ public class CompleteScreenUI : MonoBehaviour
     public TMP_Text ResourceIntelligence;
 
     public TMP_Text ResourceCoins;
+    public Button backToMenuBtn;
     public bool isTriggered = false;
+    private PanelAnimator animator;
     // Include resources plundered during battle
-    public void Complete(string type, bool complete, string team = "")
+    public async UniTask CompleteAsync(string type, bool complete, string team = "")
     {
         // Pause the world
-
+        animator = GetComponent<PanelAnimator>();
+        backToMenuBtn.onClick.RemoveAllListeners();
+        backToMenuBtn.onClick.AddListener(() => BackToMainMenu());
         switch (type)
         {
             case "os":
@@ -51,14 +57,16 @@ public class CompleteScreenUI : MonoBehaviour
         manager.AddEnergy(lootHolder.GetLoot(ItemType.Energy));
         manager.AddIntelligence(lootHolder.GetLoot(ItemType.Intelligence));
         manager.AddCoins(lootHolder.GetLoot(ItemType.Coins));
-
-        animator.SetTrigger("Complete");
+        gameObject.SetActive(true);
+        await animator.Show();
         isTriggered = true;
     }
-    public void BackToMainMenu()
+    public async void BackToMainMenu()
     {
         if (!isTriggered) return;
         Debug.Log("Going Back to mainmenu");
+        gameObject.SetActive(false);
+        await animator.Hide();
         GameInitiator.Instance.SwitchStates(GameState.MainMenu);
     }
 }

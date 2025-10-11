@@ -59,8 +59,33 @@ MonoBehaviour:
   antiVirusManager: {fileID: 6569857886064796666}
   levelManager: {fileID: 5983524649365789482}
   statusEffectManager: {fileID: 2408354721527269700}
+  tutorialLevel: {fileID: 11400000, guid: 9b8964e239d9f81458e7578133d04afa, type: 2}
   isGameActive: 0
   _isInitialized: 0
+  saveData:
+    playerData:
+      completedTutorial: 0
+      maxTeam: 2
+      maxLevel: 10
+      coinsPerExp: 2
+      healthPerCoin: 0
+      level: 1
+      currentExp: 0
+      currentHealth: -1
+      resources:
+        food: 1000
+        technology: 1000
+        energy: 1000
+        intelligence: 1000
+        coins: 0
+        bioChips: 0
+        maxBioChipCharges: 5
+      chargedDrives: 0
+      usableDrives: 50
+      coins: 50000
+    ownedCharacters: []
+    teams: []
+    antiVirusLevel: 0
 --- !u!1 &2502258062086066290
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterTemplates: []
+  ownedCharacters: []
 --- !u!1 &4983016113009914732
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,8 +318,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 285844c396b8cf449ba568f1378d6767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teams: []
+  activeTeam: []
   maxSize: 0
   increaseSizePrice: 0
+  ownedTeam: []
 --- !u!1 &6019085884692280913
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,6 +528,101 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bd766963e62d04da1788b55a77d025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadedSlots:
+  - playerData:
+      completedTutorial: 0
+      maxTeam: 2
+      maxLevel: 10
+      coinsPerExp: 2
+      healthPerCoin: 0
+      level: 1
+      currentExp: 0
+      currentHealth: -1
+      resources:
+        food: 1000
+        technology: 1000
+        energy: 1000
+        intelligence: 1000
+        coins: 0
+        bioChips: 0
+        maxBioChipCharges: 5
+      chargedDrives: 0
+      usableDrives: 50
+      coins: 50000
+    ownedCharacters: []
+    teams: []
+    antiVirusLevel: 0
+  - playerData:
+      completedTutorial: 0
+      maxTeam: 2
+      maxLevel: 10
+      coinsPerExp: 2
+      healthPerCoin: 0
+      level: 1
+      currentExp: 0
+      currentHealth: -1
+      resources:
+        food: 1000
+        technology: 1000
+        energy: 1000
+        intelligence: 1000
+        coins: 0
+        bioChips: 0
+        maxBioChipCharges: 5
+      chargedDrives: 0
+      usableDrives: 50
+      coins: 50000
+    ownedCharacters: []
+    teams: []
+    antiVirusLevel: 0
+  - playerData:
+      completedTutorial: 0
+      maxTeam: 2
+      maxLevel: 10
+      coinsPerExp: 2
+      healthPerCoin: 0
+      level: 1
+      currentExp: 0
+      currentHealth: -1
+      resources:
+        food: 1000
+        technology: 1000
+        energy: 1000
+        intelligence: 1000
+        coins: 0
+        bioChips: 0
+        maxBioChipCharges: 5
+      chargedDrives: 0
+      usableDrives: 50
+      coins: 50000
+    ownedCharacters: []
+    teams: []
+    antiVirusLevel: 0
+  loadedSlotIndex: -1
+  loadedData:
+    playerData:
+      completedTutorial: 0
+      maxTeam: 2
+      maxLevel: 10
+      coinsPerExp: 2
+      healthPerCoin: 0
+      level: 1
+      currentExp: 0
+      currentHealth: -1
+      resources:
+        food: 1000
+        technology: 1000
+        energy: 1000
+        intelligence: 1000
+        coins: 0
+        bioChips: 0
+        maxBioChipCharges: 5
+      chargedDrives: 0
+      usableDrives: 50
+      coins: 50000
+    ownedCharacters: []
+    teams: []
+    antiVirusLevel: 0
 --- !u!1 &7565599978997459261
 GameObject:
   m_ObjectHideFlags: 0

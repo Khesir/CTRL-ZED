@@ -28,13 +28,13 @@ public class WaveManager : MonoBehaviour
     {
         currentWave?.Update();
     }
-    public void StartNextWave()
+    public async void StartNextWave()
     {
         if (waveIndex >= waveConfigs.Count)
         {
             GameplayManager.Instance.enemyManager.KillAllEnemies(true);
             Debug.Log("[WaveManager] All waves completed.");
-            GameplayManager.Instance.gameplayUI.PushMessage("All Waves Cleared!");
+            await GameplayManager.Instance.gameplayUI.PushMessageAsync("All Waves Cleared!");
             currentWave = null;
             return;
         }
@@ -43,7 +43,7 @@ public class WaveManager : MonoBehaviour
         currentWave = new WaveService(config, spawner);
 
         currentWave.StartWave();
-        GameplayManager.Instance.gameplayUI.PushMessage($"Start Wave {waveIndex + 1}");
+        await GameplayManager.Instance.gameplayUI.PushMessageAsync($"Start Wave {waveIndex + 1}");
         GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(false);
     }
     public int GetWaveIndex() => waveIndex;
@@ -65,31 +65,37 @@ public class WaveManager : MonoBehaviour
     }
     private async void OnWaveCompleted()
     {
-        GameplayManager.Instance.gameplayUI.PushMessage("Wave Cleared");
+
+        // Step 1: Kill remaining enemies after message is done
         GameplayManager.Instance.enemyManager.KillAllEnemies(true);
 
+        // Step 2: Show "Wave Cleared"
+        await GameplayManager.Instance.gameplayUI.PushMessageAsync("Wave Cleared");
+
+        // Step 3: Prepare rewards
         waveIndex++;
-        // Conditional checks if level has reach the wave index or tthere is next level
+        var loots = currentWave.GetConfig().waveRewards;
+        foreach (var loot in loots)
+        {
+            GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
+        }
+
+        // Step 4: Check if level is done or next wave
         if (waveIndex >= waveConfigs.Count)
         {
-            var loots = currentWave.GetConfig().waveRewards;
-            foreach (var loot in loots)
-            {
-                GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
-            }
-            var team = GameManager.Instance.TeamManager.GetActiveTeam();
-            // This gets triggered to send a ui to say level complete
-            GameplayManager.Instance.gameplayUI.Complete("character", true, team[0].GetTeamName());
+            // Wait for "Level Complete" panel to finish showing
+            GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.LevelComplete;
+            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
         }
         else
         {
-            var loots = currentWave.GetConfig().waveRewards;
-            foreach (var loot in loots)
-            {
-                GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
-            }
+            // Optionally show another message like “Next Wave Starting”
+            await GameplayManager.Instance.gameplayUI.PushMessageAsync("Next Wave Incoming");
+
+            // Then wait before starting next wave
             await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Start);
         }
+
         currentWave = null;
     }
     public void PauseWave(bool flag)

@@ -9,7 +9,6 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
 
     [Header("Flags")]
-    public bool isActive = false;
     private bool isVisible = false;
     [HideInInspector] public Button button;
     private RectTransform rect;
@@ -29,8 +28,6 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public async UniTask Activate()
     {
-        if (isActive) return;
-        isActive = true;
         await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Playing);
     }
     public async UniTask AnimateIn(float slideDistance = 200f, float duration = 0.6f)
@@ -48,6 +45,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // Animate slide-in
         await rect.DOAnchorPosY(originalPos.y, duration)
                   .SetEase(Ease.OutBack)
+                  .SetUpdate(true)
                   .AsyncWaitForCompletion();
 
         StartWobble();
@@ -57,6 +55,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         wobbleTween?.Kill();
         wobbleTween = rect.DOAnchorPosY(originalPos.y + wobbleAmount, wobbleDuration)
             .SetLoops(-1, LoopType.Yoyo)
+            .SetUpdate(true)
             .SetEase(Ease.InOutSine);
     }
     private void StopWobble()
@@ -75,11 +74,13 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // Animate out
         var posTween = rect.DOAnchorPosY(originalPos.y - slideDistance, duration)
             .SetEase(Ease.InBack)
+            .SetUpdate(true)
             .AsyncWaitForCompletion()
             .AsUniTask();
 
         var scaleTween = rect.DOScale(Vector3.zero, duration)
             .SetEase(Ease.InBack)
+            .SetUpdate(true)
             .AsyncWaitForCompletion()
             .AsUniTask();
 

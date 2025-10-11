@@ -7,7 +7,7 @@ public class CharacterListUI : MonoBehaviour
 {
     [SerializeField] private bool animateOnce = true;
     [SerializeField] private bool isAnimated = false;
-    public GameObject CharacterIcons;
+    [SerializeField] private GameObject CharacterIcons;
     public GameObject hotbar1;
     public GameObject hotbar2;
     public GameObject hotbar3;
@@ -58,6 +58,7 @@ public class CharacterListUI : MonoBehaviour
         Vector2 startOffset = new Vector2(-200, 0); // start off-screen left
         float stagger = 0.3f * speed;
 
+        // Animate in
         for (int i = 0; i < hotbars.Count; i++)
         {
             var hotbar = hotbars[i];
@@ -65,20 +66,22 @@ public class CharacterListUI : MonoBehaviour
             var canvasGroup = hotbar.GetComponent<CanvasGroup>();
             if (canvasGroup == null) canvasGroup = hotbar.AddComponent<CanvasGroup>();
 
-            // Reset to start position & alpha
-            rect.anchoredPosition = rect.anchoredPosition + startOffset;
+            rect.anchoredPosition += startOffset;
             canvasGroup.alpha = 0;
             hotbar.SetActive(true);
 
-            // Animate in
-            rect.DOAnchorPosX(rect.anchoredPosition.x - startOffset.x, 0.4f * speed).SetEase(Ease.OutBack).SetDelay(i * stagger * delaySpeed);
-            canvasGroup.DOFade(1, 0.4f * speed).SetDelay(i * stagger * delaySpeed);
+            rect.DOAnchorPosX(rect.anchoredPosition.x - startOffset.x, 0.4f * speed)
+                .SetEase(Ease.OutBack)
+                .SetDelay(i * stagger * delaySpeed);
+            canvasGroup.DOFade(1, 0.4f * speed)
+                .SetDelay(i * stagger * delaySpeed);
         }
 
-        // Wait for all hotbars to finish entrance + display time
+        // Wait for entrance + display duration
         await UniTask.Delay((int)((hotbars.Count * stagger + 0.4f + 2f) * 1000));
 
         // Animate out
+        List<UniTask> outTweens = new();
         for (int i = 0; i < hotbars.Count; i++)
         {
             if (i == 0) continue;
@@ -86,13 +89,29 @@ public class CharacterListUI : MonoBehaviour
             var rect = hotbar.GetComponent<RectTransform>();
             var canvasGroup = hotbar.GetComponent<CanvasGroup>();
 
-            rect.DOAnchorPosX(rect.anchoredPosition.x - 200, 0.4f * speed).SetEase(Ease.InOutBack).SetDelay(i * stagger * delaySpeed);
-            canvasGroup.DOFade(0, 0.4f * speed).SetDelay(i * stagger * delaySpeed).OnComplete(() => hotbar.SetActive(false));
+            var moveTween = rect.DOAnchorPosX(rect.anchoredPosition.x - 200, 0.4f * speed)
+                .SetEase(Ease.InOutBack)
+                .SetDelay(i * stagger * delaySpeed)
+                .AsyncWaitForCompletion()
+                .AsUniTask();
+
+            var fadeTween = canvasGroup.DOFade(0, 0.4f * speed)
+                .SetDelay(i * stagger * delaySpeed)
+                .OnComplete(() => hotbar.SetActive(false))
+                .AsyncWaitForCompletion()
+                .AsUniTask();
+
+            outTweens.Add(UniTask.WhenAll(moveTween, fadeTween));
         }
+
+        await UniTask.WhenAll(outTweens);
+
+        // Then show CharacterIcons
+        CharacterIcons.SetActive(true);
+        await CharacterIcons.GetComponent<PanelAnimator>().Show();
+
         if (!animateOnce)
-        {
             isAnimated = false;
-        }
     }
     public void UpdateHotbar1()
     {

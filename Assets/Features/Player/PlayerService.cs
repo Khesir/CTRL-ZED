@@ -54,6 +54,10 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     {
         OnLevelUp += () => healthService.HandleLevelUp(data.level);
     }
+    public PlayerData GetPlayerData()
+    {
+        return data;
+    }
     #region DrivesService
     public bool CanSpendDrives(int val = 1)
     {

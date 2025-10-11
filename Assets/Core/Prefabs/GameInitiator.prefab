@@ -44,12 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b773814b6676094695746661abbf531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameStateManager: {fileID: 6285907055683387484, guid: e623a50ae7586b043b7efa3161378000, type: 3}
-  gameManager: {fileID: 0}
-  inputService: {fileID: 0}
-  soundManager: {fileID: 0}
+  gameStateManagerPrefab: {fileID: 6285907055683387484, guid: e623a50ae7586b043b7efa3161378000, type: 3}
+  gameManagerPrefab: {fileID: 8634881365983257610, guid: ec433b5be966b344d9d554fd2c481fab, type: 3}
+  inputServicePrefab: {fileID: 6192112388295911865, guid: f33d3fe7500122d4aae8cfb87d6b1533, type: 3}
+  soundManagerPrefab: {fileID: 2138905610604231703, guid: 48dbeaca32f0e954f97d31be2adf0832, type: 3}
+  uIManager: {fileID: 571203957106441226, guid: 66193038b2ec57c4d834563883d9157d, type: 3}
   isDevelopment: 1
+  generateTestData: 0
+  currentLevel: {fileID: 0}
   isGenerated: 0
   isFinished: 0
-  generateTestData: 1
-  currentLevel: {fileID: 0}

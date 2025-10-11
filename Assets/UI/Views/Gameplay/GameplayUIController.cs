@@ -26,6 +26,7 @@ public class GameplayUIController : MonoBehaviour
 
     [Header("Controls")]
     public GameObject starWaveButton;
+
     public void Initialize(PlayerService playerService)
     {
         this.playerService = playerService;
@@ -46,11 +47,9 @@ public class GameplayUIController : MonoBehaviour
     }
     public async UniTask StartStateUIAnimation()
     {
-        var hotbarTask = characterListUI.AnimateHotbarsInAndOut();
-        var startButtonTask = startButton.AnimateIn();
+        await characterListUI.AnimateHotbarsInAndOut();
+        await startButton.AnimateIn();
 
-        // Wait until both are finished
-        await UniTask.WhenAll(hotbarTask, startButtonTask);
     }
     public async UniTask PlayingStateUIAnimation()
     {
@@ -59,13 +58,13 @@ public class GameplayUIController : MonoBehaviour
         // To handle animation Concurrently
         await UniTask.WhenAll(startButtonTask);
     }
-    public void PushMessage(string message)
+    public async UniTask PushMessageAsync(string message)
     {
-        announcementUI.PushMessage(message);
+        await announcementUI.PushMessage(message);
     }
-    public void Complete(string type, bool complete, string team = "")
+    public async UniTask CompleteAsync(string type, bool complete, string team = "")
     {
-        completeScreenUI.Complete(type, complete, team);
+        await completeScreenUI.CompleteAsync(type, complete, team);
     }
     public void LootHolderAddAmount(LootDropData data)
     {
@@ -75,11 +74,23 @@ public class GameplayUIController : MonoBehaviour
     {
         // Shows Game over screen and revive
         // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
-        gameplayHandleDeath.SetDisplay(true);
         await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Revive);
+        gameplayHandleDeath.SetDisplay(true);
     }
-    public async void HandleEndGamePanel()
+    public async void HandleEndGamePanel(GameplayManager.GameplayEndGameState endGameState)
     {
-
+        if (endGameState == GameplayManager.GameplayEndGameState.DeathOnTimer)
+        {
+            await CompleteAsync("os", false);
+        }
+        else if (endGameState == GameplayManager.GameplayEndGameState.LevelComplete)
+        {
+            var team = GameManager.Instance.TeamManager.GetActiveTeam();
+            await CompleteAsync(
+                "character",
+                true,
+                team[0].GetTeamName()
+            );
+        }
     }
 }

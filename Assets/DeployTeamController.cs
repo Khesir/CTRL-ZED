@@ -31,6 +31,8 @@ public class DeployTeamController : MonoBehaviour
     }
     private void Clear()
     {
+        if (container == null) return;
+
         if (container.childCount > 0)
         {
             foreach (Transform child in container)
