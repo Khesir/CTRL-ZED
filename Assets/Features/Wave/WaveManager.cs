@@ -63,7 +63,7 @@ public class WaveManager : MonoBehaviour
             OnWaveCompleted();
         }
     }
-    private void OnWaveCompleted()
+    private async void OnWaveCompleted()
     {
         GameplayManager.Instance.gameplayUI.PushMessage("Wave Cleared");
         GameplayManager.Instance.enemyManager.KillAllEnemies(true);
@@ -88,7 +88,7 @@ public class WaveManager : MonoBehaviour
             {
                 GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
             }
-            GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(true);
+            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Start);
         }
         currentWave = null;
     }
