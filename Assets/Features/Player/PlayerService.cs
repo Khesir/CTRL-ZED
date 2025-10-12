@@ -88,7 +88,7 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     }
     public bool SpendRemainingCharge(int val) => drivesService.SpendRemainingCharge(val);
     public int GetChargedDrives() => drivesService.GetChargedDrives();
-    public void SpendChargeDrives(int val) => drivesService.SpendChargeDrives(val);
+    public bool SpendChargeDrives(int val) => drivesService.SpendChargeDrives(val);
     public DrivesChargePerResource GetResourceChargePerDrives() => drivesService.GetResourceChargePerDrives();
     #endregion
     #region ExperienceService

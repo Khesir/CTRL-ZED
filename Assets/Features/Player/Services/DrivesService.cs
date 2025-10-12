@@ -33,6 +33,7 @@ public class DrivesService : IDrivesService
     }
     public bool SpendChargeDrives(int val)
     {
+        if (data.chargedDrives < val) return false;
         data.chargedDrives -= val;
         OnSpendDrives?.Invoke();
         return true;

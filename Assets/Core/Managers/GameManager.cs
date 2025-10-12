@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public AntiVirusManager AntiVirusManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
     public StatusEffectManager StatusEffectManager;
+    public GameplayActiveStatusEffect activeStatusEffect;
+
 
     [Header("Manager Prefabs / References")]
     [SerializeField] private CharacterManager characterManager;
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelData tutorialLevel;
     public bool isGameActive;
     public bool _isInitialized = false;
-    public bool skipTutorial = true;
+    public bool skipTutorial = false;
 
     [Header("Do not Change Anything")]
     [SerializeField] private SaveData saveData;

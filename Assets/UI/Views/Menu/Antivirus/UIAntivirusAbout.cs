@@ -17,7 +17,7 @@ public class UIAntivirusAbout : MonoBehaviour
     {
         instance = effect;
         title.text = effect.title;
-        price.text = effect.price.ToString();
+        price.text = $"{effect.price} drives";
         description.text = effect.description;
         icon.sprite = effect.icon;
         var exists = GameManager.Instance.StatusEffectManager.IsThereExisitingBuffType(instance);
@@ -37,7 +37,7 @@ public class UIAntivirusAbout : MonoBehaviour
     }
     public void ActionButton()
     {
-        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(instance.price);
+        var res = GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(instance.price);
         if (res)
         {
             SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);

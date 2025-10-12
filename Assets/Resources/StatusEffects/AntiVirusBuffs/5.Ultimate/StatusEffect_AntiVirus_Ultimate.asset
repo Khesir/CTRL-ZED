@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 8b85be01bcb0b174481b2208f7d9695e, type: 3}
   title: Ultimate
   description: -30% enemy speed, +30 HP/sec, +10 Dex
-  price: 8000
+  price: 50
   sourceType: 0
   durationType: 2
   duration: 0

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEngine;
 using System.IO;
 using UnityEditor;
@@ -20,3 +19,4 @@ public class LineCountTool
         Debug.Log($"Total C# lines of code: {totalLines}");
     }
 }
+#endif

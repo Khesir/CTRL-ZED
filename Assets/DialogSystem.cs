@@ -21,12 +21,12 @@ public class DialogSystem : MonoBehaviour
         var lines = new List<string>
         {
             "Hello there!",
-            "Welcome to our CTRL-ZED.",
+            "Welcome to CTRL-ZED.",
             "You Can Explore this level and try things out!",
             "Good luck!",
             "Oh, before I forget",
             "I'll be brief about this",
-            "You can pres 1,2,3,4 to switch characters",
+            "You can press 1,2,3,4 to switch characters",
             "and Activate Skills by pressing",
             "Q and E",
             "Lastly, Try to finish the game before reaching 0 OS HP",

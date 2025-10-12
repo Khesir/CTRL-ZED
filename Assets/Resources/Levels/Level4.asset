@@ -20,23 +20,7 @@ MonoBehaviour:
   recommendation: High-defense teams, Defenders and Enforcers. Heavy use  of Turret
     skills.
   isCleared: 0
-  waves:
-  - enemyPrefabs:
-    - {fileID: 5027452726756111778, guid: 2e2de2a7c27cd2c4697ec802452730e7, type: 3}
-    - {fileID: 4766893749039834836, guid: c8b016def0b0c044aba3a106cc7f9dca, type: 3}
-    - {fileID: 5854188709080172386, guid: db29792e125ad72438410f130ea2917b, type: 3}
-    spawntTimer: 0
-    spawnInterval: 0.5
-    attackTimer: 50
-    minAttackTimerDamage: 50
-    maxAttackTimerDamage: 100
-    requiredKills: 10
-    waveRewards:
-      food: 1000
-      technology: 1000
-      energy: 1000
-      intelligence: 1000
-      coins: 1000
+  waveSet: {fileID: 11400000, guid: 3ef14c0d1f371e04194a2410e27b430a, type: 2}
   background:
   - {fileID: 2100000, guid: bba4df99a90710d4aa4f7f2c2d6fc4b1, type: 2}
   - {fileID: 2100000, guid: bb4e25930a53bfb438457372b2438c7a, type: 2}

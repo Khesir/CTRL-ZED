@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 6e72ebc5a615cca4ca751229de56331f, type: 3}
   title: Elite
   description: -20% enemy speed, +20 HP/sec, +8 Dex
-  price: 5000
+  price: 30
   sourceType: 0
   durationType: 2
   duration: 0

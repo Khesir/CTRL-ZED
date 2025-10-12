@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 45fd7eeb8f206e9438aeecf30d491d55, type: 3}
   title: Advance
   description: -15% enemy speed, +15 HP/sec, +6 Dex
-  price: 3000
+  price: 20
   sourceType: 0
   durationType: 2
   duration: 0

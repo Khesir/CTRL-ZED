@@ -15,7 +15,7 @@ public class VirusItem : MonoBehaviour
     {
         antiVirus = effect;
         plan.text = effect.title;
-        price.text = effect.price.ToString();
+        price.text = $"{effect.price} drives";
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ActionButton);
     }
