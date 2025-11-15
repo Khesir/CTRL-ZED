@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     public RepairComponent repairComponent;
     public DrivesMenuComponent drivesMenuComponent;
     public DeployTeamController deployTeamController;
+    public InstructionsPanel instructionsPanel;
     public bool isGameActive;
     public bool _isInitialized = false;
     private void Awake()
@@ -51,6 +52,10 @@ public class MenuManager : MonoBehaviour
         repairComponent.Setup();
         drivesMenuComponent.Setup();
         deployTeamController.Setup();
+        if (GameManager.Instance.isInTutorial)
+        {
+            instructionsPanel.gameObject.SetActive(true);
+        }
     }
     private void PlayMusic()
     {

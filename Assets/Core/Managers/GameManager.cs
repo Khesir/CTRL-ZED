@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive;
     public bool _isInitialized = false;
     public bool skipTutorial = false;
+    public bool isInTutorial = false;
 
     [Header("Do not Change Anything")]
     [SerializeField] private SaveData saveData;
@@ -65,7 +66,9 @@ public class GameManager : MonoBehaviour
         _isInitialized = true;
         await UniTask.CompletedTask;
         if (!skipTutorial)
+        {
             TutorialTrigger().Forget();
+        }
     }
 
     private async UniTaskVoid TutorialTrigger()
@@ -77,8 +80,20 @@ public class GameManager : MonoBehaviour
         {
             levelManager.activeLevel = tutorialLevel;
             GameInitiator.Instance.SwitchStates(GameState.Gameplay);
+            isInTutorial = true;
         }
     }
-    // Add a data processing on load for all systems
-    // Currently doing this in game initiator
+    public bool HandleTutorial()
+    {
+        if (isInTutorial)
+        {
+            skipTutorial = true;
+            isInTutorial = false;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
