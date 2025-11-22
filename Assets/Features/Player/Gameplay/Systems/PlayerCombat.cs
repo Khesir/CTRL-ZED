@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour
     private IInputService input;
     private ISoundService soundService;
     private CharacterBattleState characterData;
+    private CommandQueue commandQueue;
 
     [Header("Player Properties")]
     [SerializeField] private bool isImmune;
@@ -19,6 +20,7 @@ public class PlayerCombat : MonoBehaviour
         this.input = input;
         this.characterData = characterData;
         soundService = ServiceLocator.Get<ISoundService>();
+        commandQueue = new CommandQueue();
 
         var baseConfig = characterData.data.GetInstance();
         immunityDuration = 2f;
@@ -44,20 +46,25 @@ public class PlayerCombat : MonoBehaviour
         {
             HandleTrigger();
         }
+
+        // Process any queued commands
+        commandQueue.ProcessAll();
     }
+
     public void HandleTrigger()
     {
-        weaponHolder.Fire();
-
+        // Use command pattern for firing
+        commandQueue.ExecuteImmediate(new FireCommand(weaponHolder));
     }
+
     public void HandleSkillInput()
     {
-        // Currently support 2 skill
+        // Use command pattern for skills
         for (int i = 0; i < 2; i++)
         {
             if (input.SkillPressed(i))
             {
-                skillHolder.UseSkill(i);
+                commandQueue.ExecuteImmediate(new UseSkillCommand(skillHolder, i));
             }
         }
     }
