@@ -65,7 +65,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!isImmune) return;
 
-        soundService.PlayForDuration(SoundCategory.Status, SoundType.Status_Immune, immunityDuration).Forget();
+        soundService.PlayForDuration(SoundCategory.Status, SoundType.Status_Immune, immunityDuration);
 
         immunityTimer -= Time.deltaTime;
         if (immunityTimer <= 0f)

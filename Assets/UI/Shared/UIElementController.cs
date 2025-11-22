@@ -14,7 +14,7 @@ public class UIElementController : MonoBehaviour
 
     private void Awake()
     {
-        soundService = ServiceLocator.TryGet<ISoundService>();
+        soundService = ServiceLocator.Get<ISoundService>();
     }
 
     public void Activate()
