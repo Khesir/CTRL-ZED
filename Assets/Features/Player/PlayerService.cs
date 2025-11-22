@@ -80,7 +80,6 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
             CoreEventBus.Publish(new PlayerDrivesChangedEvent
             {
                 CurrentDrives = drivesService.GetDrives(),
-                MaxDrives = data.maxDrives
             });
         };
 
