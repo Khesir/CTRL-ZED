@@ -42,7 +42,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
     }
     void Update()
     {
-        if (!GameplayManager.Instance.isGameActive || !inputEnabled || inputService == null || isDead) return;
+        if (!GameplayManager.Instance.IsGameActive || !inputEnabled || inputService == null || isDead) return;
 
         Vector2 moveInput = inputService.MoveInput;
         bool dashPressed = inputService.DashPressed;
@@ -83,7 +83,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         // Character Switching Logic
-        var followerManager = GameplayManager.Instance.followerManager;
+        var followerManager = GameplayManager.Instance.FollowerManager;
         int nextIndex = followerManager.GetAvailableFollower();
 
         if (nextIndex != -1)
@@ -93,9 +93,8 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         else
         {
             // No available characters, trigger game over or team defeat
-            GameplayManager.Instance.SetDeadTeam(GameplayManager.Instance.activeTeamID, true);
-            GameplayManager.Instance.followerManager.ResetTarget();
-            GameplayManager.Instance.gameplayUI.HandleGameOver();
+            followerManager.ResetTarget();
+            GameplayManager.Instance.GameplayUI.HandleGameOver();
         }
     }
     public bool IsDead() => isDead;

@@ -31,13 +31,13 @@ public class GamplayTeamCompCard : MonoBehaviour
     private void OnEnable()
     {
         if (GameplayManager.Instance != null)
-            GameplayManager.Instance.onUpdateDeadTeam += Refresh;
+            GameplayManager.Instance.OnDeadTeamUpdated += Refresh;
     }
 
     private void OnDisable()
     {
         if (GameplayManager.Instance != null)
-            GameplayManager.Instance.onUpdateDeadTeam -= Refresh;
+            GameplayManager.Instance.OnDeadTeamUpdated -= Refresh;
     }
     public void Setup(TeamService service)
     {
@@ -58,8 +58,8 @@ public class GamplayTeamCompCard : MonoBehaviour
     {
         if (service == null) return;
 
-        bool isDead = GameplayManager.Instance.deadTeams[service.GetData().teamID];
-        bool isDeployed = service.GetData().teamID == GameplayManager.Instance.activeTeamID;
+        bool isDead = GameplayManager.Instance.IsTeamDead(service.GetData().teamID);
+        bool isDeployed = service.GetData().teamID == GameplayManager.Instance.ActiveTeamID;
 
         // --- Background color ---
         backgroundImage.color = isDead ? deadColor : defaultBackgroundColor;
@@ -82,8 +82,8 @@ public class GamplayTeamCompCard : MonoBehaviour
     private void DeployAction()
     {
         // End current battle and switch team
-        GameplayManager.Instance.enemyManager.KillAllEnemies(true);
-        GameplayManager.Instance.activeTeamID = service.GetData().teamID;
+        GameplayManager.Instance.EnemyManager.KillAllEnemies(true);
+        GameplayManager.Instance.ActiveTeamID = service.GetData().teamID;
 
         onDeploySelected?.Invoke(this);
     }

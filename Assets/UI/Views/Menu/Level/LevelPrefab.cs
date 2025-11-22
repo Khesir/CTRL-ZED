@@ -39,6 +39,6 @@ public class LevelPrefab : MonoBehaviour
     {
         modalComponent.data = data;
         modalComponent.Trigger();
-        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_OnOpen);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnOpen);
     }
 }

@@ -59,8 +59,7 @@ public class ResourceSystemModal : MonoBehaviour
 
     private void LockAction()
     {
-        // Currently set as 1
         playerService.SpendDrives(1);
-        SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
     }
 }

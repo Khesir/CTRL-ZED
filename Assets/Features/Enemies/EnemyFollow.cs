@@ -38,15 +38,15 @@ public class EnemyFollow : MonoBehaviour
 
         Refresh();
 
-        GameplayManager.Instance.followerManager.OnSwitch += Refresh;
+        GameplayManager.Instance.FollowerManager.OnSwitch += Refresh;
     }
     public void Refresh()
     {
-        var inStealth = GameplayManager.Instance.enemyManager.inStealth;
+        var inStealth = GameplayManager.Instance.EnemyManager.InStealth;
 
         if (!inStealth)
         {
-            target = GameplayManager.Instance.followerManager.GetCurrentTarget();
+            target = GameplayManager.Instance.FollowerManager.GetCurrentTarget();
         }
         else
         {

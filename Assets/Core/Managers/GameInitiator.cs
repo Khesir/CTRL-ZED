@@ -52,6 +52,7 @@ public class GameInitiator : MonoBehaviour
         Debug.Log("[GameInitiator] Starting...");
 
         await BindObjects();
+        RegisterServices();
         await Initialize();
         await PrepareCoreSystems();
 
@@ -85,6 +86,20 @@ public class GameInitiator : MonoBehaviour
 
         return Instantiate(prefab);
     }
+
+    private void RegisterServices()
+    {
+        Debug.Log("[GameInitiator] Registering services...");
+
+        // Core services (DontDestroyOnLoad)
+        ServiceLocator.Register<ISoundService>(SoundManager);
+        ServiceLocator.Register<IInputService>(InputService);
+
+        // Add more as you create interfaces for them:
+        // ServiceLocator.Register<IUIService>(UIManager);
+        // ServiceLocator.Register<IGameStateService>(GameStateManager);
+    }
+
     private async UniTask Initialize()
     {
         Debug.Log("[GameInitiator] Initializing managers...");
@@ -92,7 +107,7 @@ public class GameInitiator : MonoBehaviour
         await GameManager.Initialize();
         await GameStateManager.Intialize();
         await InputService.Initialize();
-        await SoundManager.Initialize();
+        SoundManager.Initialize();
     }
 
     public async UniTask PrepareCoreSystems()

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootManager : MonoBehaviour
+public class LootManager : MonoBehaviour, ILootManager
 {
     [SerializeField] private List<LootCollect> activeLoots = new List<LootCollect>();
     [SerializeField] private Transform player;
 
     void Update()
     {
-        var currentTarget = GameplayManager.Instance.followerManager.GetCurrentTarget();
+        var currentTarget = ServiceLocator.Get<IFollowerManager>().GetCurrentTarget();
 
         if (player != currentTarget)
             player = currentTarget;

@@ -29,6 +29,6 @@ public class TeamInventorySlot : MonoBehaviour, IDropHandler
 
             originalDraggable.parentAfterDrag = transform;
         }
-        SoundManager.PlaySound(SoundCategory.Team, SoundType.Team_OnDrop);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.Team, SoundType.Team_OnDrop);
     }
 }

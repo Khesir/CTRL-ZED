@@ -1,46 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-public class SoundManager : MonoBehaviour
-{
-    public static SoundManager Instance { get; private set; }
 
+public class SoundManager : MonoBehaviour, ISoundService
+{
     [SerializeField] private List<CategorizedSound> soundEntries = new List<CategorizedSound>();
+
     private Dictionary<SoundCategory, Dictionary<SoundType, AudioClip>> categoryMap;
     private Dictionary<SoundCategory, AudioSource> categorySources;
-    private Dictionary<SoundType, AudioClip> typeMap;
-    private HashSet<SoundCategory> lockedCategories = new HashSet<SoundCategory>();
+    private Dictionary<SoundCategory, float> categoryVolumes;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-    }
-    public async UniTask Initialize()
+    public void Initialize()
     {
         categorySources = new Dictionary<SoundCategory, AudioSource>();
+        categoryVolumes = new Dictionary<SoundCategory, float>();
+
         foreach (SoundCategory category in System.Enum.GetValues(typeof(SoundCategory)))
         {
-            AudioSource src = gameObject.AddComponent<AudioSource>();
+            var source = gameObject.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+
             if (category == SoundCategory.BGM)
-                src.loop = true;
-            categorySources[category] = src;
+                source.loop = true;
+
+            categorySources[category] = source;
+            categoryVolumes[category] = 1f;
         }
 
         BuildSoundMaps();
-        await UniTask.CompletedTask;
     }
+
     private void BuildSoundMaps()
     {
         categoryMap = new Dictionary<SoundCategory, Dictionary<SoundType, AudioClip>>();
-        typeMap = new Dictionary<SoundType, AudioClip>();
 
         foreach (var entry in soundEntries)
         {
@@ -48,76 +40,138 @@ public class SoundManager : MonoBehaviour
                 categoryMap[entry.category] = new Dictionary<SoundType, AudioClip>();
 
             categoryMap[entry.category][entry.soundType] = entry.clip;
-            typeMap[entry.soundType] = entry.clip;
         }
     }
 
-    public static void PlaySound(SoundCategory category, SoundType type, float volume = 1f, bool loop = false)
+    private bool TryGetClip(SoundCategory category, SoundType type, out AudioClip clip)
     {
-        if (Instance == null)
+        clip = null;
+
+        if (categoryMap == null)
         {
-            Debug.LogWarning("SoundManager not yet initialized.");
-            return;
+            Debug.LogWarning("[SoundManager] Not initialized. Call Initialize() first.");
+            return false;
         }
 
-        if (Instance.categoryMap == null || Instance.categorySources == null)
+        if (categoryMap.TryGetValue(category, out var typeDict) &&
+            typeDict.TryGetValue(type, out clip) && clip != null)
         {
-            Debug.LogWarning("SoundManager maps not built yet. Call Initialize() first.");
-            return;
+            return true;
         }
 
-        if (Instance.categoryMap.TryGetValue(category, out var typeDict) &&
-            typeDict.TryGetValue(type, out var clip) && clip != null)
-        {
-            AudioSource src = Instance.categorySources[category];
-            if (src == null)
-            {
-                Debug.LogWarning($"No AudioSource found for category {category}");
-                return;
-            }
+        Debug.LogWarning($"[SoundManager] Clip not found: {category}/{type}");
+        return false;
+    }
 
-            if (category == SoundCategory.BGM || category == SoundCategory.Status || loop)
-            {
-                src.clip = clip;
-                src.loop = loop;
-                src.volume = volume;
-                src.Play();
-            }
-            else
-            {
-                src.PlayOneShot(clip, volume);
-            }
+    private AudioSource GetSource(SoundCategory category)
+    {
+        if (categorySources.TryGetValue(category, out var source))
+            return source;
+
+        Debug.LogWarning($"[SoundManager] No AudioSource for category: {category}");
+        return null;
+    }
+
+    #region ISoundService Implementation
+
+    public void Play(SoundCategory category, SoundType type, float volume = 1f)
+    {
+        if (!TryGetClip(category, type, out var clip)) return;
+
+        var source = GetSource(category);
+        if (source == null) return;
+
+        // One-shot for SFX, full control for BGM/Status
+        if (category == SoundCategory.BGM || category == SoundCategory.Status)
+        {
+            source.clip = clip;
+            source.loop = false;
+            source.volume = volume * categoryVolumes[category];
+            source.Play();
+        }
+        else
+        {
+            source.PlayOneShot(clip, volume * categoryVolumes[category]);
         }
     }
 
-
-    public static async UniTask FadeOutCategory(SoundCategory category, float duration = 1f)
+    public void PlayLoop(SoundCategory category, SoundType type, float volume = 1f)
     {
-        if (Instance.categorySources.TryGetValue(category, out var src))
+        if (!TryGetClip(category, type, out var clip)) return;
+
+        var source = GetSource(category);
+        if (source == null) return;
+
+        source.clip = clip;
+        source.loop = true;
+        source.volume = volume * categoryVolumes[category];
+        source.Play();
+    }
+
+    public void Stop(SoundCategory category)
+    {
+        var source = GetSource(category);
+        if (source == null) return;
+
+        source.Stop();
+        source.clip = null;
+    }
+
+    public void StopAll()
+    {
+        foreach (var category in categorySources.Keys)
         {
-            float startVolume = src.volume;
-            float time = 0f;
-
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                src.volume = Mathf.Lerp(startVolume, 0f, time / duration);
-                await UniTask.Yield();
-            }
-
-            src.Stop();
-            src.volume = startVolume; // Reset for next use
+            Stop(category);
         }
     }
-    public static async UniTask PlayLoopUntil(SoundCategory category, SoundType type, float duration, float volume = 0.3f)
-    {
-        // Play loop
-        PlaySound(category, type, volume, loop: true);
 
-        // Wait for the duration
+    public void SetCategoryVolume(SoundCategory category, float volume)
+    {
+        categoryVolumes[category] = Mathf.Clamp01(volume);
+
+        // Update currently playing source
+        if (categorySources.TryGetValue(category, out var source) && source.isPlaying)
+        {
+            source.volume = volume;
+        }
+    }
+
+    public float GetCategoryVolume(SoundCategory category)
+    {
+        return categoryVolumes.TryGetValue(category, out var volume) ? volume : 1f;
+    }
+
+    public async UniTask FadeOut(SoundCategory category, float duration = 1f)
+    {
+        var source = GetSource(category);
+        if (source == null || !source.isPlaying) return;
+
+        float startVolume = source.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            source.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            await UniTask.Yield();
+        }
+
+        source.Stop();
+        source.volume = startVolume; // Reset for next play
+    }
+
+    public async UniTask PlayForDuration(SoundCategory category, SoundType type, float duration, float volume = 1f)
+    {
+        PlayLoop(category, type, volume);
         await UniTask.Delay((int)(duration * 1000));
-
-        // Fade out
-        await FadeOutCategory(category, 1f);
+        await FadeOut(category, 0.5f);
     }
+
+    public bool IsPlaying(SoundCategory category)
+    {
+        var source = GetSource(category);
+        return source != null && source.isPlaying;
+    }
+
+    #endregion
 }

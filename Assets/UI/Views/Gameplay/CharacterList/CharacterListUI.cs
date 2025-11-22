@@ -47,7 +47,7 @@ public class CharacterListUI : MonoBehaviour
                 hotbar.SetActive(false);
             }
         }
-        GameplayManager.Instance.followerManager.OnSwitch += UpdateHotbar1;
+        GameplayManager.Instance.FollowerManager.OnSwitch += UpdateHotbar1;
     }
     public async UniTask AnimateHotbarsInAndOut()
     {
@@ -115,7 +115,7 @@ public class CharacterListUI : MonoBehaviour
     }
     public void UpdateHotbar1()
     {
-        var activePlayer = GameplayManager.Instance.followerManager.GetCurrentTargetBattleState();
+        var activePlayer = GameplayManager.Instance.FollowerManager.GetCurrentTargetBattleState();
         hotbar1.GetComponent<CharacterDetails>().Initialize(activePlayer);
     }
 }

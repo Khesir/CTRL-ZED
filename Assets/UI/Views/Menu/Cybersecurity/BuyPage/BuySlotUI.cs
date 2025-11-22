@@ -30,12 +30,12 @@ public class BuySlotUI : MonoBehaviour
     {
       GameManager.Instance.CharacterManager.CreateCharacter(instance);
       Debug.Log("Purchase successfull");
-      SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
+      ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
     }
     else
     {
       Debug.LogWarning("Not enough coins");
-      SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Error);
+      ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_Error);
     }
   }
 }

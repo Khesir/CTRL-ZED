@@ -1,10 +1,5 @@
-
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using Unity.VisualScripting;
-using Vector2 = UnityEngine.Vector2;
 using System.Linq;
 
 public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
@@ -18,12 +13,23 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
     public bool isDead => currentHP <= 0;
     private readonly List<IStatProvider> statProviders = new();
 
+    // Cached service references
+    private ISoundService soundService;
+    private IEnemyManager enemyManager;
+    private ILootManager lootManager;
+    private IWaveManager waveManager;
+
     public void Initialize(EnemyConfig config)
     {
         this.config = config;
         currentHP = config.maxHealth;
 
-        // Optional visuals
+        // Cache services
+        soundService = ServiceLocator.Get<ISoundService>();
+        enemyManager = ServiceLocator.Get<IEnemyManager>();
+        lootManager = ServiceLocator.Get<ILootManager>();
+        waveManager = ServiceLocator.Get<IWaveManager>();
+
         var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null && config.sprite != null)
         {
@@ -32,13 +38,16 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
 
         follow = gameObject.GetComponent<EnemyFollow>();
         follow.Initialize(this);
-        GameplayManager.Instance.enemyManager.RegisterEnemy(this);
+        enemyManager.RegisterEnemy(this);
         isInitialized = true;
     }
+
     public void TakeDamage(float damage, GameObject source = null)
     {
-        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
-        if (damage != -1) GameplayManager.Instance.damageNumberController.CreateNumber(damage, transform.position);
+        soundService.Play(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
+
+        // TODO: Move to IDamageNumberService when created
+        if (damage != -1) ServiceLocator.Get<IDamageNumberService>().CreateNumber(damage, transform.position);
 
         currentHP -= damage;
         if (isDead)
@@ -46,23 +55,25 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
             Die();
         }
     }
+
     public void SilentKill()
     {
         Die(notifyWaveSystem: false, isSilent: true);
     }
+
     private void Die(bool isSilent = false, bool notifyWaveSystem = true)
     {
         if (config.destroyEffect != null)
-            Instantiate(config.destroyEffect, transform.position, UnityEngine.Quaternion.identity);
+            Instantiate(config.destroyEffect, transform.position, Quaternion.identity);
 
-        GameplayManager.Instance.enemyManager.UnregisterEnemy(this);
+        enemyManager.UnregisterEnemy(this);
 
         if (notifyWaveSystem)
-            GameplayManager.Instance.waveManager.ReportKill();
+            waveManager.ReportKill();
 
         if (!isSilent) InstantiateLoot(transform.position);
 
-        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Explosion);
+        soundService.Play(SoundCategory.Gameplay, SoundType.Gameplay_Explosion);
         Destroy(gameObject);
     }
     private LootDropData GetDropItem()
@@ -82,22 +93,21 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         }
         return null;
     }
-    private void InstantiateLoot(UnityEngine.Vector3 spawnPosition)
+    private void InstantiateLoot(Vector3 spawnPosition)
     {
         LootDropData droppedItem = GetDropItem();
         if (droppedItem != null)
         {
-            GameObject lootGameObject = Instantiate(lootDropPrefab, spawnPosition, UnityEngine.Quaternion.identity);
+            GameObject lootGameObject = Instantiate(lootDropPrefab, spawnPosition, Quaternion.identity);
             lootGameObject.GetComponent<SpriteRenderer>().sprite = droppedItem.item.icon;
 
             float dropForce = 300f;
             Vector2 dropDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
             lootGameObject.GetComponent<Rigidbody2D>().AddForce(dropDirection * dropForce, ForceMode2D.Impulse);
 
-            // Registering it to lootmanager
             var collect = lootGameObject.GetComponent<LootCollect>();
             collect.data = droppedItem;
-            GameplayManager.Instance.lootManager.RegisterLoot(collect);
+            lootManager.RegisterLoot(collect);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

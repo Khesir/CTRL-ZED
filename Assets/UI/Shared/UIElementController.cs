@@ -1,56 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIElementController : MonoBehaviour
 {
-    public GameObject target = null;
+    [SerializeField] private GameObject target;
+    [SerializeField] private SoundType activate = SoundType.UI_OnOpen;
+    [SerializeField] private SoundType deactivate = SoundType.UI_OnClose;
 
-    public SoundType activate = SoundType.UI_OnOpen;
-    public SoundType deactivate = SoundType.UI_OnClose;
+    [Header("Animation")]
+    [SerializeField] private bool isAnimated;
+    [SerializeField] private string triggerName;
 
-    [Header("Flags")]
-    public bool isAnimated = false;
-    public string TriggerName;
-    /// <summary>
-    /// Activates the UI element and plays the activate sound.
-    /// </summary>
-    public void Activate()
+    private ISoundService soundService;
+
+    private void Awake()
     {
-        if (!target)
-        {
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            target.SetActive(true);
-        }
-        if (isAnimated)
-        {
-            if (TriggerName == null)
-            {
-                Debug.Log("[UIElementController] TriggerName not set");
-            }
-            var x = target.GetComponent<Animator>();
-            x.SetTrigger(TriggerName);
-        }
-        SoundManager.PlaySound(SoundCategory.UI, activate);
+        soundService = ServiceLocator.TryGet<ISoundService>();
     }
 
-    /// <summary>
-    /// Deactivates the UI element and plays the deactivate sound.
-    /// </summary>
+    public void Activate()
+    {
+        var obj = target ? target : gameObject;
+        obj.SetActive(true);
+
+        if (isAnimated && !string.IsNullOrEmpty(triggerName))
+        {
+            obj.GetComponent<Animator>()?.SetTrigger(triggerName);
+        }
+
+        soundService?.Play(SoundCategory.UI, activate);
+    }
+
     public void Deactivate()
     {
+        var obj = target ? target : gameObject;
+        obj.SetActive(false);
 
-        if (!target)
-        {
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            target.SetActive(false);
-        }
-        SoundManager.PlaySound(SoundCategory.UI, deactivate);
+        soundService?.Play(SoundCategory.UI, deactivate);
     }
 }

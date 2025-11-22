@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviour, IEnemyManager
 {
     [SerializeField] private readonly List<EnemyService> activeEnemies = new();
-    public bool inStealth = false;
+    private bool inStealth = false;
+
+    public bool InStealth
+    {
+        get => inStealth;
+        set => inStealth = value;
+    }
     public void Initialize()
     {
-        inStealth = false;
+        InStealth = false;
     }
     public void RegisterEnemy(EnemyService enemy)
     {
@@ -34,7 +40,7 @@ public class EnemyManager : MonoBehaviour
     public int ActiveEnemyCount => activeEnemies.Count;
     public void SetStealth(bool val)
     {
-        inStealth = val;
+        InStealth = val;
         foreach (var enemy in new List<EnemyService>(activeEnemies))
         {
             enemy.GetComponent<EnemyFollow>().Refresh();

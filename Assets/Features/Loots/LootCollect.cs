@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LootCollect : MonoBehaviour
@@ -13,13 +11,11 @@ public class LootCollect : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Start attracting if within range
         if (!attracting && distanceToPlayer < attractRadius)
         {
             attracting = true;
         }
 
-        // Move toward player if attraction is active
         if (attracting)
         {
             Vector3 dir = (player.position - transform.position).normalized;
@@ -27,9 +23,11 @@ public class LootCollect : MonoBehaviour
 
             if (distanceToPlayer < 0.5f)
             {
-                SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Collect);
-                GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(data);
-                GameplayManager.Instance.lootManager.UnregisterLoot(this);
+                ServiceLocator.Get<ISoundService>().Play(SoundCategory.Gameplay, SoundType.Gameplay_Collect);
+
+                // TODO: Replace with ServiceLocator once ILootManager and IGameplayUI exist
+                GameplayManager.Instance.GameplayUI.lootHolder.AddAmount(data);
+                ServiceLocator.Get<ILootManager>().UnregisterLoot(this);
                 Destroy(gameObject);
             }
         }

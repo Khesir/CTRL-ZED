@@ -1,50 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    [Header("Menu References")]
-    public OsExpTop osExpTop;
-    public FundsMenuComponent fundsMenuComponent;
-    public ResourceUI resourceUI;
-    public RepairComponent repairComponent;
-    public DrivesMenuComponent drivesMenuComponent;
-    public DeployTeamController deployTeamController;
-    public InstructionsPanel instructionsPanel;
-    public bool isGameActive;
-    public bool _isInitialized = false;
+
+    [Header("Menu Components")]
+    [SerializeField] private OsExpTop osExpTop;
+    [SerializeField] private FundsMenuComponent fundsMenuComponent;
+    [SerializeField] private ResourceUI resourceUI;
+    [SerializeField] private RepairComponent repairComponent;
+    [SerializeField] private DrivesMenuComponent drivesMenuComponent;
+    [SerializeField] private DeployTeamController deployTeamController;
+    [SerializeField] private InstructionsPanel instructionsPanel;
+
+    private ISoundService soundService;
+    private bool isInitialized;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
+
     private async void Start()
     {
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
-        await Initialize();
+        Initialize();
     }
-    public async UniTask Initialize()
+
+    private void Initialize()
     {
-        if (_isInitialized) return;
-        Debug.Log("[MenuManager] Initializing Menu Manager");
-        isGameActive = false;
-        Setup();
-        PlayMusic();
-        _isInitialized = true;
-        Debug.Log("[MenuManager ] Menu Manager Initialized");
-        await UniTask.CompletedTask;
+        if (isInitialized) return;
+
+        soundService = ServiceLocator.Get<ISoundService>();
+
+        SetupComponents();
+        soundService.Play(SoundCategory.BGM, SoundType.BGM_MainMenu, 0.5f);
+
+        isInitialized = true;
+        Debug.Log("[MenuManager] Initialized");
     }
-    private void Setup()
+
+    private void SetupComponents()
     {
         osExpTop.Setup();
         fundsMenuComponent.Setup();
@@ -52,13 +54,10 @@ public class MenuManager : MonoBehaviour
         repairComponent.Setup();
         drivesMenuComponent.Setup();
         deployTeamController.Setup();
+
         if (GameManager.Instance.isInTutorial)
         {
             instructionsPanel.gameObject.SetActive(true);
         }
-    }
-    private void PlayMusic()
-    {
-        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_MainMenu, 0.5f);
     }
 }

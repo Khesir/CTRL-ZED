@@ -1,289 +1,281 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Cinemachine;
 using System.Linq;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+
+public enum GameplayState { None, Start, Playing, Revive, End }
+public enum GameplayEndGameState { DeathOnTimer, LevelComplete }
 
 public class GameplayManager : MonoBehaviour
 {
-
     public static GameplayManager Instance { get; private set; }
-    public bool isGameActive = false;
-    public bool _isInitialized = false;
 
     [Header("Core References")]
-    public GameManager gameManager;
-    public GameplayUIController gameplayUI;
+    [SerializeField] private GameplayUIController gameplayUI;
+    [SerializeField] private ParallaxBackground parallaxBackground;
+    [SerializeField] private DamageNumberService damageNumberService;
 
-    [SerializeField] private IInputService inputService;
+    [Header("Gameplay Systems")]
+    [SerializeField] private EnemySpawner spawner;
+    [SerializeField] private EnemyManager enemyManager;
+    [SerializeField] private WaveManager waveManager;
+    [SerializeField] private LootManager lootManager;
 
-    [Header("Gameplay Systems ")]
-    public ParallaxBackground parallaxBackground;
-    public FollowerSpawn spawn;
-    public SquadLevelManager squadLevelManager; // Not used
-    public DamageNumberController damageNumberController;
-    public EnemySpawner spawner;
-    public EnemyManager enemyManager;
-    public WaveManager waveManager;
-    public LootManager lootManager;
+    [Header("Player Systems")]
+    [SerializeField] private FollowerManager followerManager;
+    [SerializeField] private PlayerGameplayManager playerGameplayManager;
 
-    [Header("Player-Dependent Systems")]
-    public FollowerManager followerManager;
-    public PlayerGameplayManager playerGameplayManager;
+    [Header("Tutorial")]
+    [SerializeField] private LevelData tutorialLevel;
 
-
-    // Gameplay Main Flags & Parameters
-    [Header("Gameplay Flags & Parameters")]
-    public string activeTeamID;
-    public string previousTeamID;
-    public LevelData tutorialLevel;
-    public Dictionary<string, bool> deadTeams = new Dictionary<string, bool>();
-
-    // Events
-    public event Action onUpdateDeadTeam;
-
-    public GameplayEndGameState endGameState;
-    public enum GameplayEndGameState
+    // Public accessors for systems that still need direct access
+    public GameplayUIController GameplayUI => gameplayUI;
+    public IFollowerManager FollowerManager => followerManager;
+    public IEnemyManager EnemyManager => enemyManager;
+    public IWaveManager WaveManager => waveManager;
+    public string ActiveTeamID
     {
-        DeathOnTimer,
-        LevelComplete,
-    }
-    public enum GameplayState
-    {
-        None,
-        Start,
-        Playing,
-        Revive,
-        End
+        get => activeTeamID;
+        set
+        {
+            activeTeamID = value;
+            HandleTeamChange();
+        }
     }
 
-    private GameplayState currentState = GameplayState.None;
+    // State
+    public bool IsGameActive { get; private set; }
+    public GameplayEndGameState EndGameState { get; set; }
+    public GameplayState CurrentState { get; private set; } = GameplayState.None;
+
+    // Team tracking
+    private string activeTeamID;
+    private string previousTeamID;
+    private readonly Dictionary<string, bool> deadTeams = new();
+
+    public event Action OnDeadTeamUpdated;
+
+    // Cached references
+    private GameManager gameManager;
+    private IInputService inputService;
+    private ISoundService soundService;
+    private bool isInitialized;
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
 
     private async void Start()
     {
-        Debug.Log("[GameplayManager] Waiting for GameInitiator...");
-        await UniTask.WaitUntil(() =>
-            GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
 
-        Debug.Log("[GameplayManager] Initialization Passed");
         Initialize();
-
         await SetState(GameplayState.Start);
     }
-    public void Initialize()
+
+    private void Initialize()
     {
-        if (_isInitialized) return;
-        if (!GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial)
+        if (isInitialized) return;
+
+        // Cache references
+        gameManager = GameInitiator.Instance.GameManager;
+        inputService = ServiceLocator.Get<IInputService>();
+        soundService = ServiceLocator.Get<ISoundService>();
+
+        // Register gameplay services
+        RegisterServices();
+
+        // Tutorial setup
+        if (!gameManager.PlayerManager.playerService.GetPlayerData().completedTutorial)
         {
             GenerateTutorialCharacters();
         }
-        // Core setup
-        inputService = GameInitiator.Instance.InputService;
-        gameManager = GameInitiator.Instance.GameManager;
 
+        // Initialize subsystems
         gameplayUI.Initialize(gameManager.PlayerManager.playerService);
         enemyManager.Initialize();
         waveManager.Initialize();
         parallaxBackground.Initialize();
 
+        isInitialized = true;
         Debug.Log("[GameplayManager] Initialized");
-        _isInitialized = true;
+    }
+
+    private void RegisterServices()
+    {
+        ServiceLocator.Register<IEnemyManager>(enemyManager);
+        ServiceLocator.Register<ILootManager>(lootManager);
+        ServiceLocator.Register<IFollowerManager>(followerManager);
+        ServiceLocator.Register<IWaveManager>(waveManager);
+        ServiceLocator.Register<IDamageNumberService>(damageNumberService);
     }
     public async UniTask SetState(GameplayState newState)
     {
-        if (currentState == newState)
-        {
-            Debug.Log($"[GameplayManager] State '{newState}' ignored (already active).");
-            return;
-        }
+        if (CurrentState == newState) return;
 
-        // Exit old state
-        switch (currentState)
+        CurrentState = newState;
+
+        switch (CurrentState)
         {
             case GameplayState.Start:
-                // Cleanup Start state if needed
+                await EnterStartState();
                 break;
 
             case GameplayState.Playing:
-                // Pause gameplay, stop timers, etc.
-                break;
-
-            case GameplayState.End:
-                // Cleanup end screen
-                break;
-        }
-
-        currentState = newState;
-
-        // Enter new state
-        switch (currentState)
-        {
-            case GameplayState.Start:
-                Debug.Log($"[GameplayManager] isGameActive before Start: {isGameActive}");
-                if (!isGameActive) HandleStart();
-                if (gameplayUI != null)
-                    await gameplayUI.StartStateUIAnimation();
-                isGameActive = true;
-                break;
-
-            case GameplayState.Playing:
-                HandleTeamChange();
-                if (gameplayUI != null)
-                    await gameplayUI.PlayingStateUIAnimation();
-                StartWave();
+                await EnterPlayingState();
                 break;
 
             case GameplayState.Revive:
-                enemyManager.ResetTargets();
-                waveManager.PauseWave(true);
+                EnterReviveState();
                 break;
 
             case GameplayState.End:
-                enemyManager.KillAllEnemies(true);
-                gameplayUI?.HandleEndGamePanel(endGameState);
-                HandleEndGame();
+                EnterEndState();
                 break;
         }
     }
 
-    public void HandleStart()
+    private async UniTask EnterStartState()
     {
-        LevelData currentLevel = GameManager.Instance.LevelManager.activeLevel;
+        if (!IsGameActive) SetupLevel();
 
-        // Background / Environment
+        if (gameplayUI != null)
+            await gameplayUI.StartStateUIAnimation();
+
+        IsGameActive = true;
+    }
+
+    private async UniTask EnterPlayingState()
+    {
+        HandleTeamChange();
+
+        if (gameplayUI != null)
+            await gameplayUI.PlayingStateUIAnimation();
+
+        StartWave();
+    }
+
+    private void EnterReviveState()
+    {
+        enemyManager.ResetTargets();
+        waveManager.PauseWave(true);
+    }
+
+    private void EnterEndState()
+    {
+        enemyManager.KillAllEnemies(silent: true);
+        // gameplayUI?.HandleEndGamePanel(EndGameState);
+        MarkTutorialComplete();
+    }
+
+    private void SetupLevel()
+    {
+        var currentLevel = gameManager.LevelManager.activeLevel;
+
         parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
-
-        // Waves
         waveManager.SetWaveConfig(currentLevel.waveSet.waves);
-
-        // Audio
-        SoundManager.PlaySound(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
-
-        // UI Setup
+        soundService.Play(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
         gameplayUI.StartStateSetup();
 
-        // Teams
-        List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
-        foreach (TeamService team in teams)
+        InitializeTeams();
+    }
+
+    private void InitializeTeams()
+    {
+        var teams = gameManager.TeamManager.GetActiveTeam();
+
+        foreach (var team in teams)
         {
             deadTeams[team.GetData().teamID] = false;
         }
 
-        // Register initial team
         activeTeamID = teams[0].GetData().teamID;
         HandleTeamChange();
-
-        Debug.Log("[GameplayManager] Gameplay Active and Start State Initialized");
     }
-    public void HandleTeamChange()
+
+    private void HandleTeamChange()
     {
-        // Only refresh if the active team actually changed
-        if (previousTeamID == activeTeamID)
-            return;
+        if (previousTeamID == activeTeamID) return;
 
         previousTeamID = activeTeamID;
 
-        List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
-        List<CharacterData> members = teams[0].GetMembers();
+        var teams = gameManager.TeamManager.GetActiveTeam();
+        var members = teams[0].GetMembers();
 
-        // Build battle states
-        List<CharacterBattleState> battleStates = members
+        var battleStates = members
             .Select(m => new CharacterBattleState(new CharacterService(m)))
             .ToList();
 
-        // Initialize followers + player control
-        List<GameObject> followerObjects = followerManager.Initialize(battleStates);
+        var followerObjects = followerManager.Initialize(battleStates);
         playerGameplayManager.Initialize(followerObjects, inputService);
-
-        // Setup UI
         gameplayUI.SetupCharacterUI(battleStates);
-
-        // Default focus to first follower
         followerManager.SwitchTo(0);
+    }
 
-    }
-    public async void HandleEndGame()
+    private void MarkTutorialComplete()
     {
-        // Tutorial Flag
-        if (!GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial)
+        var playerData = gameManager.PlayerManager.playerService.GetPlayerData();
+        if (!playerData.completedTutorial)
         {
-            GameManager.Instance.PlayerManager.playerService.GetPlayerData().completedTutorial = true;
+            playerData.completedTutorial = true;
         }
-        // TODO: Implement end game logic (reward distribution, summary, etc.)
-        Debug.Log("[GameplayManager] End game sequence triggered.");
-        await SetState(GameplayState.End);
     }
-    public void StartWave()
+
+    public void TriggerEndGame() => SetState(GameplayState.End).Forget();
+
+    private void StartWave()
     {
         if (waveManager.currentWave == null)
             waveManager.StartNextWave();
         else
             waveManager.PauseWave(false);
     }
+
     public void SetDeadTeam(string teamID, bool isDead)
     {
-        if (!deadTeams.ContainsKey(teamID))
-            return;
+        if (!deadTeams.ContainsKey(teamID)) return;
 
         deadTeams[teamID] = isDead;
-        onUpdateDeadTeam?.Invoke();
+        OnDeadTeamUpdated?.Invoke();
     }
+
+    public bool IsTeamDead(string teamID) => deadTeams.TryGetValue(teamID, out var isDead) && isDead;
     private void GenerateTutorialCharacters()
     {
-        Debug.Log("[GameInitiator] Generating test data...");
+        var teamManager = gameManager.TeamManager;
+        var characters = gameManager.CharacterManager.ownedCharacters;
 
-        var teamManager = GameManager.Instance.TeamManager;
         teamManager.IncreaseMaxTeam();
-        // Team 1
-        var teamID = teamManager.CreateTeam();
-        var characters = GameManager.Instance.CharacterManager.ownedCharacters;
 
-        var c1 = CharacterFactory.CreateTestCharacter();
-        var c2 = CharacterFactory.CreateTestCharacter();
-        var c3 = CharacterFactory.CreateTestCharacter();
-        var c4 = CharacterFactory.CreateTestCharacter();
-
-        characters.AddRange(new[] { c1, c2, c3, c4 });
-        teamManager.AssignedCharacterToSlot(teamID, 0, c1);
-        teamManager.AssignedCharacterToSlot(teamID, 1, c2);
-        teamManager.AssignedCharacterToSlot(teamID, 2, c3);
-        teamManager.AssignedCharacterToSlot(teamID, 3, c4);
-        teamManager.SetActiveTeam(teamID);
-
-        // Team 2
-        var teamID2 = teamManager.CreateTeam();
-
-        var c5 = CharacterFactory.CreateTestCharacter();
-        var c6 = CharacterFactory.CreateTestCharacter();
-        var c7 = CharacterFactory.CreateTestCharacter();
-        var c8 = CharacterFactory.CreateTestCharacter();
-
-        characters.AddRange(new[] { c5, c6, c7, c8 });
-        teamManager.AssignedCharacterToSlot(teamID2, 0, c5);
-        teamManager.AssignedCharacterToSlot(teamID2, 1, c6);
-        teamManager.AssignedCharacterToSlot(teamID2, 2, c7);
-        teamManager.AssignedCharacterToSlot(teamID2, 3, c8);
-        teamManager.SetActiveTeam(teamID2);
+        CreateTutorialTeam(teamManager, characters);
+        CreateTutorialTeam(teamManager, characters);
 
         if (GameInitiator.Instance.isDevelopment)
         {
-            GameManager.Instance.LevelManager.activeLevel = tutorialLevel;
+            gameManager.LevelManager.activeLevel = tutorialLevel;
         }
+
+        Debug.Log("[GameplayManager] Tutorial characters generated");
+    }
+
+    private void CreateTutorialTeam(TeamManager teamManager, List<CharacterData> characters)
+    {
+        var teamID = teamManager.CreateTeam();
+
+        for (int i = 0; i < 4; i++)
+        {
+            var character = CharacterFactory.CreateTestCharacter();
+            characters.Add(character);
+            teamManager.AssignedCharacterToSlot(teamID, i, character);
+        }
+
+        teamManager.SetActiveTeam(teamID);
     }
 }

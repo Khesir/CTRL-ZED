@@ -11,7 +11,7 @@ public class WaveUIController : MonoBehaviour
     public Slider progressSlider;
     public void Setup()
     {
-        title.text = $"Wave {GameplayManager.Instance.waveManager.GetWaveIndex()}";
+        title.text = $"Wave {GameplayManager.Instance.WaveManager.GetWaveIndex()}";
     }
     public void UpdateSlider(int currentKills, int requiredKills, int index)
     {

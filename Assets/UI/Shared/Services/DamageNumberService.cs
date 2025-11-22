@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageNumberController : MonoBehaviour
+public class DamageNumberService : MonoBehaviour, IDamageNumberService
 {
     public DamageNumber prefab;
     public void CreateNumber(float value, Vector3 location)

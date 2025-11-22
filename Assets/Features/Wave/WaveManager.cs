@@ -3,20 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour, IWaveManager
 {
     [Header("Debug Log : Don't touch")]
     [SerializeField] private EnemySpawner spawner;
 
     private int waveIndex = 0;
     public WaveService currentWave;
+    public WaveService CurrentWave => currentWave;
+
     private List<WaveConfig> waveConfigs;
+
+    // Cached service references
+    private ISoundService soundService;
+    private IEnemyManager enemyManager;
 
     public void Initialize()
     {
         waveConfigs = null;
         waveIndex = 0;
         currentWave = null;
+
+        enemyManager = ServiceLocator.Get<IEnemyManager>();
         // Add controls if its a campaign or endless here
         Debug.Log("[WaveManager] Initialized");
     }
@@ -32,9 +40,9 @@ public class WaveManager : MonoBehaviour
     {
         if (waveIndex >= waveConfigs.Count)
         {
-            GameplayManager.Instance.enemyManager.KillAllEnemies(true);
+            enemyManager.KillAllEnemies(true);
             Debug.Log("[WaveManager] All waves completed.");
-            await GameplayManager.Instance.gameplayUI.PushMessageAsync("All Waves Cleared!");
+            await GameplayManager.Instance.GameplayUI.PushMessageAsync("All Waves Cleared!");
             currentWave = null;
             return;
         }
@@ -43,8 +51,8 @@ public class WaveManager : MonoBehaviour
         currentWave = new WaveService(config, spawner);
 
         currentWave.StartWave();
-        await GameplayManager.Instance.gameplayUI.PushMessageAsync($"Start Wave {waveIndex + 1}");
-        GameplayManager.Instance.gameplayUI.starWaveButton.SetActive(false);
+        await GameplayManager.Instance.GameplayUI.PushMessageAsync($"Start Wave {waveIndex + 1}");
+        GameplayManager.Instance.GameplayUI.starWaveButton.SetActive(false);
     }
     public int GetWaveIndex() => waveIndex;
 
@@ -57,43 +65,44 @@ public class WaveManager : MonoBehaviour
         var currentKills = currentWave.GetKillCount();
         var requiredKills = currentWave.GetRequiredKills();
 
-        GameplayManager.Instance.gameplayUI.waveUI.UpdateSlider(currentKills, requiredKills, waveIndex);
+        GameplayManager.Instance.GameplayUI.waveUI.UpdateSlider(currentKills, requiredKills, waveIndex);
         if (currentWave.IsComplete())
         {
             OnWaveCompleted();
         }
     }
+    // Todo: Wave on Complete Checker is broken and need urgently to be addressed
     private async void OnWaveCompleted()
     {
 
         // Step 1: Kill remaining enemies after message is done
-        GameplayManager.Instance.enemyManager.KillAllEnemies(true);
+        enemyManager.KillAllEnemies(true);
 
         // Step 2: Show "Wave Cleared"
-        await GameplayManager.Instance.gameplayUI.PushMessageAsync("Wave Cleared");
+        await GameplayManager.Instance.GameplayUI.PushMessageAsync("Wave Cleared");
 
         // Step 3: Prepare rewards
         waveIndex++;
         var loots = currentWave.GetConfig().waveRewards;
         foreach (var loot in loots)
         {
-            GameplayManager.Instance.gameplayUI.lootHolder.AddAmount(loot);
+            GameplayManager.Instance.GameplayUI.lootHolder.AddAmount(loot);
         }
 
         // Step 4: Check if level is done or next wave
         if (waveIndex >= waveConfigs.Count)
         {
             // Wait for "Level Complete" panel to finish showing
-            GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.LevelComplete;
-            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
+            // GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.LevelComplete;
+            // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
         }
         else
         {
             // Optionally show another message like “Next Wave Starting”
-            await GameplayManager.Instance.gameplayUI.PushMessageAsync("Next Wave Incoming");
+            await GameplayManager.Instance.GameplayUI.PushMessageAsync("Next Wave Incoming");
 
             // Then wait before starting next wave
-            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Start);
+            // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Start);
         }
 
         currentWave = null;

@@ -86,7 +86,7 @@ public class SaveContainer : MonoBehaviour
 
     private async void OnActionButtonClicked()
     {
-        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_OnTransition);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnTransition);
 
         if (data == null)
         {

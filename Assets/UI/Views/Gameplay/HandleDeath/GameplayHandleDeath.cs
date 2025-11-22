@@ -18,14 +18,14 @@ public class GameplayHandleDeath : MonoBehaviour
         if (flag)
         {
             await panelAnimator.Show();
-            GameplayManager.Instance.onUpdateDeadTeam += UpdateDeployedTeam;
+            GameplayManager.Instance.OnDeadTeamUpdated += UpdateDeployedTeam;
             Setup();
         }
         else
         {
             // Disconnect external dependencies
             await panelAnimator.Hide();
-            GameplayManager.Instance.onUpdateDeadTeam -= UpdateDeployedTeam;
+            GameplayManager.Instance.OnDeadTeamUpdated -= UpdateDeployedTeam;
         }
     }
     private void Setup()
@@ -60,7 +60,7 @@ public class GameplayHandleDeath : MonoBehaviour
         giveupButton.onClick.RemoveAllListeners();
         giveupButton.onClick.AddListener(async () =>
         {
-            await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
+            await GameplayManager.Instance.SetState(GameplayState.End);
         });
     }
     private async void OnDeploySelected(GamplayTeamCompCard card)
@@ -69,7 +69,7 @@ public class GameplayHandleDeath : MonoBehaviour
         SetDisplay(false);
 
         // Start the round
-        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Playing);
+        await GameplayManager.Instance.SetState(GameplayState.Playing);
     }
     private void Clear()
     {

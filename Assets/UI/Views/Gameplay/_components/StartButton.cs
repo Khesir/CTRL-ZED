@@ -28,7 +28,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public async UniTask Activate()
     {
-        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Playing);
+        await GameplayManager.Instance.SetState(GameplayState.Playing);
     }
     public async UniTask AnimateIn(float slideDistance = 200f, float duration = 0.6f)
     {

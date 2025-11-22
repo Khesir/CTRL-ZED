@@ -50,7 +50,7 @@ public class CompleteScreenUI : MonoBehaviour
                 break;
         }
         PlayerService manager = GameManager.Instance.PlayerManager.playerService;
-        var lootHolder = GameplayManager.Instance.gameplayUI.lootHolder;
+        var lootHolder = GameplayManager.Instance.GameplayUI.lootHolder;
 
         manager.AddFood(lootHolder.GetLoot(ItemType.Food));
         manager.AddTechnology(lootHolder.GetLoot(ItemType.Technology));

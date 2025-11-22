@@ -83,7 +83,7 @@ public class DetailsController : MonoBehaviour
         {
             GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(nextLevelCost);
             character.currentLevel++;
-            SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_spend);
+            ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
         }
     }
 }

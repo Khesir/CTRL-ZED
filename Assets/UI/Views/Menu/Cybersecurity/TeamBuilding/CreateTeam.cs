@@ -19,9 +19,9 @@ public class CreateTeam : MonoBehaviour
         {
             manager.IncreaseMaxTeam();
             manager.CreateTeam();
-            SoundManager.PlaySound(SoundCategory.Coins, SoundType.Coins_massive);
+            ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_massive);
             return;
         }
-        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Error);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_Error);
     }
 }

@@ -8,13 +8,13 @@ public class UISkillSlots : MonoBehaviour
     [SerializeField] private SkillEventChannel skillEventChannel;
     public void Initialize()
     {
-        GameplayManager.Instance.followerManager.OnSwitch += Refresh;
+        GameplayManager.Instance.FollowerManager.OnSwitch += Refresh;
         skillEventChannel.OnSkillUsed += OnSkillUsed;
         skillEventChannel.OnSkillsEquipped += Refresh;
     }
     private void Refresh()
     {
-        var x = GameplayManager.Instance.followerManager.GetCurrentTargetBattleState().data.GetData();
+        var x = GameplayManager.Instance.FollowerManager.GetCurrentTargetBattleState().data.GetData();
         skillSlots[0].Initialize(x.baseData.skill1);
         skillSlots[1].Initialize(x.baseData.skill2);
     }

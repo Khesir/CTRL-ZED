@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour, IWeapon
 
     private GameObject source;
     private SourceType sourceType;
+    private ISoundService soundService;
     public void Initialize(WeaponConfig config, GameObject source, SourceType sourceType)
     {
         bulletPrefab = config.bulletPrefab;
@@ -20,6 +21,7 @@ public class Weapon : MonoBehaviour, IWeapon
 
         this.sourceType = sourceType;
         this.source = source;
+        soundService = ServiceLocator.Get<ISoundService>();
     }
     public void Fire()
     {
@@ -38,7 +40,7 @@ public class Weapon : MonoBehaviour, IWeapon
             }
             bullet.transform.up = firepoint.up;
             nextFireTime = Time.time + (1f / fireRate);
-            SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Shoot);
+            soundService.Play(SoundCategory.Gameplay, SoundType.Gameplay_Shoot);
         }
     }
     public void UpdateFirerate(float rate)

@@ -21,7 +21,7 @@ public class VirusItem : MonoBehaviour
     }
     public void ActionButton()
     {
-        SoundManager.PlaySound(SoundCategory.UI, SoundType.UI_Button);
+        ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_Button);
         target.Setup(antiVirus);
     }
 

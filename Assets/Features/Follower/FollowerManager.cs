@@ -6,7 +6,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class FollowerManager : MonoBehaviour
+public class FollowerManager : MonoBehaviour, IFollowerManager
 {
     public CinemachineVirtualCamera focusCamera;
     public GameplayUIController gameplayUI;

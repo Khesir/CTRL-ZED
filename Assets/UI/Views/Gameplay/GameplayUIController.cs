@@ -73,17 +73,16 @@ public class GameplayUIController : MonoBehaviour
     public async void HandleGameOver()
     {
         // Shows Game over screen and revive
-        // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
-        await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Revive);
+        await GameplayManager.Instance.SetState(GameplayState.Revive);
         gameplayHandleDeath.SetDisplay(true);
     }
-    public async void HandleEndGamePanel(GameplayManager.GameplayEndGameState endGameState)
+    public async void HandleEndGamePanel(GameplayEndGameState endGameState)
     {
-        if (endGameState == GameplayManager.GameplayEndGameState.DeathOnTimer)
+        if (endGameState == GameplayEndGameState.DeathOnTimer)
         {
             await CompleteAsync("os", false);
         }
-        else if (endGameState == GameplayManager.GameplayEndGameState.LevelComplete)
+        else if (endGameState == GameplayEndGameState.LevelComplete)
         {
             var team = GameManager.Instance.TeamManager.GetActiveTeam();
             await CompleteAsync(

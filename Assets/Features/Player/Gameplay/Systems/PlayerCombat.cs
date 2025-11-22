@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
     private IInputService input;
+    private ISoundService soundService;
     private CharacterBattleState characterData;
+
     [Header("Player Properties")]
     [SerializeField] private bool isImmune;
     [SerializeField] private float immunityDuration;
@@ -13,12 +13,15 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private SkillHolder skillHolder;
     [SerializeField] private ShaderDamageFlash damageFlash;
+
     public void Initialize(IInputService input, CharacterBattleState characterData)
     {
-        var baseConfig = characterData.data.GetInstance();
-        immunityDuration = 2f;
         this.input = input;
         this.characterData = characterData;
+        soundService = ServiceLocator.Get<ISoundService>();
+
+        var baseConfig = characterData.data.GetInstance();
+        immunityDuration = 2f;
 
         weaponHolder = GetComponentInChildren<WeaponHolder>();
         weaponHolder.EquipWeapon(baseConfig.weapon, gameObject, SourceType.Player);
@@ -61,7 +64,8 @@ public class PlayerCombat : MonoBehaviour
     private void HandleImmunity()
     {
         if (!isImmune) return;
-        _ = SoundManager.PlayLoopUntil(SoundCategory.Status, SoundType.Status_Immune, immunityDuration);
+
+        soundService.PlayForDuration(SoundCategory.Status, SoundType.Status_Immune, immunityDuration).Forget();
 
         immunityTimer -= Time.deltaTime;
         if (immunityTimer <= 0f)
@@ -69,15 +73,16 @@ public class PlayerCombat : MonoBehaviour
             isImmune = false;
         }
     }
+
     public void TakeDamage(float damage, GameObject source = null)
     {
         if (isImmune) return;
+
         damageFlash.Flash(immunityDuration);
         isImmune = true;
         immunityTimer = immunityDuration;
         characterData.TakeDamage(damage);
-
-        SoundManager.PlaySound(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
+        soundService.Play(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
     }
 
     // Temporary Change on weapon effects

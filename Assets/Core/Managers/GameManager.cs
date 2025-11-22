@@ -1,40 +1,36 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public PlayerDataManager PlayerDataManager { get; private set; }
-    public PlayerManager PlayerManager { get; private set; }
-    public TeamManager TeamManager { get; private set; }
-    public CharacterManager CharacterManager { get; private set; }
-    public AntiVirusManager AntiVirusManager { get; private set; }
-    public LevelManager LevelManager { get; private set; }
-    public StatusEffectManager StatusEffectManager;
-    public GameplayActiveStatusEffect activeStatusEffect;
 
-
-    [Header("Manager Prefabs / References")]
-    [SerializeField] private CharacterManager characterManager;
-    [SerializeField] private PlayerManager playerManager;
-    [SerializeField] private TeamManager teamManager;
+    [Header("Managers")]
     [SerializeField] private PlayerDataManager playerDataManager;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private CharacterManager characterManager;
+    [SerializeField] private TeamManager teamManager;
     [SerializeField] private AntiVirusManager antiVirusManager;
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private StatusEffectManager statusEffectManager;
-    [SerializeField] private LevelData tutorialLevel;
-    public bool isGameActive;
-    public bool _isInitialized = false;
-    public bool skipTutorial = false;
-    public bool isInTutorial = false;
 
-    [Header("Do not Change Anything")]
-    [SerializeField] private SaveData saveData;
+    [Header("Tutorial")]
+    [SerializeField] private LevelData tutorialLevel;
+    [SerializeField] private bool skipTutorial = false;
+
+    // Public accessors (will be replaced by ServiceLocator in Phase 6)
+    public PlayerDataManager PlayerDataManager => playerDataManager;
+    public PlayerManager PlayerManager => playerManager;
+    public CharacterManager CharacterManager => characterManager;
+    public TeamManager TeamManager => teamManager;
+    public AntiVirusManager AntiVirusManager => antiVirusManager;
+    public LevelManager LevelManager => levelManager;
+    public StatusEffectManager StatusEffectManager => statusEffectManager;
+
+    // State
+    public bool isGameActive;
+    public bool isInTutorial;
+    private bool isInitialized;
 
     private void Awake()
     {
@@ -46,25 +42,17 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
     public async UniTask Initialize()
     {
-        if (_isInitialized) return;
+        if (isInitialized) return;
 
-        // Initialize the Managers and game systems
-        // Setup basic manager references (no save data yet)
-        PlayerDataManager = playerDataManager;
-        PlayerManager = playerManager;
-        CharacterManager = characterManager;
-        TeamManager = teamManager;
-        AntiVirusManager = antiVirusManager;
-        LevelManager = levelManager;
-        StatusEffectManager = statusEffectManager;
-        // Set Initial game state
         isGameActive = false;
+        isInitialized = true;
 
-        Debug.Log("[GameManager] Game Manager Initialized");
-        _isInitialized = true;
+        Debug.Log("[GameManager] Initialized");
         await UniTask.CompletedTask;
+
         if (!skipTutorial)
         {
             TutorialTrigger().Forget();
@@ -74,26 +62,24 @@ public class GameManager : MonoBehaviour
     private async UniTaskVoid TutorialTrigger()
     {
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
-
         await UniTask.WaitUntil(() => GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu);
-        if (GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu && !playerManager.playerService.GetPlayerData().completedTutorial)
+
+        bool tutorialNotCompleted = !playerManager.playerService.GetPlayerData().completedTutorial;
+
+        if (tutorialNotCompleted)
         {
             levelManager.activeLevel = tutorialLevel;
             GameInitiator.Instance.SwitchStates(GameState.Gameplay);
             isInTutorial = true;
         }
     }
+
     public bool HandleTutorial()
     {
-        if (isInTutorial)
-        {
-            skipTutorial = true;
-            isInTutorial = false;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        if (!isInTutorial) return false;
+
+        skipTutorial = true;
+        isInTutorial = false;
+        return true;
     }
 }

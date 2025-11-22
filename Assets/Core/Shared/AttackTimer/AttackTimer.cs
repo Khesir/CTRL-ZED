@@ -28,9 +28,9 @@ public class AttackTimer : MonoBehaviour
             if (playerInstance.IsDead())
             {
                 Debug.Log("Game Over");
-                GameplayManager.Instance.followerManager.ResetTarget();
-                GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.DeathOnTimer;
-                await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
+                GameplayManager.Instance.FollowerManager.ResetTarget();
+                GameplayManager.Instance.EndGameState = GameplayEndGameState.DeathOnTimer;
+                await GameplayManager.Instance.SetState(GameplayState.End);
             }
             timer = timeLimit;
         }
