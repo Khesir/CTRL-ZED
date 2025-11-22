@@ -62,6 +62,13 @@ public class GameplayManager : MonoBehaviour
     private ISoundService soundService;
     private bool isInitialized;
 
+    // State Machine
+    private StateMachine stateMachine;
+    private GameplayStartState startState;
+    private GameplayPlayingState playingState;
+    private GameplayReviveState reviveState;
+    private GameplayEndState endState;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -111,74 +118,103 @@ public class GameplayManager : MonoBehaviour
         waveManager.Initialize();
         parallaxBackground.Initialize();
 
+        // Initialize state machine
+        stateMachine = new StateMachine();
+        startState = new GameplayStartState(this);
+        playingState = new GameplayPlayingState(this);
+        reviveState = new GameplayReviveState(this);
+        endState = new GameplayEndState(this);
+
         isInitialized = true;
         Debug.Log("[GameplayManager] Initialized");
     }
 
+    private void Update()
+    {
+        stateMachine?.Update();
+    }
+
     private void RegisterServices()
     {
-        ServiceLocator.Register<IEnemyManager>(enemyManager);
-        ServiceLocator.Register<ILootManager>(lootManager);
-        ServiceLocator.Register<IFollowerManager>(followerManager);
-        ServiceLocator.Register<IWaveManager>(waveManager);
-        ServiceLocator.Register<IDamageNumberService>(damageNumberService);
+        // Use DI composition root for gameplay services
+        GameplayCompositionRoot.Configure(
+            GameServices.Container,
+            enemyManager,
+            waveManager,
+            lootManager,
+            followerManager,
+            damageNumberService,
+            gameplayUI
+        );
     }
-    public async UniTask SetState(GameplayState newState)
+    public UniTask SetState(GameplayState newState)
     {
-        if (CurrentState == newState) return;
+        if (CurrentState == newState) return UniTask.CompletedTask;
 
         CurrentState = newState;
 
+        // Use state machine for state transitions
         switch (CurrentState)
         {
             case GameplayState.Start:
-                await EnterStartState();
+                stateMachine.ChangeState(startState);
                 break;
 
             case GameplayState.Playing:
-                await EnterPlayingState();
+                stateMachine.ChangeState(playingState);
                 break;
 
             case GameplayState.Revive:
-                EnterReviveState();
+                stateMachine.ChangeState(reviveState);
                 break;
 
             case GameplayState.End:
-                EnterEndState();
+                stateMachine.ChangeState(endState);
                 break;
         }
+
+        return UniTask.CompletedTask;
     }
 
-    private async UniTask EnterStartState()
+    // Internal methods called by states
+    public void SetGameActive(bool active) => IsGameActive = active;
+
+    public void SetupLevelInternal()
     {
-        if (!IsGameActive) SetupLevel();
+        var currentLevel = gameManager.LevelManager.activeLevel;
 
-        if (gameplayUI != null)
-            await gameplayUI.StartStateUIAnimation();
+        parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
+        waveManager.SetWaveConfig(currentLevel.waveSet.waves);
+        soundService.Play(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
+        gameplayUI.StartStateSetup();
 
-        IsGameActive = true;
+        InitializeTeams();
     }
 
-    private async UniTask EnterPlayingState()
+    public void HandleTeamChangeInternal() => HandleTeamChange();
+
+    public void StartWaveInternal()
     {
-        HandleTeamChange();
-
-        if (gameplayUI != null)
-            await gameplayUI.PlayingStateUIAnimation();
-
-        StartWave();
+        if (waveManager.currentWave == null)
+            waveManager.StartNextWave();
+        else
+            waveManager.PauseWave(false);
     }
 
-    private void EnterReviveState()
+    public void PauseGameplayInternal()
     {
         enemyManager.ResetTargets();
         waveManager.PauseWave(true);
     }
 
-    private void EnterEndState()
+    public void ResumeGameplayInternal()
+    {
+        waveManager.PauseWave(false);
+    }
+
+    public void EndGameplayInternal()
     {
         enemyManager.KillAllEnemies(silent: true);
-        // gameplayUI?.HandleEndGamePanel(EndGameState);
         MarkTutorialComplete();
     }
 

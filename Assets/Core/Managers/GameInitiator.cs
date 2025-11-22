@@ -101,13 +101,22 @@ public class GameInitiator : MonoBehaviour
     {
         Debug.Log("[GameInitiator] Registering services...");
 
-        // Core services (DontDestroyOnLoad)
+        // Initialize DI Container
+        var container = new DIContainer();
+        GameServices.Initialize(container);
+
+        // Configure core services via composition root
+        CoreCompositionRoot.Configure(
+            container,
+            SoundManager,
+            InputService,
+            GameManager,
+            GameStateManager
+        );
+
+        // Also register with ServiceLocator for backward compatibility
         ServiceLocator.Register<ISoundService>(SoundManager);
         ServiceLocator.Register<IInputService>(InputService);
-
-        // Add more as you create interfaces for them:
-        // ServiceLocator.Register<IUIService>(UIManager);
-        // ServiceLocator.Register<IGameStateService>(GameStateManager);
     }
 
     private async UniTask Initialize()
