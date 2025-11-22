@@ -39,14 +39,51 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
 
     public void WiredEvents()
     {
-        healthService.OnHealthChanged += () => OnHealthChanged?.Invoke();
+        healthService.OnHealthChanged += () =>
+        {
+            OnHealthChanged?.Invoke();
+            // Publish to CoreEventBus for cross-scene listeners
+            CoreEventBus.Publish(new PlayerHealthChangedEvent
+            {
+                CurrentHealth = (int)healthService.GetCurrentHealth(),
+                MaxHealth = (int)healthService.GetMaxHealth()
+            });
+        };
+
         // Economy events
-        economyService.OnCoinsChange += () => OnCoinsChange?.Invoke();
+        economyService.OnCoinsChange += () =>
+        {
+            OnCoinsChange?.Invoke();
+            CoreEventBus.Publish(new PlayerDataChangedEvent
+            {
+                Coins = economyService.GetCoins(),
+                Level = expService.GetLevel()
+            });
+        };
+
         // Exp Events
-        expService.OnLevelUp += () => OnLevelUp?.Invoke();
+        expService.OnLevelUp += () =>
+        {
+            OnLevelUp?.Invoke();
+            CoreEventBus.Publish(new PlayerLevelUpEvent
+            {
+                NewLevel = expService.GetLevel(),
+                PreviousLevel = expService.GetLevel() - 1
+            });
+        };
         expService.OnExpGained += () => OnExpGained?.Invoke();
+
         // Drives Events
-        drivesService.OnSpendDrives += () => OnSpendDrives?.Invoke();
+        drivesService.OnSpendDrives += () =>
+        {
+            OnSpendDrives?.Invoke();
+            CoreEventBus.Publish(new PlayerDrivesChangedEvent
+            {
+                CurrentDrives = drivesService.GetDrives(),
+                MaxDrives = data.maxDrives
+            });
+        };
+
         // Resource Events
         resourceService.OnResourceChange += () => OnResourceChange?.Invoke();
     }

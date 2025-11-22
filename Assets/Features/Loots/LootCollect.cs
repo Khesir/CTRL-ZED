@@ -25,8 +25,13 @@ public class LootCollect : MonoBehaviour
             {
                 ServiceLocator.Get<ISoundService>().Play(SoundCategory.Gameplay, SoundType.Gameplay_Collect);
 
-                // TODO: Replace with ServiceLocator once ILootManager and IGameplayUI exist
-                GameplayManager.Instance.GameplayUI.lootHolder.AddAmount(data);
+                // Publish event instead of direct UI call
+                SceneEventBus.Publish(new LootCollectedEvent
+                {
+                    Data = data,
+                    Position = transform.position
+                });
+
                 ServiceLocator.Get<ILootManager>().UnregisterLoot(this);
                 Destroy(gameObject);
             }

@@ -18,6 +18,22 @@ public class WaveManager : MonoBehaviour, IWaveManager
     private ISoundService soundService;
     private IEnemyManager enemyManager;
 
+    private void OnEnable()
+    {
+        SceneEventBus.Subscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
+    }
+
+    private void OnDisable()
+    {
+        SceneEventBus.Unsubscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
+    }
+
+    private void OnEnemyDefeated(EnemyDefeatedEvent evt)
+    {
+        // Replace direct ReportKill call - now triggered by event
+        ReportKillInternal();
+    }
+
     public void Initialize()
     {
         waveConfigs = null;
@@ -36,13 +52,21 @@ public class WaveManager : MonoBehaviour, IWaveManager
     {
         currentWave?.Update();
     }
-    public async void StartNextWave()
+    public void StartNextWave()
     {
         if (waveIndex >= waveConfigs.Count)
         {
             enemyManager.KillAllEnemies(true);
             Debug.Log("[WaveManager] All waves completed.");
-            await GameplayManager.Instance.GameplayUI.PushMessageAsync("All Waves Cleared!");
+
+            // Publish event instead of direct UI call
+            SceneEventBus.Publish(new WaveMessageEvent { Message = "All Waves Cleared!" });
+            SceneEventBus.Publish(new AllWavesCompletedEvent
+            {
+                TotalWaves = waveConfigs.Count,
+                TotalReward = 0
+            });
+
             currentWave = null;
             return;
         }
@@ -51,58 +75,72 @@ public class WaveManager : MonoBehaviour, IWaveManager
         currentWave = new WaveService(config, spawner);
 
         currentWave.StartWave();
-        await GameplayManager.Instance.GameplayUI.PushMessageAsync($"Start Wave {waveIndex + 1}");
-        GameplayManager.Instance.GameplayUI.starWaveButton.SetActive(false);
+
+        // Publish events instead of direct UI calls
+        SceneEventBus.Publish(new WaveMessageEvent { Message = $"Start Wave {waveIndex + 1}" });
+        SceneEventBus.Publish(new WaveStartedEvent
+        {
+            WaveNumber = waveIndex + 1,
+            TotalWaves = waveConfigs.Count,
+            EnemyCount = config.requiredKills
+        });
     }
     public int GetWaveIndex() => waveIndex;
 
+    // Keep public for backward compatibility, but internal logic moved
     public void ReportKill()
     {
-        if (currentWave.IsComplete())
+        ReportKillInternal();
+    }
+
+    private void ReportKillInternal()
+    {
+        if (currentWave == null || currentWave.IsComplete())
             return;
 
-        currentWave?.RegisterKill();
+        currentWave.RegisterKill();
         var currentKills = currentWave.GetKillCount();
         var requiredKills = currentWave.GetRequiredKills();
 
-        GameplayManager.Instance.GameplayUI.waveUI.UpdateSlider(currentKills, requiredKills, waveIndex);
+        // Publish progress event instead of direct UI call
+        SceneEventBus.Publish(new WaveProgressUpdatedEvent
+        {
+            CurrentKills = currentKills,
+            RequiredKills = requiredKills,
+            WaveIndex = waveIndex
+        });
+
         if (currentWave.IsComplete())
         {
             OnWaveCompleted();
         }
     }
-    // Todo: Wave on Complete Checker is broken and need urgently to be addressed
-    private async void OnWaveCompleted()
-    {
 
-        // Step 1: Kill remaining enemies after message is done
+    private void OnWaveCompleted()
+    {
+        // Step 1: Kill remaining enemies
         enemyManager.KillAllEnemies(true);
 
-        // Step 2: Show "Wave Cleared"
-        await GameplayManager.Instance.GameplayUI.PushMessageAsync("Wave Cleared");
+        // Step 2: Publish wave cleared message
+        SceneEventBus.Publish(new WaveMessageEvent { Message = "Wave Cleared" });
 
-        // Step 3: Prepare rewards
+        // Step 3: Prepare and publish rewards
         waveIndex++;
         var loots = currentWave.GetConfig().waveRewards;
-        foreach (var loot in loots)
+        bool isLastWave = waveIndex >= waveConfigs.Count;
+
+        // Publish wave completed event with rewards
+        SceneEventBus.Publish(new WaveCompletedEvent
         {
-            GameplayManager.Instance.GameplayUI.lootHolder.AddAmount(loot);
-        }
+            WaveNumber = waveIndex,
+            Rewards = loots,
+            IsLastWave = isLastWave
+        });
 
         // Step 4: Check if level is done or next wave
-        if (waveIndex >= waveConfigs.Count)
+        if (!isLastWave)
         {
-            // Wait for "Level Complete" panel to finish showing
-            // GameplayManager.Instance.endGameState = GameplayManager.GameplayEndGameState.LevelComplete;
-            // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.End);
-        }
-        else
-        {
-            // Optionally show another message like “Next Wave Starting”
-            await GameplayManager.Instance.GameplayUI.PushMessageAsync("Next Wave Incoming");
-
-            // Then wait before starting next wave
-            // await GameplayManager.Instance.SetState(GameplayManager.GameplayState.Start);
+            SceneEventBus.Publish(new WaveMessageEvent { Message = "Next Wave Incoming" });
         }
 
         currentWave = null;

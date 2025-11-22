@@ -27,6 +27,49 @@ public class GameplayUIController : MonoBehaviour
     [Header("Controls")]
     public GameObject starWaveButton;
 
+    private void OnEnable()
+    {
+        SceneEventBus.Subscribe<WaveMessageEvent>(OnWaveMessage);
+        SceneEventBus.Subscribe<WaveStartedEvent>(OnWaveStarted);
+        SceneEventBus.Subscribe<WaveCompletedEvent>(OnWaveCompleted);
+        SceneEventBus.Subscribe<LootCollectedEvent>(OnLootCollected);
+    }
+
+    private void OnDisable()
+    {
+        SceneEventBus.Unsubscribe<WaveMessageEvent>(OnWaveMessage);
+        SceneEventBus.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
+        SceneEventBus.Unsubscribe<WaveCompletedEvent>(OnWaveCompleted);
+        SceneEventBus.Unsubscribe<LootCollectedEvent>(OnLootCollected);
+    }
+
+    private void OnWaveMessage(WaveMessageEvent evt)
+    {
+        PushMessageAsync(evt.Message).Forget();
+    }
+
+    private void OnWaveStarted(WaveStartedEvent evt)
+    {
+        starWaveButton.SetActive(false);
+    }
+
+    private void OnWaveCompleted(WaveCompletedEvent evt)
+    {
+        // Add wave rewards to loot holder
+        if (evt.Rewards != null)
+        {
+            foreach (var loot in evt.Rewards)
+            {
+                lootHolder.AddAmount(loot);
+            }
+        }
+    }
+
+    private void OnLootCollected(LootCollectedEvent evt)
+    {
+        lootHolder.AddAmount(evt.Data);
+    }
+
     public void Initialize(PlayerService playerService)
     {
         this.playerService = playerService;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour, IEnemyManager
@@ -12,6 +13,27 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         get => inStealth;
         set => inStealth = value;
     }
+
+    private void OnEnable()
+    {
+        SceneEventBus.Subscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
+    }
+
+    private void OnDisable()
+    {
+        SceneEventBus.Unsubscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
+    }
+
+    private void OnEnemyDefeated(EnemyDefeatedEvent evt)
+    {
+        // Find and remove the enemy by instance ID
+        var enemy = activeEnemies.FirstOrDefault(e => e != null && e.GetInstanceID() == evt.EnemyId);
+        if (enemy != null)
+        {
+            activeEnemies.Remove(enemy);
+        }
+    }
+
     public void Initialize()
     {
         InStealth = false;

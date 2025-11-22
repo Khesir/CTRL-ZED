@@ -66,10 +66,16 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         if (config.destroyEffect != null)
             Instantiate(config.destroyEffect, transform.position, Quaternion.identity);
 
-        enemyManager.UnregisterEnemy(this);
+        // Publish enemy defeated event - managers subscribe to this
+        SceneEventBus.Publish(new EnemyDefeatedEvent
+        {
+            EnemyId = GetInstanceID(),
+            Position = transform.position
+        });
 
-        if (notifyWaveSystem)
-            waveManager.ReportKill();
+        // Still need direct call for silent kills (no wave report)
+        if (!notifyWaveSystem)
+            enemyManager.UnregisterEnemy(this);
 
         if (!isSilent) InstantiateLoot(transform.position);
 

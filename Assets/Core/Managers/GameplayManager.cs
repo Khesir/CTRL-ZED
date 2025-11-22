@@ -84,6 +84,13 @@ public class GameplayManager : MonoBehaviour
     {
         if (isInitialized) return;
 
+        // Create SceneEventBus for this scene if it doesn't exist
+        if (FindAnyObjectByType<SceneEventBus>() == null)
+        {
+            var sceneEventBusGO = new GameObject("SceneEventBus");
+            sceneEventBusGO.AddComponent<SceneEventBus>();
+        }
+
         // Cache references
         gameManager = GameInitiator.Instance.GameManager;
         inputService = ServiceLocator.Get<IInputService>();

@@ -34,6 +34,7 @@ public class GameInitiator : MonoBehaviour
     public InputService InputService { get; private set; }
     public SoundManager SoundManager { get; private set; }
     public UIManager UIManager { get; private set; }
+    public CoreEventBus CoreEventBus { get; private set; }
 
     private void Awake()
     {
@@ -70,6 +71,15 @@ public class GameInitiator : MonoBehaviour
         InputService = EnsureExists(InputService, inputServicePrefab);
         SoundManager = EnsureExists(SoundManager, soundManagerPrefab);
         UIManager = EnsureExists(UIManager, uIManager);
+
+        // Create CoreEventBus if it doesn't exist
+        CoreEventBus = FindAnyObjectByType<CoreEventBus>();
+        if (CoreEventBus == null)
+        {
+            var eventBusGO = new GameObject("CoreEventBus");
+            CoreEventBus = eventBusGO.AddComponent<CoreEventBus>();
+            eventBusGO.transform.SetParent(transform);
+        }
 
         await UniTask.CompletedTask;
     }
