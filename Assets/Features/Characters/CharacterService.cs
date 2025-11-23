@@ -8,6 +8,8 @@ public class CharacterService : IStatHandler
 {
     private readonly CharacterData _data;
     private readonly List<IStatProvider> statProviders = new();
+    private const float LevelScalingFactor = 0.1f; // 10% stronger per level (matches enemy scaling)
+
     public event Action onLevelUp;
     public event Action onStatChange;
     // // (Optional) dictionary if you want expandable stat system
@@ -84,11 +86,13 @@ public class CharacterService : IStatHandler
         return (basevalue + flat) * (1 + percentAdd) * percentMult;
     }
 
-    // Derived Stats
-    public int GetAttack() => Mathf.RoundToInt(ApplyModifiers("ATK", _data.baseData.baseAttack + (_data.currentLevel * 2)));
-    public int GetDefense() => Mathf.RoundToInt(ApplyModifiers("DEF", _data.baseData.defense + (_data.currentLevel * 1.5f)));
+    // Derived Stats (scaled by character level - matches enemy progression)
+    private float GetLevelMultiplier() => 1 + (_data.currentLevel * LevelScalingFactor);
+
+    public int GetAttack() => Mathf.RoundToInt(ApplyModifiers("ATK", _data.baseData.baseAttack * GetLevelMultiplier()));
+    public int GetDefense() => Mathf.RoundToInt(ApplyModifiers("DEF", _data.baseData.defense * GetLevelMultiplier()));
     public int GetDexterity() => Mathf.RoundToInt(ApplyModifiers("DEX", _data.baseData.dex));
-    public int GetMaxHealth() => Mathf.RoundToInt(ApplyModifiers("HP", _data.baseData.baseHealth + (_data.currentLevel * 10)));
+    public int GetMaxHealth() => Mathf.RoundToInt(ApplyModifiers("HP", _data.baseData.baseHealth * GetLevelMultiplier()));
     public Dictionary<string, int> GetStatMap()
     {
         return new()

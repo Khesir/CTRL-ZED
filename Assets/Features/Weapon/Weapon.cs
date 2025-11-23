@@ -5,23 +5,41 @@ using UnityEngine;
 public class Weapon : MonoBehaviour, IWeapon
 {
     [SerializeField] private Transform firepoint;
+    private const float LevelScalingFactor = 0.05f; // 5% faster fire rate per level
+
     private GameObject bulletPrefab;
     private float fireForce;
+    private float baseFireRate;
     private float fireRate;
     private float nextFireTime = 0f;
 
     private GameObject source;
     private SourceType sourceType;
     private ISoundService soundService;
+
     public void Initialize(WeaponConfig config, GameObject source, SourceType sourceType)
     {
         bulletPrefab = config.bulletPrefab;
         fireForce = config.fireForce;
-        fireRate = config.fireRate;
+        baseFireRate = config.fireRate;
 
         this.sourceType = sourceType;
         this.source = source;
         soundService = ServiceLocator.Get<ISoundService>();
+
+        // Apply level-based fire rate scaling for player characters
+        if (sourceType == SourceType.Player)
+        {
+            var battleState = source.GetComponent<PlayerGameplayService>()?.GetCharacterState();
+            int characterLevel = battleState?.data?.GetLevel() ?? 1;
+            float levelMultiplier = 1 + (characterLevel * LevelScalingFactor);
+            fireRate = baseFireRate * levelMultiplier;
+            Debug.Log($"[Weapon] Fire rate scaled: base {baseFireRate} -> {fireRate} (Lv.{characterLevel}, x{levelMultiplier:F2})");
+        }
+        else
+        {
+            fireRate = baseFireRate;
+        }
     }
     public void Fire()
     {

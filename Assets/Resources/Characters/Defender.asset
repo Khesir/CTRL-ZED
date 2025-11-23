@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
   m_Name: Defender
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 7cec2ca696d182a4b8ac962d1fb3f597, type: 3}
+  icon: {fileID: 21300000, guid: 9859b5454f1c05f46a366b874c76d0ef, type: 3}
   className: Defender
   charactername: 
-  ship: {fileID: 21300000, guid: f2de68326db9c6546b70efeb79e98f09, type: 3}
-  baseAttack: 3
+  ship: {fileID: 21300000, guid: a2ca6d589d7c3db4c8b67ebc562d9c0f, type: 3}
+  buyIcon: {fileID: 32900000, guid: 42d5ac49df8d2c649af6afb6f6d39aa9, type: 3}
+  buyIconFallBack: {fileID: 21300000, guid: 7d6d1cc11c02f824bbdcf51fb9e1d3ff, type: 3}
+  baseAttack: 6
   baseHealth: 9
   defense: 10
   dex: 4

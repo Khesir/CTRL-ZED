@@ -264,7 +264,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         {
             playerData.completedTutorial = true;
         }
-        ServiceLocator.Get<GameInitiator>().CompleteTutorial();
+        ServiceLocator.Get<GameInitiator>().IntroViewed();
     }
     #endregion
 
@@ -299,10 +299,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         CreateTutorialTeam(teamManager, characters);
         CreateTutorialTeam(teamManager, characters);
 
-        if (GameInitiator.Instance.isDevelopment)
-        {
-            ServiceLocator.Get<ILevelManager>().activeLevel = tutorialLevel;
-        }
+        // activeLevel is now set by GameInitiator in dev mode
 
         Debug.Log("[GameplayManager] Tutorial characters generated");
     }

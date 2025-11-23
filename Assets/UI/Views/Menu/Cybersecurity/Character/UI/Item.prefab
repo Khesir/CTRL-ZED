@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7283019, g: 0.7283019, b: 0.7283019, a: 1}
+  m_Color: {r: 0.7283019, g: 0.7283019, b: 0.7283019, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420234162418932300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -268,10 +268,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5609976450473649444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 62.551, y: -51.6}
+  m_SizeDelta: {x: 172.2791, y: 162.6726}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6933396137131367196
 CanvasRenderer:
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d583d8cdaac53ca4f9b24f77e5d198f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 59c298d016245df41b594d29810237ad, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -325,6 +325,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 2288248447729163146}
   parentAfterDrag: {fileID: 0}
+  instance:
+    id: 
+    baseData: {fileID: 0}
+    maxHealth: 0
+    name: 
+    level: 0
+    currentLevel: 0
+    experience: 0
+    assignedTeam: 
   isExternal: 0
   characterName: {fileID: 0}
   className: {fileID: 0}
@@ -572,7 +581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 84.296, y: 53.563}
+  m_AnchoredPosition: {x: 84.297, y: 49.4}
   m_SizeDelta: {x: 125.1, y: 26.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5167094179389698907
@@ -770,9 +779,18 @@ MonoBehaviour:
   className: {fileID: 5753345705380889800}
   nameText: {fileID: 3825913262901530933}
   level: {fileID: 3269176025374531677}
+  instance:
+    id: 
+    baseData: {fileID: 0}
+    maxHealth: 0
+    name: 
+    level: 0
+    currentLevel: 0
+    experience: 0
+    assignedTeam: 
   draggableItem: {fileID: 2311397157245499150}
-  detailsController: {fileID: 0}
   actionButton: {fileID: 5244675185670540834}
+  detailsController: {fileID: 0}
   noCharacterDetailsSection: {fileID: 0}
 --- !u!114 &5244675185670540834
 MonoBehaviour:

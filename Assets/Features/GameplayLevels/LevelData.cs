@@ -6,7 +6,9 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     [Header("Basic Info")]
-    public Sprite levelIcon;
+    public Sprite levelBanner;
+    public Sprite hoverLevelBanner;
+    public Sprite levelInformation;
     public string levelID;
     public string levelName;
     public string objective;

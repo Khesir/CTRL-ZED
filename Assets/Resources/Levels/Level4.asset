@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5aa5a1f0654c14380d70744d750274, type: 3}
   m_Name: Level4
   m_EditorClassIdentifier: 
-  levelIcon: {fileID: 21300000, guid: 443151ce682ba2b42945d72ea07513e7, type: 3}
+  levelBanner: {fileID: 21300000, guid: e311ed1d02abfb146a0705828a60bbe8, type: 3}
+  hoverLevelBanner: {fileID: 21300000, guid: b9b5c569814c7774b88af271bb54325a, type: 3}
+  levelInformation: {fileID: 21300000, guid: c691327d2408e574da68528118e44abc, type: 3}
   levelID: 4
   levelName: 'Level 4: Botnet Blackout '
   objective: ' Survive a massive botnet attack and restore city systems.'
@@ -20,10 +22,10 @@ MonoBehaviour:
   recommendation: High-defense teams, Defenders and Enforcers. Heavy use  of Turret
     skills.
   isCleared: 0
-  waveSet: {fileID: 11400000, guid: 3ef14c0d1f371e04194a2410e27b430a, type: 2}
+  waveSet: {fileID: 11400000, guid: 0a9f083fd4abbee4a9df3cefe8a04933, type: 2}
   background:
-  - {fileID: 2100000, guid: bba4df99a90710d4aa4f7f2c2d6fc4b1, type: 2}
-  - {fileID: 2100000, guid: bb4e25930a53bfb438457372b2438c7a, type: 2}
-  - {fileID: 2100000, guid: b4a7bb79d77c46e43a46f97c2f5aafb0, type: 2}
-  - {fileID: 2100000, guid: 6c87a56e32b3ce0429cc252509536b38, type: 2}
-  - {fileID: 2100000, guid: d8dff77a8a92ead4e93005a1ebf4870a, type: 2}
+  - {fileID: 2100000, guid: f33ddc614dd14f241bab1f098303304a, type: 2}
+  - {fileID: 2100000, guid: 9631dc393c2bedd409d9a1e33470d22d, type: 2}
+  - {fileID: 2100000, guid: 1cf783623ec75044eb286e2d8f5c615f, type: 2}
+  - {fileID: 2100000, guid: 369f65cc1a3cd3b448e08ec7639f7c01, type: 2}
+  - {fileID: 2100000, guid: 48839935b7f0ef14e809b6ec54ddceea, type: 2}

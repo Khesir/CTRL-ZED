@@ -16,7 +16,7 @@ public static class SceneLoader
 
         bool isInTutorial = GameInitiator.Instance != null && GameInitiator.Instance.isInTutorial;
 
-        if (isInTutorial && canvas.HasTutorialVideo)
+        if (isInTutorial && canvas.HasTutorialVideo && !GameInitiator.Instance.introViewed)
         {
             // Tutorial flow: Video first, then load scene
             Debug.Log("[SceneLoader] Playing tutorial video...");

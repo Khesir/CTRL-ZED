@@ -79,6 +79,7 @@ public class MenuManager : MonoBehaviour
         if (ServiceLocator.Get<GameInitiator>().isInTutorial && instructionsPanel != null)
         {
             instructionsPanel.gameObject.SetActive(true);
+            ServiceLocator.Get<GameInitiator>().CompleteTutorial();
         }
     }
 }

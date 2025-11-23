@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fded2f317a014e545b673626fe3435cc, type: 3}
+  m_Name: Ransomeware
+  m_EditorClassIdentifier: 
+  enemyName: 
+  maxHealth: 50
+  baseDamage: 10
+  defense: 1
+  dex: 1
+  experienceToGive: 10
+  destroyEffect: {fileID: 2347741762400089613, guid: 6271160c99ccae74dad792ddd7fce5fb, type: 3}
+  sprite: {fileID: 21300000, guid: 69850d13dd4e91741bccd623787c95e7, type: 3}
+  difficultyMultiplier: 3
+  movementSpeed: 3
+  detectionRange: 5
+  stopDistance: 1
+  lootDrops:
+  - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
+    amount: 3332
+    dropChance: 0.9
+  - item: {fileID: 11400000, guid: 38deaf929d122d948b62d1f7b2761457, type: 2}
+    amount: 3332
+    dropChance: 0.565
+  - item: {fileID: 11400000, guid: 569af82d94da6ef46b1d237b0261a5c3, type: 2}
+    amount: 3332
+    dropChance: 0.312

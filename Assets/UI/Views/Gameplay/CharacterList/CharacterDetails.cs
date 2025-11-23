@@ -14,7 +14,7 @@ public class CharacterDetails : MonoBehaviour
     public void Initialize(CharacterBattleState data)
     {
         instance = data;
-        image.sprite = data.data.GetInstance().ship;
+        image.sprite = data.data.GetInstance().icon;
         characterName.text = data.data.GetName();
         level.text = "LVL " + data.data.GetLevel().ToString();
         UpdateHealth();

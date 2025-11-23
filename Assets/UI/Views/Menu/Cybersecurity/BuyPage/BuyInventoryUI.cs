@@ -13,6 +13,7 @@ public class BuyInventoryUI : MonoBehaviour
     // Clear Old Ones
     Clear();
     // Updated ones
+    Debug.Log(characterData.Count);
     foreach (var instance in characterData)
     {
       var card = Instantiate(slotPrefab, content);

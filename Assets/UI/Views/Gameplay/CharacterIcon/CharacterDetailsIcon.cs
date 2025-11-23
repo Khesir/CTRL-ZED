@@ -11,7 +11,7 @@ public class CharacterDetailsIcon : MonoBehaviour
     {
         instance = data;
         indexText.text = (index + 1).ToString();
-        image.sprite = data.data.GetInstance().ship;
+        image.sprite = data.data.GetInstance().icon;
         UpdateIcon();
         data.onDeath += UpdateIcon;
     }

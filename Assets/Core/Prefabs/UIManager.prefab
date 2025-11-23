@@ -256,7 +256,7 @@ MonoBehaviour:
   loadingCanvas: {fileID: 7887021799072375099}
   popupCanvas: {fileID: 4827586559300023125}
   videoPlayer: {fileID: 71992666743016644}
-  tutorialVideo: {fileID: 32900000, guid: 1c13a2984eceb5748931abfcfe3a5cb1, type: 3}
+  tutorialVideo: {fileID: 32900000, guid: a8b7c46a4239f4148b6dfe9a74cfe039, type: 3}
 --- !u!1 &3898400447752041603
 GameObject:
   m_ObjectHideFlags: 0

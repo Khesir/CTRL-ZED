@@ -6,9 +6,13 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
 {
     [SerializeField] private EnemyConfig config;
     [SerializeField] private GameObject lootDropPrefab;
+    [SerializeField] private float levelScalingFactor = 0.1f; // 10% stronger per player level
+
     private float currentHP;
     private EnemyFollow follow;
     public bool isInitialized;
+    private int playerLevel;
+    private float levelMultiplier;
 
     public bool isDead => currentHP <= 0;
     private readonly List<IStatProvider> statProviders = new();
@@ -22,13 +26,20 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
     public void Initialize(EnemyConfig config)
     {
         this.config = config;
-        currentHP = config.maxHealth;
 
         // Cache services
         soundService = ServiceLocator.Get<ISoundService>();
         enemyManager = ServiceLocator.Get<IEnemyManager>();
         lootManager = ServiceLocator.Get<ILootManager>();
         waveManager = ServiceLocator.Get<IWaveManager>();
+
+        // Calculate level-based scaling
+        var playerService = ServiceLocator.Get<IPlayerManager>()?.playerService;
+        playerLevel = playerService?.GetLevel() ?? 1;
+        levelMultiplier = 1 + (playerLevel * levelScalingFactor);
+
+        // Set HP after calculating multiplier
+        currentHP = GetMaxHealth();
 
         var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null && config.sprite != null)
@@ -40,6 +51,8 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         follow.Initialize(this);
         enemyManager.RegisterEnemy(this);
         isInitialized = true;
+
+        Debug.Log($"[EnemyService] {config.enemyName} spawned - Player Lv.{playerLevel}, Multiplier: {levelMultiplier:F2}x");
     }
 
     public void TakeDamage(float damage, GameObject source = null)
@@ -152,11 +165,11 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         }
         return (basevalue + flat) * (1 + percentAdd) * percentMult;
     }
-    // Derived Stats
-    public int GetAttack() => Mathf.RoundToInt(ApplyModifiers("ATK", config.baseDamage + (config.difficultyMultiplier * 2)));
-    public int GetDefense() => Mathf.RoundToInt(ApplyModifiers("DEF", config.defense + (config.difficultyMultiplier * 1.5f)));
+    // Derived Stats (scaled by player level)
+    public int GetAttack() => Mathf.RoundToInt(ApplyModifiers("ATK", (config.baseDamage + (config.difficultyMultiplier * 2)) * levelMultiplier));
+    public int GetDefense() => Mathf.RoundToInt(ApplyModifiers("DEF", (config.defense + (config.difficultyMultiplier * 1.5f)) * levelMultiplier));
     public int GetDexterity() => Mathf.RoundToInt(ApplyModifiers("DEX", config.dex));
-    public int GetMaxHealth() => Mathf.RoundToInt(ApplyModifiers("HP", config.maxHealth + (config.difficultyMultiplier * 10)));
+    public int GetMaxHealth() => Mathf.RoundToInt(ApplyModifiers("HP", (config.maxHealth + (config.difficultyMultiplier * 10)) * levelMultiplier));
     public int GetSpeed() => Mathf.RoundToInt(ApplyModifiers("SPD", config.dex));
     public Dictionary<string, int> GetStatMap()
     {

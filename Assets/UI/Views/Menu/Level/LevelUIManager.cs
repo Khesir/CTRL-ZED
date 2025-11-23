@@ -7,18 +7,32 @@ public class LevelUIManager : MonoBehaviour
     public GameObject LevelPrefab;
     public Transform content;
     public LevelInformationModal levelInformationModal;
-    void OnEnable()
+    public PanelAnimator panel;
+    public CanvasGroup canvasGroup;
+    private bool isActive = false;
+    public void TriggerArena()
     {
-        Generate();
+        if (!isActive)
+        {
+            isActive = true;
+            ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnOpen);
+            Generate();
+        }
+        else
+        {
+
+            isActive = false;
+            ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnClose);
+            Clear();
+            canvasGroup.alpha = 0;
+        }
     }
-    void OnDisable()
+    public async void Generate()
     {
-        // #A500FF // Active Color button
-        Clear();
-    }
-    public void Generate()
-    {
+        await panel.Show();
+
         var levels = ServiceLocator.Get<ILevelManager>().allLevels;
+        Debug.Log(levels.Count);
         Clear();
         for (int i = 0; i < levels.Count - 1; i++)
         {

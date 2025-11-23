@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5aa5a1f0654c14380d70744d750274, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  levelIcon: {fileID: 21300000, guid: 443151ce682ba2b42945d72ea07513e7, type: 3}
+  levelBanner: {fileID: 21300000, guid: d5b3a34a5e3e73743ad70f42adc2b807, type: 3}
+  hoverLevelBanner: {fileID: 21300000, guid: c41b3374ae395e3498f1d93e41fb360a, type: 3}
+  levelInformation: {fileID: 21300000, guid: c5a7bb2730fe5044cadf79e63ff87268, type: 3}
   levelID: 1
-  levelName: 'Level 1: Spyware Infiltration'
-  objective: Detect and neutralize hidden spyware threats.
+  levelName: Intel Sector
+  objective: Clear the Area
   description: Scanning mechanics, focused on detection and quick strikes.
   recommendation: Analysts for detection, Hackers for stealth counter.
   isCleared: 0
-  waveSet: {fileID: 11400000, guid: 3ef14c0d1f371e04194a2410e27b430a, type: 2}
+  waveSet: {fileID: 11400000, guid: 74415cd96226b9f4899ed8e1a14a991a, type: 2}
   background:
   - {fileID: 2100000, guid: bba4df99a90710d4aa4f7f2c2d6fc4b1, type: 2}
   - {fileID: 2100000, guid: bb4e25930a53bfb438457372b2438c7a, type: 2}

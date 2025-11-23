@@ -1,44 +1,58 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
-public class LevelPrefab : MonoBehaviour
+public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Image icon;
-    public TMP_Text title;
-    public TMP_Text objective;
-    public Image disabled;
-    public LevelInformationModal modalComponent;
+    [Header("Display")]
+    [SerializeField] private Image bannerImage;
+    [SerializeField] private Image disabled;
+
+    [Header("Modal")]
+    [SerializeField] public LevelInformationModal modalComponent;
+
     private LevelData data;
+    private Sprite normalBanner;
+    private Sprite hoverBanner;
+
     public void Setup(LevelData data)
     {
         this.data = data;
-        var button = GetComponent<Button>();
-        title.text = data.levelName;
-        icon.sprite = data.levelIcon;
-        objective.text = data.objective;
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(Active);
+        normalBanner = data.levelBanner;
+        hoverBanner = data.hoverLevelBanner;
 
-        // gameplayButton.onClick.RemoveAllListeners();
-        // if (active)
-        // {
-        //     disabled.gameObject.SetActive(false);
-        //     gameplayButton.interactable = true;
-        //     gameplayButton.onClick.AddListener(() => StartGameplay(index));
-        // }
-        // else
-        // {
-        //     disabled.gameObject.SetActive(true);
-        //     gameplayButton.interactable = false;
-        // }
+        // Set initial banner
+        if (bannerImage != null)
+            bannerImage.sprite = normalBanner;
+
+        // Setup button click
+        var button = GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OpenModal);
+        }
     }
-    public void Active()
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        modalComponent.data = data;
-        modalComponent.Trigger();
+        if (bannerImage != null && hoverBanner != null)
+            bannerImage.sprite = hoverBanner;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (bannerImage != null && normalBanner != null)
+            bannerImage.sprite = normalBanner;
+    }
+
+    private void OpenModal()
+    {
+        if (modalComponent != null)
+        {
+            modalComponent.data = data;
+            modalComponent.Trigger();
+        }
         ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnOpen);
     }
 }

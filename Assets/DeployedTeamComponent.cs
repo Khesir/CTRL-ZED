@@ -36,7 +36,7 @@ public class DeployedTeamComponent : MonoBehaviour
         var members = service.GetMembers();
         for (int i = 0; i < members.Count; i++)
         {
-            var sprite = members[i]?.baseData.ship ?? nullMember;
+            var sprite = members[i]?.baseData.icon ?? nullMember;
             icons[i].GetComponent<Image>().sprite = sprite;
         }
     }

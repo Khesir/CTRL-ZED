@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5aa5a1f0654c14380d70744d750274, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
-  levelIcon: {fileID: 21300000, guid: 443151ce682ba2b42945d72ea07513e7, type: 3}
+  levelBanner: {fileID: 21300000, guid: c5b5cb5b042d0d9459e1efc08b18d72d, type: 3}
+  hoverLevelBanner: {fileID: 21300000, guid: 3965dabe64f34704497ef99f97fe3827, type: 3}
+  levelInformation: {fileID: 21300000, guid: bcf8187c424723446bf03399757c0c07, type: 3}
   levelID: 2
-  levelName: 'Level 2: Malware Surge '
+  levelName: Food Sector
   objective: Defend against a broad malware attack.
   description: 'High enemy density, strategic ship positioning. '
   recommendation: Balanced team, Defenders for ship protection, Enforcers for  crowd
     control.
   isCleared: 0
-  waveSet: {fileID: 11400000, guid: 3ef14c0d1f371e04194a2410e27b430a, type: 2}
+  waveSet: {fileID: 11400000, guid: e90dcaee8efd7934e8b5900c3529662c, type: 2}
   background:
   - {fileID: 2100000, guid: bba4df99a90710d4aa4f7f2c2d6fc4b1, type: 2}
   - {fileID: 2100000, guid: bb4e25930a53bfb438457372b2438c7a, type: 2}

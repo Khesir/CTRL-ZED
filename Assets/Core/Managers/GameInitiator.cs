@@ -152,8 +152,8 @@ public class GameInitiator : MonoBehaviour
             {
                 Debug.Log("[GameInitiator] Dev mode: Initializing services with default data...");
                 var testData = new SaveData();
-                await PrepareGame(testData);
-                return; // PrepareGame handles state switching
+                await PrepareGameDev(testData, currentScene);
+                return;
             }
 
             var devState = GameStateUtils.GetStateFromSceneName(currentScene);
@@ -161,6 +161,43 @@ public class GameInitiator : MonoBehaviour
         }
 
         Debug.Log("[GameInitiator] Core systems prepared.");
+    }
+
+    private async UniTask PrepareGameDev(SaveData saveData, string currentScene)
+    {
+        await ServiceLocator.Get<IPlayerManager>().Initialize(saveData.playerData);
+        await ServiceLocator.Get<ICharacterManager>().Initialize(saveData.ownedCharacters);
+        await ServiceLocator.Get<ITeamManager>().Initialize(saveData.teams);
+        await ServiceLocator.Get<IAntiVirusManager>().Initialize();
+        await ServiceLocator.Get<ILevelManager>().Initialize();
+        await ServiceLocator.Get<IStatusEffectManager>().Initialize();
+
+        await UniTask.Yield();
+
+        // For Gameplay scene in dev mode, use currentLevel if set, otherwise tutorialLevel
+        if (currentScene == "Gameplay")
+        {
+            var levelToUse = currentLevel != null ? currentLevel : tutorialLevel;
+            var levelManager = ServiceLocator.Get<ILevelManager>();
+
+            Debug.Log($"[GameInitiator] Dev mode - currentLevel field: '{currentLevel?.levelName ?? "NULL"}'");
+            Debug.Log($"[GameInitiator] Dev mode - levelToUse: '{levelToUse?.levelName ?? "NULL"}'");
+            Debug.Log($"[GameInitiator] Dev mode - LevelManager.activeLevel BEFORE: '{levelManager.activeLevel?.levelName ?? "NULL"}'");
+
+            levelManager.activeLevel = levelToUse;
+            isInTutorial = (levelToUse == tutorialLevel);
+
+            Debug.Log($"[GameInitiator] Dev mode - LevelManager.activeLevel AFTER: '{levelManager.activeLevel?.levelName ?? "NULL"}'");
+            SwitchStates(GameState.Gameplay);
+        }
+        else
+        {
+            // For other scenes, just switch to the appropriate state
+            var devState = GameStateUtils.GetStateFromSceneName(currentScene);
+            SwitchStates(devState);
+        }
+
+        Debug.Log("[GameInitiator] Dev game preparation complete.");
     }
     public async UniTask PrepareGame(SaveData saveData)
     {
@@ -192,7 +229,8 @@ public class GameInitiator : MonoBehaviour
 
         Debug.Log("[GameInitiator] Game preparation complete.");
     }
-
+    public bool introViewed = false;
+    public void IntroViewed() => introViewed = true;
     public void CompleteTutorial(bool status = true)
     {
         skipTutorial = status;

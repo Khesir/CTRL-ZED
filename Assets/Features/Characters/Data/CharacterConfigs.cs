@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
 [CreateAssetMenu(fileName = "NewCharacter", menuName = "Characters/Character")]
 public class CharacterConfig : ScriptableObject
@@ -9,6 +11,8 @@ public class CharacterConfig : ScriptableObject
     public string className;
     public string charactername;
     public Sprite ship;
+    public VideoClip buyIcon;
+    public Sprite buyIconFallBack;
 
     [Header("Stats")]
     public int baseAttack = 1;

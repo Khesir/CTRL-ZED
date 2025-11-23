@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09882446095b9f042ad46068221b7054, type: 3}
   m_Name: Analyst
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 81fd8112e80646848ba76e3ef93ad8f2, type: 3}
-  className: Analyst Ranger
+  icon: {fileID: 21300000, guid: 59c298d016245df41b594d29810237ad, type: 3}
+  className: Analyst
   charactername: 
-  ship: {fileID: 21300000, guid: d583d8cdaac53ca4f9b24f77e5d198f0, type: 3}
-  baseAttack: 8
+  ship: {fileID: 21300000, guid: 41befd3b65c3541468c9b790c55c08e5, type: 3}
+  buyIcon: {fileID: 32900000, guid: 8b6dc92e9cc2aa64999b0e99abdd77a7, type: 3}
+  buyIconFallBack: {fileID: 21300000, guid: c76ac0a699a19dc4aa3340f31afa05d7, type: 3}
+  baseAttack: 15
   baseHealth: 3
   defense: 2
-  dex: 7
+  dex: 10
   level: 1
   moveSpeed: 5
   dashCooldown: 1
