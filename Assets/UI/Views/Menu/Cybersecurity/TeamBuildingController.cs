@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,20 +8,29 @@ public class TeamBuildingController : MonoBehaviour
     [SerializeField] private GameObject teamPrefab;
     [SerializeField] private Transform parentLayout;
     [SerializeField] private GameObject TeamDetails;
+
+    private ICharacterManager _characterManager;
+    private ITeamManager _teamManager;
+
     private void OnEnable()
     {
+        _characterManager = ServiceLocator.Get<ICharacterManager>();
+        _teamManager = ServiceLocator.Get<ITeamManager>();
+
         Populate();
-        GameManager.Instance.CharacterManager.onInventoryChange += inventoryUI.RefreshUI;
-        GameManager.Instance.TeamManager.onTeamChange += RefreshUI;
+        _characterManager.onInventoryChange += inventoryUI.RefreshUI;
+        _teamManager.onTeamChange += RefreshUI;
     }
+
     private void OnDisable()
     {
-        GameManager.Instance.CharacterManager.onInventoryChange -= inventoryUI.RefreshUI;
-        GameManager.Instance.TeamManager.onTeamChange -= RefreshUI;
+        _characterManager.onInventoryChange -= inventoryUI.RefreshUI;
+        _teamManager.onTeamChange -= RefreshUI;
     }
+
     private void Populate()
     {
-        List<TeamService> teamData = GameManager.Instance.TeamManager.GetTeams();
+        List<TeamService> teamData = _teamManager.GetTeams();
         Clear();
         for (int i = 0; i < teamData.Count; i++)
         {

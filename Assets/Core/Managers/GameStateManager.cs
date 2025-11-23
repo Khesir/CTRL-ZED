@@ -28,9 +28,6 @@ public class GameStateManager : MonoBehaviour
         if (_isInitialize) return;
 
         Debug.Log("[GameStateManager] Waiting for loaderCanva...");
-        Debug.Log($"[GameStateManager] GameManager.Instance: {GameManager.Instance}");
-        Debug.Log($"[GameStateManager] GameManager.LevelManager: {GameManager.Instance?.LevelManager}");
-        Debug.Log($"[GameStateManager] loaderCanva: {GameManager.Instance?.LevelManager?.loaderCanva}");
 
         uIManager = GameInitiator.Instance.UIManager;
         _isInitialize = true;
@@ -49,7 +46,7 @@ public class GameStateManager : MonoBehaviour
     public async UniTask SetState(GameState newState)
     {
         if (GameInitiator.Instance.isDevelopment)
-            GameManager.Instance.PlayerDataManager.AutoSaveTrigger();
+            ServiceLocator.Get<IPlayerDataManager>().AutoSaveTrigger();
 
         if (newState == Currentstate)
         {

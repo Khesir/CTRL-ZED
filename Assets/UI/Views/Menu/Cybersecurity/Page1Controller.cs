@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Page1Controller : MonoBehaviour
@@ -8,18 +6,22 @@ public class Page1Controller : MonoBehaviour
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private CharacterCounter characterCounter;
 
+    private ICharacterManager _characterManager;
+
     private void OnEnable()
     {
-        inventoryUI.Populate();
-        characterCounter.Setup(GameManager.Instance.CharacterManager.GetCharacters().Count);
+        _characterManager = ServiceLocator.Get<ICharacterManager>();
 
-        GameManager.Instance.CharacterManager.onInventoryChange += characterCounter.UpdateCounter;
-        GameManager.Instance.CharacterManager.onInventoryChange += inventoryUI.RefreshUI;
+        inventoryUI.Populate();
+        characterCounter.Setup(_characterManager.GetCharacters().Count);
+
+        _characterManager.onInventoryChange += characterCounter.UpdateCounter;
+        _characterManager.onInventoryChange += inventoryUI.RefreshUI;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.CharacterManager.onInventoryChange -= characterCounter.UpdateCounter;
-        GameManager.Instance.CharacterManager.onInventoryChange -= inventoryUI.RefreshUI;
+        _characterManager.onInventoryChange -= characterCounter.UpdateCounter;
+        _characterManager.onInventoryChange -= inventoryUI.RefreshUI;
     }
 }

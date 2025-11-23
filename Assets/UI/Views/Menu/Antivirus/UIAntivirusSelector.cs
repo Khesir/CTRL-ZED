@@ -14,11 +14,11 @@ public class UIAntivirusSelector : MonoBehaviour
         this.target = target;
         this.buffs = buffs;
         Refresh();
-        GameManager.Instance.PlayerManager.playerService.OnCoinsChange += Refresh;
+        ServiceLocator.Get<IPlayerManager>().playerService.OnCoinsChange += Refresh;
     }
     public void OnDisable()
     {
-        GameManager.Instance.PlayerManager.playerService.OnCoinsChange -= Refresh;
+        ServiceLocator.Get<IPlayerManager>().playerService.OnCoinsChange -= Refresh;
     }
     private void Refresh()
     {

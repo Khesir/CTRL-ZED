@@ -17,7 +17,7 @@ public class DialogSystem : MonoBehaviour
     private bool isPlaying = false;
     public void Start()
     {
-        if (GameManager.Instance.LevelManager.activeLevel.levelID != "0") return;
+        if (ServiceLocator.Get<ILevelManager>().activeLevel.levelID != "0") return;
         var lines = new List<string>
         {
             "Hello there!",

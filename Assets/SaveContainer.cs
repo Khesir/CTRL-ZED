@@ -88,22 +88,23 @@ public class SaveContainer : MonoBehaviour
     {
         ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_OnTransition);
 
+        var playerDataManager = ServiceLocator.Get<IPlayerDataManager>();
         if (data == null)
         {
             var saveData = new SaveData();
-            GameManager.Instance.PlayerDataManager.LoadPlayerData(index, saveData);
-            GameManager.Instance.PlayerDataManager.SaveToSlot(index, saveData);
+            playerDataManager.LoadPlayerData(index, saveData);
+            playerDataManager.SaveToSlot(index, saveData);
             await GameInitiator.Instance.PrepareGame(saveData);
         }
         else
         {
-            GameManager.Instance.PlayerDataManager.LoadPlayerData(index, data);
+            playerDataManager.LoadPlayerData(index, data);
             await GameInitiator.Instance.PrepareGame(data);
         }
         GameInitiator.Instance.SwitchStates(GameState.MainMenu);
     }
     public void DeleteSlot()
     {
-        GameManager.Instance.PlayerDataManager.DeleteSlot(index);
+        ServiceLocator.Get<IPlayerDataManager>().DeleteSlot(index);
     }
 }

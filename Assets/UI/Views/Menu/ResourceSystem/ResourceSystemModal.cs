@@ -17,7 +17,7 @@ public class ResourceSystemModal : MonoBehaviour
     private PlayerService playerService;
     private void OnEnable()
     {
-        playerService = GameManager.Instance.PlayerManager.playerService;
+        playerService = ServiceLocator.Get<IPlayerManager>().playerService;
 
         UpdateText();
         UpdateCost();

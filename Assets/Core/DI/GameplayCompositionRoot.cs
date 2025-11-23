@@ -25,13 +25,6 @@ public static class GameplayCompositionRoot
         // Register UI
         container.RegisterSingleton(gameplayUI);
 
-        // Also register with ServiceLocator for backward compatibility
-        ServiceLocator.Register<IEnemyManager>(enemyManager);
-        ServiceLocator.Register<ILootManager>(lootManager);
-        ServiceLocator.Register<IFollowerManager>(followerManager);
-        ServiceLocator.Register<IWaveManager>(waveManager);
-        ServiceLocator.Register<IDamageNumberService>(damageNumberService);
-
         Debug.Log("[GameplayCompositionRoot] Gameplay services configured");
     }
 }

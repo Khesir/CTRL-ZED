@@ -70,9 +70,9 @@ public class LevelInformationModal : MonoBehaviour
     }
     async UniTask StartGame()
     {
-        var activeTeam = GameManager.Instance.TeamManager.GetActiveTeam();
+        var activeTeam = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
 
-        PlayerService playerService = GameManager.Instance.PlayerManager.playerService;
+        PlayerService playerService = ServiceLocator.Get<IPlayerManager>().playerService;
         // IBioChipService bioChipService = playerService;
         IResourceService resourceService = playerService;
         if (activeTeam.Count < 1)
@@ -111,8 +111,9 @@ public class LevelInformationModal : MonoBehaviour
         resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
         resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
 
-        LevelManager.Instance.activeLevel = data;
+        var levelManager = ServiceLocator.Get<ILevelManager>();
+        levelManager.activeLevel = data;
         ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_Activate);
-        await LevelManager.Instance.LoadScene(GameState.Gameplay);
+        await levelManager.LoadScene(GameState.Gameplay);
     }
 }

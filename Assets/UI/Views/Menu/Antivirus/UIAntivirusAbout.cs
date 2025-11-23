@@ -20,7 +20,7 @@ public class UIAntivirusAbout : MonoBehaviour
         price.text = $"{effect.price} drives";
         description.text = effect.description;
         icon.sprite = effect.icon;
-        var exists = GameManager.Instance.StatusEffectManager.IsThereExisitingBuffType(instance);
+        var exists = ServiceLocator.Get<IStatusEffectManager>().IsThereExisitingBuffType(instance);
 
         if (exists)
         {
@@ -37,11 +37,11 @@ public class UIAntivirusAbout : MonoBehaviour
     }
     public void ActionButton()
     {
-        var res = GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(instance.price);
+        var res = ServiceLocator.Get<IPlayerManager>().playerService.SpendChargeDrives(instance.price);
         if (res)
         {
             ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
-            GameManager.Instance.StatusEffectManager.AddBuff(instance);
+            ServiceLocator.Get<IStatusEffectManager>().AddBuff(instance);
         }
         else
         {

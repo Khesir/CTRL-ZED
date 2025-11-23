@@ -13,7 +13,7 @@ public class InventoryUI : MonoBehaviour
     public void Populate()
     {
         Clear();
-        List<CharacterData> ownedCharacters = GameManager.Instance.CharacterManager.GetCharacters();
+        List<CharacterData> ownedCharacters = ServiceLocator.Get<ICharacterManager>().GetCharacters();
         if (ownedCharacters.Count < 1)
         {
             Instantiate(noCharacterAvailablePrefab, gridContainer).SetActive(true);

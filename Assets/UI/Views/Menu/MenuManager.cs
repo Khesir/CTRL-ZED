@@ -55,7 +55,7 @@ public class MenuManager : MonoBehaviour
         drivesMenuComponent.Setup();
         deployTeamController.Setup();
 
-        if (GameManager.Instance.isInTutorial)
+        if (ServiceLocator.Get<GameManager>().isInTutorial)
         {
             instructionsPanel.gameObject.SetActive(true);
         }

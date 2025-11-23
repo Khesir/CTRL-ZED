@@ -18,15 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelData tutorialLevel;
     [SerializeField] private bool skipTutorial = false;
 
-    // Public accessors (will be replaced by ServiceLocator in Phase 6)
-    public PlayerDataManager PlayerDataManager => playerDataManager;
-    public PlayerManager PlayerManager => playerManager;
-    public CharacterManager CharacterManager => characterManager;
-    public TeamManager TeamManager => teamManager;
-    public AntiVirusManager AntiVirusManager => antiVirusManager;
-    public LevelManager LevelManager => levelManager;
-    public StatusEffectManager StatusEffectManager => statusEffectManager;
-
     // State
     public bool isGameActive;
     public bool isInTutorial;
@@ -64,11 +55,11 @@ public class GameManager : MonoBehaviour
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
         await UniTask.WaitUntil(() => GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu);
 
-        bool tutorialNotCompleted = !playerManager.playerService.GetPlayerData().completedTutorial;
+        bool tutorialNotCompleted = !ServiceLocator.Get<IPlayerManager>().playerService.GetPlayerData().completedTutorial;
 
         if (tutorialNotCompleted)
         {
-            levelManager.activeLevel = tutorialLevel;
+            ServiceLocator.Get<ILevelManager>().activeLevel = tutorialLevel;
             GameInitiator.Instance.SwitchStates(GameState.Gameplay);
             isInTutorial = true;
         }
@@ -82,4 +73,16 @@ public class GameManager : MonoBehaviour
         isInTutorial = false;
         return true;
     }
+
+    #region Internal Accessors for CoreCompositionRoot Only
+    // These are only used during DI registration in CoreCompositionRoot
+    // Do NOT use these elsewhere - use ServiceLocator.Get<T>() instead
+    internal PlayerDataManager GetPlayerDataManager() => playerDataManager;
+    internal PlayerManager GetPlayerManager() => playerManager;
+    internal CharacterManager GetCharacterManager() => characterManager;
+    internal TeamManager GetTeamManager() => teamManager;
+    internal AntiVirusManager GetAntiVirusManager() => antiVirusManager;
+    internal LevelManager GetLevelManager() => levelManager;
+    internal StatusEffectManager GetStatusEffectManager() => statusEffectManager;
+    #endregion
 }

@@ -22,7 +22,7 @@ public static class CharacterFactory
     }
     public static CharacterData CreateTestCharacter()
     {
-        List<CharacterConfig> possibleConfigs = GameManager.Instance.CharacterManager.characterTemplates;
+        List<CharacterConfig> possibleConfigs = ServiceLocator.Get<ICharacterManager>().characterTemplates;
         if (possibleConfigs == null || possibleConfigs.Count == 0)
         {
             Debug.LogError("No character configs available.");

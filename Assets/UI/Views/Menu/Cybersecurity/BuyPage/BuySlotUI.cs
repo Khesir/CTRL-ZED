@@ -24,11 +24,11 @@ public class BuySlotUI : MonoBehaviour
 
   private void OnActionButtonClicked()
   {
-    var result = GameManager.Instance.PlayerManager.playerService.SpendCoins(instance.price);
+    var result = ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(instance.price);
 
     if (result)
     {
-      GameManager.Instance.CharacterManager.CreateCharacter(instance);
+      ServiceLocator.Get<ICharacterManager>().CreateCharacter(instance);
       Debug.Log("Purchase successfull");
       ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
     }

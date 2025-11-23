@@ -25,7 +25,7 @@ public class DetailsController : MonoBehaviour
         character = data;
 
         Populate();
-        GameManager.Instance.PlayerManager.playerService.OnSpendDrives += Populate;
+        ServiceLocator.Get<IPlayerManager>().playerService.OnSpendDrives += Populate;
     }
     public void Populate()
     {
@@ -60,7 +60,7 @@ public class DetailsController : MonoBehaviour
         upgradeButton.onClick.RemoveAllListeners();
         upgradeButton.onClick.AddListener(Upgrade);
         // Disabled incase it doesnt require the given requirement
-        if (GameManager.Instance.PlayerManager.playerService.GetChargedDrives() >= nextLevelCost)
+        if (ServiceLocator.Get<IPlayerManager>().playerService.GetChargedDrives() >= nextLevelCost)
         {
             upgradeButton.interactable = true;
         }
@@ -81,7 +81,7 @@ public class DetailsController : MonoBehaviour
     {
         if (nextLevelCost > 0)
         {
-            GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(nextLevelCost);
+            ServiceLocator.Get<IPlayerManager>().playerService.SpendChargeDrives(nextLevelCost);
             character.currentLevel++;
             ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_spend);
         }

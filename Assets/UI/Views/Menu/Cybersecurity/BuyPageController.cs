@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuyPageController : MonoBehaviour
@@ -7,15 +5,23 @@ public class BuyPageController : MonoBehaviour
     [Header("References")]
     [SerializeField] private BuyInventoryUI buyInventoryUI;
     [SerializeField] private CoinCounter coinCounter;
+
+    private ICharacterManager _characterManager;
+    private IPlayerManager _playerManager;
+
     private void OnEnable()
     {
-        buyInventoryUI.Populate(GameManager.Instance.CharacterManager.characterTemplates);
-        coinCounter.Setup(GameManager.Instance.PlayerManager.playerService.GetCoins());
+        _characterManager = ServiceLocator.Get<ICharacterManager>();
+        _playerManager = ServiceLocator.Get<IPlayerManager>();
 
-        GameManager.Instance.PlayerManager.playerService.OnCoinsChange += coinCounter.UpdateCoins;
+        buyInventoryUI.Populate(_characterManager.characterTemplates);
+        coinCounter.Setup(_playerManager.playerService.GetCoins());
+
+        _playerManager.playerService.OnCoinsChange += coinCounter.UpdateCoins;
     }
+
     private void OnDisable()
     {
-        GameManager.Instance.PlayerManager.playerService.OnCoinsChange -= coinCounter.UpdateCoins;
+        _playerManager.playerService.OnCoinsChange -= coinCounter.UpdateCoins;
     }
 }

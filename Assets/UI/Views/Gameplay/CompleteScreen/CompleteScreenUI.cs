@@ -49,7 +49,7 @@ public class CompleteScreenUI : MonoBehaviour
                 }
                 break;
         }
-        PlayerService manager = GameManager.Instance.PlayerManager.playerService;
+        PlayerService manager = ServiceLocator.Get<IPlayerManager>().playerService;
         var lootHolder = GameplayManager.Instance.GameplayUI.lootHolder;
 
         manager.AddFood(lootHolder.GetLoot(ItemType.Food));

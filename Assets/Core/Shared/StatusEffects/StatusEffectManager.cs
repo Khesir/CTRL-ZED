@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class StatusEffectManager : MonoBehaviour
+public class StatusEffectManager : MonoBehaviour, IStatusEffectManager
 {
-    public List<StatusEffectInstance> activeBuffs;
+    public List<StatusEffectInstance> activeBuffs { get; private set; }
     public event Action onBuffChange;
     public async UniTask Initialize()
     {

@@ -114,9 +114,6 @@ public class GameInitiator : MonoBehaviour
             GameStateManager
         );
 
-        // Also register with ServiceLocator for backward compatibility
-        ServiceLocator.Register<ISoundService>(SoundManager);
-        ServiceLocator.Register<IInputService>(InputService);
     }
 
     private async UniTask Initialize()
@@ -131,7 +128,7 @@ public class GameInitiator : MonoBehaviour
 
     public async UniTask PrepareCoreSystems()
     {
-        GameManager.PlayerDataManager.Initialize();
+        ServiceLocator.Get<IPlayerDataManager>().Initialize();
 
         if (isDevelopment)
         {
@@ -145,12 +142,12 @@ public class GameInitiator : MonoBehaviour
     }
     public async UniTask PrepareGame(SaveData saveData)
     {
-        await GameManager.PlayerManager.Initialize(saveData.playerData);
-        await GameManager.CharacterManager.Initialize(saveData.ownedCharacters);
-        await GameManager.TeamManager.Initialize(saveData.teams);
-        await GameManager.AntiVirusManager.Initialize();
-        await GameManager.LevelManager.Initialize();
-        await GameManager.StatusEffectManager.Initialize();
+        await ServiceLocator.Get<IPlayerManager>().Initialize(saveData.playerData);
+        await ServiceLocator.Get<ICharacterManager>().Initialize(saveData.ownedCharacters);
+        await ServiceLocator.Get<ITeamManager>().Initialize(saveData.teams);
+        await ServiceLocator.Get<IAntiVirusManager>().Initialize();
+        await ServiceLocator.Get<ILevelManager>().Initialize();
+        await ServiceLocator.Get<IStatusEffectManager>().Initialize();
 
         await UniTask.Yield();
 

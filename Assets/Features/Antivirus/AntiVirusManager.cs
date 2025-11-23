@@ -4,7 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class AntiVirusManager : MonoBehaviour
+public class AntiVirusManager : MonoBehaviour, IAntiVirusManager
 {
     public static AntiVirusManager Instance { get; private set; }
 

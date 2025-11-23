@@ -4,14 +4,20 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class TeamManager : MonoBehaviour
+public class TeamManager : MonoBehaviour, ITeamManager
 {
     [SerializeField] private List<TeamService> teams = new();
     [SerializeField] private List<TeamService> activeTeam = new();
     [SerializeField] private int maxSize;
-    public int increaseSizePrice;
+
+    public int increaseSizePrice { get; private set; }
+    public List<Team> ownedTeam { get; private set; }
+
+    // Interface Implementation
+    List<Team> ITeamManager.ownedTeam => ownedTeam;
+    int ITeamManager.increaseSizePrice => increaseSizePrice;
+
     public event Action onTeamChange;
-    public List<Team> ownedTeam;
     public async UniTask Initialize(List<Team> teams, int maxSize = 1, int increaseSizePrice = 10000)
     {
         ownedTeam = teams;
@@ -133,7 +139,7 @@ public class TeamManager : MonoBehaviour
     }
     public void AssignedCharacterToSlot(string teamId, int slotIndex, CharacterData character)
     {
-        if (character == null || !GameManager.Instance.CharacterManager.GetCharacters().Contains(character))
+        if (character == null || !ServiceLocator.Get<ICharacterManager>().GetCharacters().Contains(character))
         {
             Debug.LogError("You don't own the character");
             return;

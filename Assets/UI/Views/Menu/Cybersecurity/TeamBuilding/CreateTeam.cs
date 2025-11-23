@@ -1,24 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class CreateTeam : MonoBehaviour
 {
     public TMP_Text priceText;
-    private TeamManager manager;
+    private ITeamManager _teamManager;
+
     public void Initialize()
     {
-        manager = GameManager.Instance.TeamManager;
-        priceText.text = $"Buy for {manager.increaseSizePrice} coins";
+        _teamManager = ServiceLocator.Get<ITeamManager>();
+        priceText.text = $"Buy for {_teamManager.increaseSizePrice} coins";
     }
+
     public void CreateTeamGroup()
     {
-        var res = GameManager.Instance.PlayerManager.playerService.SpendCoins(manager.increaseSizePrice);
+        var res = ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(_teamManager.increaseSizePrice);
         if (res)
         {
-            manager.IncreaseMaxTeam();
-            manager.CreateTeam();
+            _teamManager.IncreaseMaxTeam();
+            _teamManager.CreateTeam();
             ServiceLocator.Get<ISoundService>().Play(SoundCategory.Coins, SoundType.Coins_massive);
             return;
         }

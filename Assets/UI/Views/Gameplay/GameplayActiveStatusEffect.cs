@@ -10,12 +10,12 @@ public class GameplayActiveStatusEffect : MonoBehaviour
     public void Setup()
     {
         UpdateUI();
-        GameManager.Instance.StatusEffectManager.onBuffChange += UpdateUI;
+        ServiceLocator.Get<IStatusEffectManager>().onBuffChange += UpdateUI;
     }
     private void UpdateUI()
     {
         Clear();
-        var activeBuffs = GameManager.Instance.StatusEffectManager.activeBuffs;
+        var activeBuffs = ServiceLocator.Get<IStatusEffectManager>().activeBuffs;
         foreach (var buff in activeBuffs)
         {
             var go = Instantiate(statusEffectPrefab, this.gameObject.transform);
@@ -25,7 +25,7 @@ public class GameplayActiveStatusEffect : MonoBehaviour
     }
     public void OnDestroy()
     {
-        GameManager.Instance.StatusEffectManager.onBuffChange -= UpdateUI;
+        ServiceLocator.Get<IStatusEffectManager>().onBuffChange -= UpdateUI;
     }
     private void Clear()
     {

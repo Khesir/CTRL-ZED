@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerDataManager : MonoBehaviour
+public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
 {
-    public SaveData[] loadedSlots = new SaveData[3];
-    public int loadedSlotIndex = -1;
-    public SaveData loadedData;
+    [SerializeField] private SaveData[] _loadedSlots = new SaveData[3];
+    private int _loadedSlotIndex = -1;
+    private SaveData _loadedData;
+
+    public SaveData[] loadedSlots => _loadedSlots;
+    public int loadedSlotIndex => _loadedSlotIndex;
+    public SaveData loadedData => _loadedData;
     public void Initialize()
     {
         LoadSlotData();
@@ -24,13 +28,13 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (data == null)
         {
-            loadedSlotIndex = -1;
-            loadedData = null;
+            _loadedSlotIndex = -1;
+            _loadedData = null;
         }
         else
         {
-            loadedSlotIndex = slotIndex + 1;
-            loadedData = data;
+            _loadedSlotIndex = slotIndex + 1;
+            _loadedData = data;
         }
         return data;
     }

@@ -19,7 +19,7 @@ public class SaveLoader : MonoBehaviour
     {
         ClearContainer();
 
-        var saves = GameManager.Instance.PlayerDataManager.loadedSlots;
+        var saves = ServiceLocator.Get<IPlayerDataManager>().loadedSlots;
 
 
         for (int i = 0; i < saves.Length; i++)

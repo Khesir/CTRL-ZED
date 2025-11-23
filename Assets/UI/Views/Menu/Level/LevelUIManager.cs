@@ -18,7 +18,7 @@ public class LevelUIManager : MonoBehaviour
     }
     public void Generate()
     {
-        var levels = GameManager.Instance.LevelManager.allLevels;
+        var levels = ServiceLocator.Get<ILevelManager>().allLevels;
         Clear();
         for (int i = 0; i < levels.Count - 1; i++)
         {

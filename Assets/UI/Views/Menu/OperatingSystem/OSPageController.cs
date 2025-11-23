@@ -19,7 +19,7 @@ public class OSPageController : MonoBehaviour
     public UIRepairSection UIRepairSection;
     private void OnEnable()
     {
-        service = GameManager.Instance.PlayerManager.playerService;
+        service = ServiceLocator.Get<IPlayerManager>().playerService;
         UpdateText();
 
         oSExpSlider.Setup(service);

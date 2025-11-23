@@ -36,7 +36,7 @@ public class UIRepairSection : MonoBehaviour
         coinsNeeded = Mathf.CeilToInt(missingHealth / healthPerCoin);
         cost.text = coinsNeeded.ToString();
 
-        coins.text = GameManager.Instance.PlayerManager.playerService.GetCoins() + " Coins";
+        coins.text = ServiceLocator.Get<IPlayerManager>().playerService.GetCoins() + " Coins";
         level.text = "Level " + instance.GetLevel();
         health.text = currentHealth.ToString();
 
@@ -45,7 +45,7 @@ public class UIRepairSection : MonoBehaviour
     }
     private void Repair()
     {
-        if (GameManager.Instance.PlayerManager.playerService.SpendCoins(coinsNeeded))
+        if (ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(coinsNeeded))
         {
             instance.Heal();
         }

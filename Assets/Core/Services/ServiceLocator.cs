@@ -1,23 +1,30 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/// <summary>
+/// Service Locator pattern - provides clean access to DI Container.
+/// Acts as a bridge for MonoBehaviours to access backend services.
+/// </summary>
 public static class ServiceLocator
 {
-    private static readonly Dictionary<Type, object> services = new();
-
-    public static void Register<T>(T service) where T : class
-    {
-        services[typeof(T)] = service;
-    }
-
+    /// <summary>
+    /// Get a service from the DI container.
+    /// </summary>
     public static T Get<T>() where T : class
     {
-        if (services.TryGetValue(typeof(T), out var service))
-
-            return (T)service;
-        throw new Exception($"Service {typeof(T)} not registered");
+        return GameServices.Container.Resolve<T>();
     }
-    public static void Clear() => services.Clear();
+
+    /// <summary>
+    /// Try to get a service, returns null if not found.
+    /// </summary>
+    public static T TryGet<T>() where T : class
+    {
+        return GameServices.Container.TryResolve<T>();
+    }
+
+    /// <summary>
+    /// Check if a service is registered.
+    /// </summary>
+    public static bool IsRegistered<T>() where T : class
+    {
+        return GameServices.Container.IsRegistered<T>();
+    }
 }

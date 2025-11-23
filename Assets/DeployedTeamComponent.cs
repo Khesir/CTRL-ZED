@@ -43,20 +43,20 @@ public class DeployedTeamComponent : MonoBehaviour
 
     private void DeployAction()
     {
-        GameManager.Instance.TeamManager.SetActiveTeam(service.GetData().teamID);
+        ServiceLocator.Get<ITeamManager>().SetActiveTeam(service.GetData().teamID);
         UpdateActiveState();
         soundService.Play(SoundCategory.Team, SoundType.Team_Deploy);
     }
 
     private void UnDeployAction()
     {
-        GameManager.Instance.TeamManager.RemoveActiveTeam(service.GetData().teamID);
+        ServiceLocator.Get<ITeamManager>().RemoveActiveTeam(service.GetData().teamID);
         UpdateActiveState();
         soundService.Play(SoundCategory.Team, SoundType.Team_UnDeploy);
     }
     private void UpdateActiveState()
     {
-        var isActive = GameManager.Instance.TeamManager.isTeamActive(service.GetData().teamID);
+        var isActive = ServiceLocator.Get<ITeamManager>().isTeamActive(service.GetData().teamID);
         deployButton.SetActive(!isActive);
         unDeployButton.SetActive(isActive);
     }

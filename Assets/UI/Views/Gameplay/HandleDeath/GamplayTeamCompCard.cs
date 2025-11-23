@@ -90,7 +90,7 @@ public class GamplayTeamCompCard : MonoBehaviour
 
     private void ReviveAction()
     {
-        GameManager.Instance.PlayerManager.playerService.SpendChargeDrives(1);
+        ServiceLocator.Get<IPlayerManager>().playerService.SpendChargeDrives(1);
 
         GameplayManager.Instance.SetDeadTeam(service.GetData().teamID, false);
     }

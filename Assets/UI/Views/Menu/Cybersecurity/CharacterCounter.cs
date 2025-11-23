@@ -12,5 +12,5 @@ public class CharacterCounter : MonoBehaviour
         counter.text = "Cyber Securities " + Count;
     }
 
-    public void UpdateCounter() => Setup(GameManager.Instance.CharacterManager.GetCharacters().Count);
+    public void UpdateCounter() => Setup(ServiceLocator.Get<ICharacterManager>().GetCharacters().Count);
 }

@@ -37,7 +37,7 @@ public class GameplayHandleDeath : MonoBehaviour
 
     private void UpdateDeployedTeam()
     {
-        List<TeamService> teams = GameManager.Instance.TeamManager.GetActiveTeam();
+        List<TeamService> teams = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
         if (teams.Count == 0)
         {
             Debug.LogWarning("No set Deployed team");
@@ -54,7 +54,7 @@ public class GameplayHandleDeath : MonoBehaviour
     }
     private async void SetupGiveUpButton()
     {
-        driveCounter.text = GameManager.Instance.PlayerManager
+        driveCounter.text = ServiceLocator.Get<IPlayerManager>()
                         .playerService.GetChargedDrives().ToString();
 
         giveupButton.onClick.RemoveAllListeners();

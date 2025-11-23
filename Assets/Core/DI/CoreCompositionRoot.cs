@@ -17,18 +17,18 @@ public static class CoreCompositionRoot
         container.RegisterSingleton<ISoundService>(soundManager);
         container.RegisterSingleton<IInputService>(inputService);
 
-        // Register managers
+        // Register managers (concrete types for backward compatibility)
         container.RegisterSingleton(gameManager);
         container.RegisterSingleton(gameStateManager);
 
-        // Register sub-managers from GameManager
-        container.RegisterSingleton(gameManager.PlayerDataManager);
-        container.RegisterSingleton(gameManager.PlayerManager);
-        container.RegisterSingleton(gameManager.CharacterManager);
-        container.RegisterSingleton(gameManager.TeamManager);
-        container.RegisterSingleton(gameManager.AntiVirusManager);
-        container.RegisterSingleton(gameManager.LevelManager);
-        container.RegisterSingleton(gameManager.StatusEffectManager);
+        // Register sub-managers with interfaces for proper DI
+        container.RegisterSingleton<IPlayerDataManager>(gameManager.GetPlayerDataManager());
+        container.RegisterSingleton<IPlayerManager>(gameManager.GetPlayerManager());
+        container.RegisterSingleton<ICharacterManager>(gameManager.GetCharacterManager());
+        container.RegisterSingleton<ITeamManager>(gameManager.GetTeamManager());
+        container.RegisterSingleton<IAntiVirusManager>(gameManager.GetAntiVirusManager());
+        container.RegisterSingleton<ILevelManager>(gameManager.GetLevelManager());
+        container.RegisterSingleton<IStatusEffectManager>(gameManager.GetStatusEffectManager());
 
         Debug.Log("[CoreCompositionRoot] Core services configured");
     }

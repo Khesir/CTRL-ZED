@@ -4,14 +4,27 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour, ILevelManager
 {
+
     public static LevelManager Instance { get; private set; }
-    public LevelData activeLevel;
+
+    // Proper interface implementation
+    LevelData ILevelManager.activeLevel
+    {
+        get => activeLevel;
+        set => activeLevel = value;
+    }
+
+    List<LevelData> ILevelManager.allLevels => allLevels;
+
     [Header("Assigned via Inspector or Resources.Load")]
+    public LevelData activeLevel;
     public List<LevelData> allLevels = new();
+
     private Dictionary<string, LevelData> levelLookup;
     public GameObject loaderCanva;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }

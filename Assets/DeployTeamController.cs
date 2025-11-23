@@ -10,11 +10,11 @@ public class DeployTeamController : MonoBehaviour
     public void Setup()
     {
         UpdateComponent();
-        GameManager.Instance.TeamManager.onTeamChange += UpdateComponent;
+        ServiceLocator.Get<ITeamManager>().onTeamChange += UpdateComponent;
     }
     private void UpdateComponent()
     {
-        List<TeamService> teams = GameManager.Instance.TeamManager.GetTeams();
+        List<TeamService> teams = ServiceLocator.Get<ITeamManager>().GetTeams();
         if (teams.Count == 0)
         {
             Instantiate(NoSelectedTeamMessagePrefab, container);

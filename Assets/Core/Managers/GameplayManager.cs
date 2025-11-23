@@ -60,6 +60,7 @@ public class GameplayManager : MonoBehaviour
     private GameManager gameManager;
     private IInputService inputService;
     private ISoundService soundService;
+    private IPlayerManager playerManager;
     private bool isInitialized;
 
     // State Machine
@@ -102,18 +103,18 @@ public class GameplayManager : MonoBehaviour
         gameManager = GameInitiator.Instance.GameManager;
         inputService = ServiceLocator.Get<IInputService>();
         soundService = ServiceLocator.Get<ISoundService>();
-
+        playerManager = ServiceLocator.Get<IPlayerManager>();
         // Register gameplay services
         RegisterServices();
 
         // Tutorial setup
-        if (!gameManager.PlayerManager.playerService.GetPlayerData().completedTutorial)
+        if (!playerManager.playerService.GetPlayerData().completedTutorial)
         {
             GenerateTutorialCharacters();
         }
 
         // Initialize subsystems
-        gameplayUI.Initialize(gameManager.PlayerManager.playerService);
+        gameplayUI.Initialize(playerManager.playerService);
         enemyManager.Initialize();
         waveManager.Initialize();
         parallaxBackground.Initialize();
@@ -181,7 +182,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupLevelInternal()
     {
-        var currentLevel = gameManager.LevelManager.activeLevel;
+        var currentLevel = ServiceLocator.Get<ILevelManager>().activeLevel;
 
         parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
         waveManager.SetWaveConfig(currentLevel.waveSet.waves);
@@ -220,7 +221,7 @@ public class GameplayManager : MonoBehaviour
 
     private void SetupLevel()
     {
-        var currentLevel = gameManager.LevelManager.activeLevel;
+        var currentLevel = ServiceLocator.Get<ILevelManager>().activeLevel;
 
         parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
         waveManager.SetWaveConfig(currentLevel.waveSet.waves);
@@ -232,7 +233,7 @@ public class GameplayManager : MonoBehaviour
 
     private void InitializeTeams()
     {
-        var teams = gameManager.TeamManager.GetActiveTeam();
+        var teams = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
 
         foreach (var team in teams)
         {
@@ -249,7 +250,7 @@ public class GameplayManager : MonoBehaviour
 
         previousTeamID = activeTeamID;
 
-        var teams = gameManager.TeamManager.GetActiveTeam();
+        var teams = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
         var members = teams[0].GetMembers();
 
         var battleStates = members
@@ -264,7 +265,7 @@ public class GameplayManager : MonoBehaviour
 
     private void MarkTutorialComplete()
     {
-        var playerData = gameManager.PlayerManager.playerService.GetPlayerData();
+        var playerData = playerManager.playerService.GetPlayerData();
         if (!playerData.completedTutorial)
         {
             playerData.completedTutorial = true;
@@ -292,8 +293,8 @@ public class GameplayManager : MonoBehaviour
     public bool IsTeamDead(string teamID) => deadTeams.TryGetValue(teamID, out var isDead) && isDead;
     private void GenerateTutorialCharacters()
     {
-        var teamManager = gameManager.TeamManager;
-        var characters = gameManager.CharacterManager.ownedCharacters;
+        var teamManager = ServiceLocator.Get<ITeamManager>();
+        var characters = ServiceLocator.Get<ICharacterManager>().ownedCharacters;
 
         teamManager.IncreaseMaxTeam();
 
@@ -302,13 +303,13 @@ public class GameplayManager : MonoBehaviour
 
         if (GameInitiator.Instance.isDevelopment)
         {
-            gameManager.LevelManager.activeLevel = tutorialLevel;
+            ServiceLocator.Get<ILevelManager>().activeLevel = tutorialLevel;
         }
 
         Debug.Log("[GameplayManager] Tutorial characters generated");
     }
 
-    private void CreateTutorialTeam(TeamManager teamManager, List<CharacterData> characters)
+    private void CreateTutorialTeam(ITeamManager teamManager, List<CharacterData> characters)
     {
         var teamID = teamManager.CreateTeam();
 

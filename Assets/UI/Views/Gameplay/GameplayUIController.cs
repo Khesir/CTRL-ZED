@@ -127,7 +127,7 @@ public class GameplayUIController : MonoBehaviour
         }
         else if (endGameState == GameplayEndGameState.LevelComplete)
         {
-            var team = GameManager.Instance.TeamManager.GetActiveTeam();
+            var team = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
             await CompleteAsync(
                 "character",
                 true,

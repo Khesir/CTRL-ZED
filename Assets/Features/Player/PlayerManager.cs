@@ -5,7 +5,7 @@ using System.ComponentModel.Design;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, IPlayerManager
 {
     public PlayerService playerService { get; private set; }
     public async UniTask Initialize(PlayerData data)

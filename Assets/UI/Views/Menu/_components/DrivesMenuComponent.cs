@@ -9,7 +9,7 @@ public class DrivesMenuComponent : MonoBehaviour
     private PlayerService service;
     public void Setup()
     {
-        service = GameManager.Instance.PlayerManager.playerService;
+        service = ServiceLocator.Get<IPlayerManager>().playerService;
         UpdateText();
         service.OnSpendDrives += UpdateText;
     }

@@ -26,7 +26,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolable
         // Reset velocity
         if (_rb != null)
         {
-            _rb.linearVelocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
 
         // Clear trail
@@ -41,7 +41,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolable
         // Reset state
         if (_rb != null)
         {
-            _rb.linearVelocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
     }
 
@@ -59,7 +59,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolable
     {
         if (_rb != null)
         {
-            _rb.linearVelocity = direction.normalized * speed;
+            _rb.velocity = direction.normalized * speed;
         }
     }
 
