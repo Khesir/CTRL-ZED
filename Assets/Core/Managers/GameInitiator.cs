@@ -27,6 +27,12 @@ public class GameInitiator : MonoBehaviour
     [Header("Flags")]
     public bool isGenerated = false; // Flagged as public for independent monobehaviour scripts
     public bool isFinished = false;
+
+
+    [Header("Tutorial")]
+    [SerializeField] private LevelData tutorialLevel;
+    [SerializeField] private bool skipTutorial = false;
+    public bool isInTutorial = false;
     ////////////////////////////////////////////////////
     // Runtime references
     public GameStateManager GameStateManager { get; private set; }
@@ -57,10 +63,7 @@ public class GameInitiator : MonoBehaviour
         await Initialize();
         await PrepareCoreSystems();
 
-        await PrepareGame(new SaveData());
-
-
-        isGenerated = true;
+        isFinished = true;
     }
     private async UniTask BindObjects()
     {
@@ -81,6 +84,7 @@ public class GameInitiator : MonoBehaviour
             eventBusGO.transform.SetParent(transform);
         }
 
+        isGenerated = true;
         await UniTask.CompletedTask;
     }
 
@@ -89,12 +93,19 @@ public class GameInitiator : MonoBehaviour
         if (existing != null) return existing;
 
         var found = FindAnyObjectByType<T>();
-        if (found != null) return found;
+        if (found != null)
+        {
+            // Make persistent by parenting to GameInitiator
+            found.transform.SetParent(transform);
+            return found;
+        }
 
         if (prefab == null)
             throw new Exception($"{typeof(T).Name} is missing in GameInitiator. Please assign a prefab.");
 
-        return Instantiate(prefab);
+        var instance = Instantiate(prefab);
+        instance.transform.SetParent(transform); // Make child of GameInitiator for persistence
+        return instance;
     }
 
     private void RegisterServices()
@@ -111,7 +122,8 @@ public class GameInitiator : MonoBehaviour
             SoundManager,
             InputService,
             GameManager,
-            GameStateManager
+            GameStateManager,
+            this // Register self for tutorial flags
         );
 
     }
@@ -134,6 +146,16 @@ public class GameInitiator : MonoBehaviour
         {
             Debug.Log("[GameInitiator] Dev environment detected.");
             var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+            // In dev mode, initialize services with test data if not in StartMenu
+            if (currentScene != "StartMenu")
+            {
+                Debug.Log("[GameInitiator] Dev mode: Initializing services with default data...");
+                var testData = new SaveData();
+                await PrepareGame(testData);
+                return; // PrepareGame handles state switching
+            }
+
             var devState = GameStateUtils.GetStateFromSceneName(currentScene);
             await GameStateManager.SetState(devState);
         }
@@ -151,8 +173,30 @@ public class GameInitiator : MonoBehaviour
 
         await UniTask.Yield();
 
-        isFinished = true;
+        // Determine next state based on tutorial completion
+        bool goToTutorial = !skipTutorial &&
+            !ServiceLocator.Get<IPlayerManager>().playerService.GetPlayerData().completedTutorial;
+
+        if (goToTutorial)
+        {
+            ServiceLocator.Get<ILevelManager>().activeLevel = tutorialLevel;
+            isInTutorial = true;
+            Debug.Log("[GameInitiator] Tutorial not completed. Going to Gameplay (Tutorial).");
+            SwitchStates(GameState.Gameplay);
+        }
+        else
+        {
+            Debug.Log("[GameInitiator] Going to MainMenu.");
+            SwitchStates(GameState.MainMenu);
+        }
+
         Debug.Log("[GameInitiator] Game preparation complete.");
+    }
+
+    public void CompleteTutorial(bool status = true)
+    {
+        skipTutorial = status;
+        isInTutorial = !status;
     }
 
     public async void SwitchStates(GameState state)

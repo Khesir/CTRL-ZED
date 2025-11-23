@@ -16,6 +16,7 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
     {
         LoadSlotData();
         Debug.Log("Save path: " + Application.persistentDataPath);
+        CoreEventBus.Subscribe<SaveSystemOnLoadEvent>(LoadSlotData);
     }
     public void LoadSlotData()
     {
@@ -23,6 +24,10 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
         {
             loadedSlots[i] = SaveSystem.LoadFromSlot(i + 1);
         }
+    }
+    public void LoadSlotData(SaveSystemOnLoadEvent evt)
+    {
+        LoadSlotData();
     }
     public SaveData LoadPlayerData(int slotIndex, SaveData data)
     {
@@ -41,11 +46,11 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
     public void SaveToSlot(int slotIndex, SaveData data)
     {
         SaveSystem.SaveToSlot(slotIndex + 1, data);
-        LoadSlotData();
     }
     public void DeleteSlot(int slot)
     {
         SaveSystem.DeleteSlot(slot + 1);
+        // Reload slot data so UI reflects the change
         LoadSlotData();
     }
     public void AutoSaveTrigger()
@@ -57,7 +62,6 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
         }
 
         SaveSystem.SaveToSlot(loadedSlotIndex, loadedData);
-        LoadSlotData();
         Debug.Log("[PlayerDataManager] Auto save triggered");
     }
 }

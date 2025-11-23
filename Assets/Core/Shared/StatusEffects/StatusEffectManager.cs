@@ -8,9 +8,11 @@ public class StatusEffectManager : MonoBehaviour, IStatusEffectManager
 {
     public List<StatusEffectInstance> activeBuffs { get; private set; }
     public event Action onBuffChange;
+    private bool isInitialized = false;
     public async UniTask Initialize()
     {
         activeBuffs = new();
+        isInitialized = true;
         await UniTask.CompletedTask;
     }
     public void AddBuff(StatusEffectData data)
@@ -22,6 +24,7 @@ public class StatusEffectManager : MonoBehaviour, IStatusEffectManager
     }
     private void Update()
     {
+        if (!isInitialized) return;
         float dt = Time.deltaTime;
         for (int i = activeBuffs.Count - 1; i >= 0; i--)
         {

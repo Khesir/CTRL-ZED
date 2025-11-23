@@ -5393,7 +5393,7 @@ GameObject:
   - component: {fileID: 735333124}
   - component: {fileID: 735333126}
   m_Layer: 5
-  m_Name: HandleDeath
+  m_Name: RevivePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8463,7 +8463,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.6869, y: -318.72}
+  m_AnchoredPosition: {x: 1.6868896, y: -318.72}
   m_SizeDelta: {x: 274.52, y: 157.979}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1227931356
@@ -15384,35 +15384,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: spawn
-      value: 
-      objectReference: {fileID: 1418764995}
-    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: spawner
       value: 
       objectReference: {fileID: 1562620954}
-    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1279795981}
-    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: isGameActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: tutorialLevel
-      value: 
-      objectReference: {fileID: 11400000, guid: 9b8964e239d9f81458e7578133d04afa, type: 2}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: parallaxBackground
       value: 
       objectReference: {fileID: 1641910465}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: damageNumberService
-      value: 
-      objectReference: {fileID: 1167635886}
-    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: damageNumberController
       value: 
       objectReference: {fileID: 1167635886}
     - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
@@ -15428,6 +15408,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1777090306}
     - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: dialogUI
+      value: 
+      objectReference: {fileID: 1506970237}
+    - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: lootHolder
       value: 
       objectReference: {fileID: 2118409417}
@@ -15435,6 +15419,10 @@ PrefabInstance:
       propertyPath: skillSlots
       value: 
       objectReference: {fileID: 327514831}
+    - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: revivePanel
+      value: 
+      objectReference: {fileID: 735333126}
     - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: startButton
       value: 
@@ -15463,10 +15451,6 @@ PrefabInstance:
       propertyPath: activeStatusEffect
       value: 
       objectReference: {fileID: 1447823069}
-    - target: {fileID: 4035268777878427305, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
-      propertyPath: gameplayHandleDeath
-      value: 
-      objectReference: {fileID: 735333126}
     - target: {fileID: 7850368718434146567, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: focusCamera
       value: 

@@ -85,7 +85,7 @@ public class SoundManager : MonoBehaviour, ISoundService
         if (category == SoundCategory.BGM || category == SoundCategory.Status)
         {
             source.clip = clip;
-            source.loop = false;
+            source.loop = (category == SoundCategory.BGM); // BGM should loop
             source.volume = volume * categoryVolumes[category];
             source.Play();
         }

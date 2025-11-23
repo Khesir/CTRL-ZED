@@ -90,7 +90,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4e9c488033df92d489e54e2562a7c3d8, type: 3}
   - category: 3
     soundType: 15
-    clip: {fileID: 8300000, guid: 360cbc837ae576b4480389fbc4a16e20, type: 3}
+    clip: {fileID: 8300000, guid: b046e98d406ff364fa305f246395980c, type: 3}
   - category: 3
     soundType: 16
     clip: {fileID: 8300000, guid: bd37c2fe623bcda488d994f4f2b4e5c0, type: 3}
@@ -100,7 +100,7 @@ MonoBehaviour:
   - category: 4
     soundType: 18
     clip: {fileID: 8300000, guid: 7433286780d89a146ab4facdf9e46515, type: 3}
-  - category: 4
+  - category: 5
     soundType: 22
     clip: {fileID: 8300000, guid: 8049dd253cd3f4744a885a6368f1868b, type: 3}
   - category: 4

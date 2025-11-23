@@ -101,7 +101,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         {
             // No available characters, trigger game over or team defeat
             followerManager.ResetTarget();
-            ServiceLocator.Get<GameplayUIController>().HandleGameOver();
+            SceneEventBus.Publish(new GameplayPlayerDeathEvent());
         }
     }
     public bool IsDead() => isDead;

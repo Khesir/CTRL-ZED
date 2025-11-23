@@ -6,26 +6,41 @@ using UnityEngine.UI;
 
 public class OsExpTop : MonoBehaviour
 {
-    public TMP_Text level;
-    public Slider expSlider;
-    public TMP_Text expText;
-    public PlayerService service;
+    [SerializeField] private TMP_Text level;
+    [SerializeField] private Slider expSlider;
+    [SerializeField] private TMP_Text expText;
+
+    private PlayerService service;
+
     public void Setup()
     {
-        service = ServiceLocator.Get<IPlayerManager>().playerService;
-        UpdateText();
+        service = ServiceLocator.Get<IPlayerManager>()?.playerService;
+        if (service == null)
+        {
+            Debug.LogError("[OsExpTop] PlayerService is null!");
+            return;
+        }
 
+        UpdateText();
         UpdateSlider();
+
         service.OnExpGained += UpdateSlider;
         service.OnLevelUp += UpdateText;
     }
-    public void OnDestroy()
+
+    private void OnDestroy()
     {
-        service.OnExpGained -= UpdateSlider;
-        service.OnLevelUp -= UpdateText;
+        if (service != null)
+        {
+            service.OnExpGained -= UpdateSlider;
+            service.OnLevelUp -= UpdateText;
+        }
     }
+
     public void UpdateSlider()
     {
+        if (service == null || expSlider == null || expText == null) return;
+
         int maxValue = (int)service.GetRequiredExp();
         int value = (int)service.GetCurrentExp();
         expSlider.maxValue = maxValue;
@@ -36,6 +51,8 @@ public class OsExpTop : MonoBehaviour
 
     private void UpdateText()
     {
+        if (service == null || level == null) return;
+
         level.text = service.GetLevel().ToString();
     }
 }

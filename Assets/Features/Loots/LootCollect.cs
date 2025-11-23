@@ -25,7 +25,6 @@ public class LootCollect : MonoBehaviour
             {
                 ServiceLocator.Get<ISoundService>().Play(SoundCategory.Gameplay, SoundType.Gameplay_Collect);
 
-                // Publish event instead of direct UI call
                 SceneEventBus.Publish(new LootCollectedEvent
                 {
                     Data = data,

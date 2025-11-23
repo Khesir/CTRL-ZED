@@ -7,30 +7,70 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
+    private const float MinLoadingDisplayTime = 2f; // Minimum seconds to show loading screen
+
     public static async UniTask LoadScene(string sceneName, UIManager canvas)
     {
         Debug.Log($"[SceneLoader] Loading scene: {sceneName}");
         await ServiceLocator.Get<ISoundService>().FadeOut(SoundCategory.BGM);
-        canvas.ShowLoading(true);
 
-        var loadOperation = SceneManager.LoadSceneAsync(sceneName);
-        loadOperation.allowSceneActivation = false;
+        bool isInTutorial = GameInitiator.Instance != null && GameInitiator.Instance.isInTutorial;
 
-        // Wait until loading reaches 90% (Unity's async loading stops here)
-        while (loadOperation.progress < 0.9f)
+        if (isInTutorial && canvas.HasTutorialVideo)
         {
-            await Task.Delay(100);
+            // Tutorial flow: Video first, then load scene
+            Debug.Log("[SceneLoader] Playing tutorial video...");
+
+            await canvas.PlayTutorialVideo();
+
+            // After video ends/skipped, show loading and load scene
+            canvas.ShowLoading(true);
+            float loadingStartTime = Time.unscaledTime;
+
+            var loadOperation = SceneManager.LoadSceneAsync(sceneName);
+            loadOperation.allowSceneActivation = false;
+
+            // Wait until scene is ready
+            while (loadOperation.progress < 0.9f)
+            {
+                await UniTask.Yield();
+            }
+
+            // Ensure minimum loading display time
+            float elapsedTime = Time.unscaledTime - loadingStartTime;
+            if (elapsedTime < MinLoadingDisplayTime)
+            {
+                float remainingTime = MinLoadingDisplayTime - elapsedTime;
+                Debug.Log($"[SceneLoader] Waiting {remainingTime:F1}s for minimum loading time...");
+                await UniTask.Delay((int)(remainingTime * 1000), ignoreTimeScale: true);
+            }
+
+            Debug.Log($"[SceneLoader] Scene {sceneName} loaded. Activating...");
+            loadOperation.allowSceneActivation = true;
             await UniTask.Yield();
+            canvas.ShowLoading(false);
         }
-        await Task.Delay(1000);
-        Debug.Log($"[SceneLoader] Scene {sceneName} loaded. Activating...");
+        else
+        {
+            // Normal flow: Just load with loading screen
+            canvas.ShowLoading(true);
 
-        // Now activate the scene
-        loadOperation.allowSceneActivation = true;
-        // Optionally wait one more frame to let it finish
-        await UniTask.Yield();
-        canvas.ShowLoading(false);
+            var loadOperation = SceneManager.LoadSceneAsync(sceneName);
+            loadOperation.allowSceneActivation = false;
+
+            while (loadOperation.progress < 0.9f)
+            {
+                await UniTask.Yield();
+            }
+
+            await UniTask.Delay(1000, ignoreTimeScale: true);
+
+            Debug.Log($"[SceneLoader] Scene {sceneName} loaded. Activating...");
+            loadOperation.allowSceneActivation = true;
+            await UniTask.Yield();
+            canvas.ShowLoading(false);
+        }
+
         Debug.Log($"[SceneLoader] Scene {sceneName} loaded successfully.");
-
     }
 }

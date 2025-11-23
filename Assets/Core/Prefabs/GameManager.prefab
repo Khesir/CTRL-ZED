@@ -51,41 +51,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f15968111cd2a46a5b38d196c725d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StatusEffectManager: {fileID: 0}
-  characterManager: {fileID: 6092448247830112212}
-  playerManager: {fileID: 4763567265307021909}
-  teamManager: {fileID: 1943364294108916775}
   playerDataManager: {fileID: 8233345103251920072}
+  playerManager: {fileID: 4763567265307021909}
+  characterManager: {fileID: 6092448247830112212}
+  teamManager: {fileID: 1943364294108916775}
   antiVirusManager: {fileID: 6569857886064796666}
   levelManager: {fileID: 5983524649365789482}
   statusEffectManager: {fileID: 2408354721527269700}
-  tutorialLevel: {fileID: 11400000, guid: 9b8964e239d9f81458e7578133d04afa, type: 2}
   isGameActive: 0
-  _isInitialized: 0
-  saveData:
-    playerData:
-      completedTutorial: 0
-      maxTeam: 2
-      maxLevel: 10
-      coinsPerExp: 2
-      healthPerCoin: 0
-      level: 1
-      currentExp: 0
-      currentHealth: -1
-      resources:
-        food: 1000
-        technology: 1000
-        energy: 1000
-        intelligence: 1000
-        coins: 0
-        bioChips: 0
-        maxBioChipCharges: 5
-      chargedDrives: 0
-      usableDrives: 50
-      coins: 50000
-    ownedCharacters: []
-    teams: []
-    antiVirusLevel: 0
 --- !u!1 &2502258062086066290
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb7cef220c84ee4a9884d60cd32edcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeBuffs: []
 --- !u!1 &2705661482474968949
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,8 +244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9074abe5928f22d4e8162efe69d178aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterTemplates: []
-  ownedCharacters: []
+  _characterTemplates: []
+  _ownedCharacters: []
 --- !u!1 &4983016113009914732
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,8 +293,6 @@ MonoBehaviour:
   teams: []
   activeTeam: []
   maxSize: 0
-  increaseSizePrice: 0
-  ownedTeam: []
 --- !u!1 &6019085884692280913
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bd766963e62d04da1788b55a77d025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadedSlots:
+  _loadedSlots:
   - playerData:
       completedTutorial: 0
       maxTeam: 2
@@ -576,31 +546,6 @@ MonoBehaviour:
     teams: []
     antiVirusLevel: 0
   - playerData:
-      completedTutorial: 0
-      maxTeam: 2
-      maxLevel: 10
-      coinsPerExp: 2
-      healthPerCoin: 0
-      level: 1
-      currentExp: 0
-      currentHealth: -1
-      resources:
-        food: 1000
-        technology: 1000
-        energy: 1000
-        intelligence: 1000
-        coins: 0
-        bioChips: 0
-        maxBioChipCharges: 5
-      chargedDrives: 0
-      usableDrives: 50
-      coins: 50000
-    ownedCharacters: []
-    teams: []
-    antiVirusLevel: 0
-  loadedSlotIndex: -1
-  loadedData:
-    playerData:
       completedTutorial: 0
       maxTeam: 2
       maxLevel: 10

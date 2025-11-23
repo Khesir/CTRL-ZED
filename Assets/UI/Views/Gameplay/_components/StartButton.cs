@@ -15,6 +15,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Vector2 originalPos;
     private Vector3 originalScale;
     private Tween wobbleTween;
+
     private void Awake()
     {
         button = GetComponent<Button>();
@@ -23,6 +24,10 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalScale = rect.localScale;
 
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(async () => await Activate());
     }

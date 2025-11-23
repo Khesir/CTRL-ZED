@@ -16,3 +16,14 @@ public struct DisplaySettingsChangedEvent
     public int ResolutionWidth;
     public int ResolutionHeight;
 }
+
+public struct SaveSystemOnSaveActionEvent
+{
+    public int slotIndex;
+    public SaveData data;
+}
+
+public struct SaveSystemOnLoadEvent
+{
+}
+public struct SaveSystemDeleteActionEvent { }

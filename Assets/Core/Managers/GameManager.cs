@@ -14,13 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private StatusEffectManager statusEffectManager;
 
-    [Header("Tutorial")]
-    [SerializeField] private LevelData tutorialLevel;
-    [SerializeField] private bool skipTutorial = false;
 
     // State
     public bool isGameActive;
-    public bool isInTutorial;
     private bool isInitialized;
 
     private void Awake()
@@ -44,34 +40,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Initialized");
         await UniTask.CompletedTask;
 
-        if (!skipTutorial)
-        {
-            TutorialTrigger().Forget();
-        }
-    }
-
-    private async UniTaskVoid TutorialTrigger()
-    {
-        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
-        await UniTask.WaitUntil(() => GameInitiator.Instance.GameStateManager.Currentstate == GameState.MainMenu);
-
-        bool tutorialNotCompleted = !ServiceLocator.Get<IPlayerManager>().playerService.GetPlayerData().completedTutorial;
-
-        if (tutorialNotCompleted)
-        {
-            ServiceLocator.Get<ILevelManager>().activeLevel = tutorialLevel;
-            GameInitiator.Instance.SwitchStates(GameState.Gameplay);
-            isInTutorial = true;
-        }
-    }
-
-    public bool HandleTutorial()
-    {
-        if (!isInTutorial) return false;
-
-        skipTutorial = true;
-        isInTutorial = false;
-        return true;
     }
 
     #region Internal Accessors for CoreCompositionRoot Only

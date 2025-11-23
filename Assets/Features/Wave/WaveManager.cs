@@ -19,10 +19,18 @@ public class WaveManager : MonoBehaviour, IWaveManager
     private IEnemyManager enemyManager;
     private AttackTimer attackTimer;
 
-    private void OnEnable()
+    public void Initialize()
     {
+        waveConfigs = null;
+        waveIndex = 0;
+        currentWave = null;
+
+        enemyManager = ServiceLocator.Get<IEnemyManager>();
+        attackTimer = ServiceLocator.Get<GameplayUIController>().timer;
         SceneEventBus.Subscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
+        Debug.Log("[WaveManager] Initialized");
     }
+
 
     private void OnDisable()
     {
@@ -33,17 +41,6 @@ public class WaveManager : MonoBehaviour, IWaveManager
     {
         // Replace direct ReportKill call - now triggered by event
         ReportKillInternal();
-    }
-
-    public void Initialize()
-    {
-        waveConfigs = null;
-        waveIndex = 0;
-        currentWave = null;
-
-        enemyManager = ServiceLocator.Get<IEnemyManager>();
-        attackTimer = ServiceLocator.Get<GameplayUIController>().timer;
-        Debug.Log("[WaveManager] Initialized");
     }
     public void SetWaveConfig(List<WaveConfig> waveConfigs)
     {

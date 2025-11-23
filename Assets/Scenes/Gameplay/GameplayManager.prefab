@@ -51,20 +51,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f06867e772149c46b50eb6936558455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameActive: 1
-  _isInitialized: 0
-  gameManager: {fileID: 0}
   gameplayUI: {fileID: 4035268777878427305}
-  followerManager: {fileID: 7850368718434146567}
-  playerGameplayManager: {fileID: 4847832720207668489}
   parallaxBackground: {fileID: 0}
-  spawn: {fileID: 0}
-  squadLevelManager: {fileID: 1772367184815221831}
-  damageNumberController: {fileID: 0}
+  damageNumberService: {fileID: 0}
   spawner: {fileID: 0}
   enemyManager: {fileID: 4369155390820268657}
   waveManager: {fileID: 822019436188621062}
   lootManager: {fileID: 818863747149330968}
+  followerManager: {fileID: 7850368718434146567}
+  playerGameplayManager: {fileID: 4847832720207668489}
+  tutorialLevel: {fileID: 11400000, guid: 9b8964e239d9f81458e7578133d04afa, type: 2}
 --- !u!1 &961352731125913463
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,12 +296,16 @@ MonoBehaviour:
   characterListUI: {fileID: 0}
   characterIcons: {fileID: 0}
   baseOSHP: {fileID: 0}
-  timer: {fileID: 0}
   waveUI: {fileID: 0}
   announcementUI: {fileID: 0}
   completeScreenUI: {fileID: 0}
-  lootHolder: {fileID: 0}
   activeStatusEffect: {fileID: 0}
+  startButton: {fileID: 0}
+  revivePanel: {fileID: 0}
+  dialogUI: {fileID: 0}
+  timer: {fileID: 0}
+  skillSlots: {fileID: 0}
+  lootHolder: {fileID: 0}
   starWaveButton: {fileID: 0}
 --- !u!1 &7862667196828465748
 GameObject:
@@ -397,5 +397,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a038ac345e1c4740955c4776c1a6b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevelData: {fileID: 0}
   spawner: {fileID: 0}

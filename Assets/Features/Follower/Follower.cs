@@ -161,7 +161,6 @@ public class Follower : MonoBehaviour
             // 2. Fire to weapon
             gameplayService?.Fire();
 
-            Debug.Log($"[{name}] Fired at enemy {enemy.name}");
 
             lastAttackTime = Time.time;
         }

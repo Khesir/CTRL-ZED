@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 
 public enum GameplayState { None, Start, Playing, Revive, End }
 public enum GameplayEndGameState { DeathOnTimer, LevelComplete }
-
+// This is the brain for this scene.
 public class GameplayManager : MonoBehaviour, IGameplayManager
 {
     public static GameplayManager Instance { get; private set; }
@@ -30,7 +30,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     [SerializeField] private LevelData tutorialLevel;
 
     // IGameplayManager implementation
-    public bool IsGameActive { get; private set; }
+    [SerializeField] public bool IsGameActive { get; set; } = false;
     public GameplayEndGameState EndGameState { get; set; }
     public GameplayState CurrentState { get; private set; } = GameplayState.None;
 
@@ -90,11 +90,13 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     private async void Start()
     {
         await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
-
         Initialize();
         await SetState(GameplayState.Start);
     }
-
+    private void Update()
+    {
+        stateMachine?.Update();
+    }
     private void Initialize()
     {
         if (isInitialized) return;
@@ -104,39 +106,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         inputService = ServiceLocator.Get<IInputService>();
         soundService = ServiceLocator.Get<ISoundService>();
         playerManager = ServiceLocator.Get<IPlayerManager>();
-        // Register gameplay services
-        RegisterServices();
 
-        // Tutorial setup
-        if (!playerManager.playerService.GetPlayerData().completedTutorial)
-        {
-            GenerateTutorialCharacters();
-        }
-
-        // Initialize subsystems
-        gameplayUI.Initialize(playerManager.playerService);
-        enemyManager.Initialize();
-        waveManager.Initialize();
-        parallaxBackground.Initialize();
-
-        // Initialize state machine
-        stateMachine = new StateMachine();
-        startState = new GameplayStartState(this);
-        playingState = new GameplayPlayingState(this);
-        reviveState = new GameplayReviveState(this);
-        endState = new GameplayEndState(this);
-
-        isInitialized = true;
-        Debug.Log("[GameplayManager] Initialized");
-    }
-
-    private void Update()
-    {
-        stateMachine?.Update();
-    }
-
-    private void RegisterServices()
-    {
         // Use DI composition root for gameplay services
         GameplayCompositionRoot.Configure(
             GameServices.Container,
@@ -148,7 +118,51 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
             damageNumberService,
             gameplayUI
         );
+        // Tutorial setup
+        if (!playerManager.playerService.GetPlayerData().completedTutorial)
+        {
+            GenerateTutorialCharacters();
+        }
+
+        // Initialize subsystems
+        gameplayUI.Initialize(playerManager.playerService);
+        enemyManager.Initialize();
+        waveManager.Initialize();
+        parallaxBackground.Initialize();
+        lootManager.Initialize();
+        // Initialize state machine
+        stateMachine = new StateMachine();
+        startState = new GameplayStartState(this);
+        playingState = new GameplayPlayingState(this);
+        reviveState = new GameplayReviveState(this);
+        endState = new GameplayEndState(this);
+        isInitialized = true;
+
+        SceneEventBus.Subscribe<GameplayPlayerDeathEvent>(HandleDeath);
+        SceneEventBus.Subscribe<WaveCompletedEvent>(HandleWaveComplete);
+        Debug.Log("[GameplayManager] Initialized");
     }
+    #region  Gameplay Events
+    private void HandleDeath(GameplayPlayerDeathEvent evt)
+    {
+        // reviveCount
+        gameplayUI.revivePanel.SetDisplay(true);
+    }
+    private void HandleWaveComplete(WaveCompletedEvent evt)
+    {
+        if (!evt.IsLastWave)
+        {
+            SetState(GameplayState.Start); // Reset with new set
+        }
+        else
+        {
+            EndGameState = GameplayEndGameState.LevelComplete;
+            SetState(GameplayState.End); // Level Complete
+        }
+    }
+    #endregion
+
+    #region Statemachine
     public UniTask SetState(GameplayState newState)
     {
         if (CurrentState == newState) return UniTask.CompletedTask;
@@ -177,10 +191,10 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 
         return UniTask.CompletedTask;
     }
+    #endregion
 
+    #region Internal Methods by states
     // Internal methods called by states
-    public void SetGameActive(bool active) => IsGameActive = active;
-
     public void SetupLevelInternal()
     {
         var currentLevel = ServiceLocator.Get<ILevelManager>().activeLevel;
@@ -190,50 +204,6 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         soundService.Play(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
         gameplayUI.StartStateSetup();
 
-        InitializeTeams();
-    }
-
-    public void HandleTeamChangeInternal() => HandleTeamChange();
-
-    public void StartWaveInternal()
-    {
-        if (waveManager.currentWave == null)
-            waveManager.StartNextWave();
-        else
-            waveManager.PauseWave(false);
-    }
-
-    public void PauseGameplayInternal()
-    {
-        enemyManager.ResetTargets();
-        waveManager.PauseWave(true);
-    }
-
-    public void ResumeGameplayInternal()
-    {
-        waveManager.PauseWave(false);
-    }
-
-    public void EndGameplayInternal()
-    {
-        enemyManager.KillAllEnemies(silent: true);
-        MarkTutorialComplete();
-    }
-
-    private void SetupLevel()
-    {
-        var currentLevel = ServiceLocator.Get<ILevelManager>().activeLevel;
-
-        parallaxBackground.SetupParallaxLayerMaterial(currentLevel.background);
-        waveManager.SetWaveConfig(currentLevel.waveSet.waves);
-        soundService.Play(SoundCategory.BGM, SoundType.BGM_Gameplay1, 0.5f);
-        gameplayUI.StartStateSetup();
-
-        InitializeTeams();
-    }
-
-    private void InitializeTeams()
-    {
         var teams = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
 
         foreach (var team in teams)
@@ -244,7 +214,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         activeTeamID = teams[0].GetData().teamID;
         HandleTeamChange();
     }
-
+    public void HandleTeamChangeInternal() => HandleTeamChange();
     private void HandleTeamChange()
     {
         if (previousTeamID == activeTeamID) return;
@@ -263,6 +233,29 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         gameplayUI.SetupCharacterUI(battleStates);
         followerManager.SwitchTo(0);
     }
+    public void StartWaveInternal()
+    {
+        if (waveManager.currentWave == null)
+            waveManager.StartNextWave();
+    }
+
+    public void PauseGameplayInternal()
+    {
+        enemyManager.ResetTargets();
+        waveManager.PauseWave(true);
+    }
+
+    public void ResumeGameplayInternal()
+    {
+        waveManager.PauseWave(false);
+    }
+
+    public void EndGameplayInternal()
+    {
+        gameplayUI.HandleEndGamePanel(EndGameState);
+        MarkTutorialComplete();
+    }
+
 
     private void MarkTutorialComplete()
     {
@@ -271,7 +264,9 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         {
             playerData.completedTutorial = true;
         }
+        ServiceLocator.Get<GameInitiator>().CompleteTutorial();
     }
+    #endregion
 
     public void TriggerEndGame() => SetState(GameplayState.End).Forget();
 
@@ -292,6 +287,8 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     }
 
     public bool IsTeamDead(string teamID) => deadTeams.TryGetValue(teamID, out var isDead) && isDead;
+
+    #region TutorialGamePlay
     private void GenerateTutorialCharacters()
     {
         var teamManager = ServiceLocator.Get<ITeamManager>();
@@ -323,4 +320,5 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 
         teamManager.SetActiveTeam(teamID);
     }
+    #endregion
 }

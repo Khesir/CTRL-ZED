@@ -39,6 +39,7 @@ public class MenuManager : MonoBehaviour
 
         soundService = ServiceLocator.Get<ISoundService>();
 
+        FindComponents();
         SetupComponents();
         soundService.Play(SoundCategory.BGM, SoundType.BGM_MainMenu, 0.5f);
 
@@ -46,16 +47,36 @@ public class MenuManager : MonoBehaviour
         Debug.Log("[MenuManager] Initialized");
     }
 
+    private void FindComponents()
+    {
+        // Find scene components if not assigned (include inactive objects)
+        if (osExpTop == null) osExpTop = FindAnyObjectByType<OsExpTop>(FindObjectsInactive.Include);
+        if (fundsMenuComponent == null) fundsMenuComponent = FindAnyObjectByType<FundsMenuComponent>(FindObjectsInactive.Include);
+        if (resourceUI == null) resourceUI = FindAnyObjectByType<ResourceUI>(FindObjectsInactive.Include);
+        if (repairComponent == null) repairComponent = FindAnyObjectByType<RepairComponent>(FindObjectsInactive.Include);
+        if (drivesMenuComponent == null) drivesMenuComponent = FindAnyObjectByType<DrivesMenuComponent>(FindObjectsInactive.Include);
+        if (deployTeamController == null) deployTeamController = FindAnyObjectByType<DeployTeamController>(FindObjectsInactive.Include);
+        if (instructionsPanel == null) instructionsPanel = FindAnyObjectByType<InstructionsPanel>(FindObjectsInactive.Include);
+
+        // Debug: Log which components were found
+        Debug.Log($"[MenuManager] FindComponents - osExpTop: {(osExpTop != null ? "Found" : "NULL")}");
+        Debug.Log($"[MenuManager] FindComponents - fundsMenuComponent: {(fundsMenuComponent != null ? "Found" : "NULL")}");
+        Debug.Log($"[MenuManager] FindComponents - resourceUI: {(resourceUI != null ? "Found" : "NULL")}");
+        Debug.Log($"[MenuManager] FindComponents - repairComponent: {(repairComponent != null ? "Found" : "NULL")}");
+        Debug.Log($"[MenuManager] FindComponents - drivesMenuComponent: {(drivesMenuComponent != null ? "Found" : "NULL")}");
+        Debug.Log($"[MenuManager] FindComponents - deployTeamController: {(deployTeamController != null ? "Found" : "NULL")}");
+    }
+
     private void SetupComponents()
     {
-        osExpTop.Setup();
-        fundsMenuComponent.Setup();
-        resourceUI.Setup();
-        repairComponent.Setup();
-        drivesMenuComponent.Setup();
-        deployTeamController.Setup();
+        osExpTop?.Setup();
+        fundsMenuComponent?.Setup();
+        resourceUI?.Setup();
+        repairComponent?.Setup();
+        drivesMenuComponent?.Setup();
+        deployTeamController?.Setup();
 
-        if (ServiceLocator.Get<GameManager>().isInTutorial)
+        if (ServiceLocator.Get<GameInitiator>().isInTutorial && instructionsPanel != null)
         {
             instructionsPanel.gameObject.SetActive(true);
         }

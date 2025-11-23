@@ -6,9 +6,14 @@ public class LootManager : MonoBehaviour, ILootManager
 {
     [SerializeField] private List<LootCollect> activeLoots = new List<LootCollect>();
     [SerializeField] private Transform player;
-
+    private bool isInitialized = false;
+    public void Initialize()
+    {
+        isInitialized = true;
+    }
     void Update()
     {
+        if (!isInitialized) return;
         var currentTarget = ServiceLocator.Get<IFollowerManager>().GetCurrentTarget();
 
         if (player != currentTarget)

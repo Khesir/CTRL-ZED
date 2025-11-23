@@ -12,7 +12,7 @@ public static class SaveSystem
     {
         string path = Application.persistentDataPath + $"/slot{slot}.json";
         File.WriteAllText(path, JsonUtility.ToJson(data, true));
-        onSaveAction?.Invoke();
+        CoreEventBus.Publish(new SaveSystemOnLoadEvent());
     }
     static public SaveData LoadFromSlot(int slot)
     {
@@ -28,7 +28,7 @@ public static class SaveSystem
         {
             File.Delete(path);
             Debug.Log($"Deleted save slot {slot} at {path}");
-            onSaveAction?.Invoke();
+            CoreEventBus.Publish(new SaveSystemDeleteActionEvent());
         }
         else
         {

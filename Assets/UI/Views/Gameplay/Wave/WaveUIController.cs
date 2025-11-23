@@ -10,12 +10,6 @@ public class WaveUIController : MonoBehaviour
     public TMP_Text title;
     public Slider progressSlider;
 
-    private void OnEnable()
-    {
-        SceneEventBus.Subscribe<WaveStartedEvent>(OnWaveStarted);
-        SceneEventBus.Subscribe<WaveProgressUpdatedEvent>(OnWaveProgressUpdated);
-    }
-
     private void OnDisable()
     {
         SceneEventBus.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
@@ -37,6 +31,9 @@ public class WaveUIController : MonoBehaviour
 
     public void Setup()
     {
+        SceneEventBus.Subscribe<WaveStartedEvent>(OnWaveStarted);
+        SceneEventBus.Subscribe<WaveProgressUpdatedEvent>(OnWaveProgressUpdated);
+
         title.text = $"Wave {ServiceLocator.Get<IWaveManager>().GetWaveIndex()}";
     }
 

@@ -11,8 +11,11 @@ public static class CoreCompositionRoot
         SoundManager soundManager,
         InputService inputService,
         GameManager gameManager,
-        GameStateManager gameStateManager)
+        GameStateManager gameStateManager,
+        GameInitiator gameInitiator
+        )
     {
+        container.RegisterSingleton(gameInitiator);
         // Register core services
         container.RegisterSingleton<ISoundService>(soundManager);
         container.RegisterSingleton<IInputService>(inputService);

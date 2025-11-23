@@ -15,11 +15,13 @@ public class GameplayUIController : MonoBehaviour
     public CompleteScreenUI completeScreenUI;
     public GameplayActiveStatusEffect activeStatusEffect;
     public StartButton startButton;
-    public GameplayHandleDeath gameplayHandleDeath;
+    public RevivePanel revivePanel;
+    public DialogSystem dialogUI;
     [Header("Gameplay Services")]
     private PlayerService playerService;
     public AttackTimer timer;
     public UISkillSlots skillSlots;
+
 
     [Header("Rewards & Progressions")]
     public LootHolder lootHolder;
@@ -79,28 +81,42 @@ public class GameplayUIController : MonoBehaviour
         characterListUI.Initialize(characters);
         characterIcons.Initialize(characters);
     }
+    #region  Gameplay State Animation
+
+    private bool _isInitializeSetup = false;
     public void StartStateSetup()
     {
-        baseOSHP.Setup(playerService);
-        waveUI.Setup();
-        timer.Setup(playerService);
-        lootHolder.Setup();
-        activeStatusEffect.Setup();
-        skillSlots.Initialize();
+        // Only happen on start state once, since we look start to next
+        if (!_isInitializeSetup)
+        {
+            baseOSHP.Setup(playerService);
+            waveUI.Setup();
+            timer.Setup(playerService);
+            lootHolder.Setup();
+            activeStatusEffect.Setup();
+            skillSlots.Initialize();
+            dialogUI.Initialize();
+            _isInitializeSetup = true;
+        }
+
+        startButton.gameObject.SetActive(true);
     }
+    private bool _isInitializeSetupAnimation = false;
     public async UniTask StartStateUIAnimation()
     {
-        await characterListUI.AnimateHotbarsInAndOut();
-        await startButton.AnimateIn();
+        if (!_isInitializeSetupAnimation)
+        {
+            characterListUI.AnimateHotbarsInAndOut().Forget();
+            _isInitializeSetupAnimation = true;
+        }
 
+        startButton.AnimateIn().Forget();
     }
     public async UniTask PlayingStateUIAnimation()
     {
-        var startButtonTask = startButton.AnimateOut();
-
-        // To handle animation Concurrently
-        await UniTask.WhenAll(startButtonTask);
+        startButton.AnimateOut().Forget();
     }
+    #endregion
     public async UniTask PushMessageAsync(string message)
     {
         await announcementUI.PushMessage(message);
@@ -112,12 +128,6 @@ public class GameplayUIController : MonoBehaviour
     public void LootHolderAddAmount(LootDropData data)
     {
         lootHolder.AddAmount(data);
-    }
-    public async void HandleGameOver()
-    {
-        // Shows Game over screen and revive
-        await ServiceLocator.Get<IGameplayManager>().SetState(GameplayState.Revive);
-        gameplayHandleDeath.SetDisplay(true);
     }
     public async void HandleEndGamePanel(GameplayEndGameState endGameState)
     {

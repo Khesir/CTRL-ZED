@@ -14,11 +14,6 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
         set => inStealth = value;
     }
 
-    private void OnEnable()
-    {
-        SceneEventBus.Subscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
-    }
-
     private void OnDisable()
     {
         SceneEventBus.Unsubscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
@@ -37,6 +32,7 @@ public class EnemyManager : MonoBehaviour, IEnemyManager
     public void Initialize()
     {
         InStealth = false;
+        SceneEventBus.Subscribe<EnemyDefeatedEvent>(OnEnemyDefeated);
     }
     public void RegisterEnemy(EnemyService enemy)
     {
