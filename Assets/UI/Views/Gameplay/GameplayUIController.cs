@@ -116,7 +116,7 @@ public class GameplayUIController : MonoBehaviour
     public async void HandleGameOver()
     {
         // Shows Game over screen and revive
-        await GameplayManager.Instance.SetState(GameplayState.Revive);
+        await ServiceLocator.Get<IGameplayManager>().SetState(GameplayState.Revive);
         gameplayHandleDeath.SetDisplay(true);
     }
     public async void HandleEndGamePanel(GameplayEndGameState endGameState)

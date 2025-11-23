@@ -6,15 +6,19 @@ public class UISkillSlots : MonoBehaviour
 {
     [SerializeField] private List<UISkillSlot> skillSlots;
     [SerializeField] private SkillEventChannel skillEventChannel;
+    private IFollowerManager followerManager;
+
     public void Initialize()
     {
-        GameplayManager.Instance.FollowerManager.OnSwitch += Refresh;
+        followerManager = ServiceLocator.Get<IFollowerManager>();
+        followerManager.OnSwitch += Refresh;
         skillEventChannel.OnSkillUsed += OnSkillUsed;
         skillEventChannel.OnSkillsEquipped += Refresh;
     }
+
     private void Refresh()
     {
-        var x = GameplayManager.Instance.FollowerManager.GetCurrentTargetBattleState().data.GetData();
+        var x = followerManager.GetCurrentTargetBattleState().data.GetData();
         skillSlots[0].Initialize(x.baseData.skill1);
         skillSlots[1].Initialize(x.baseData.skill2);
     }

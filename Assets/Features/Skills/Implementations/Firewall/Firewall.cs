@@ -97,8 +97,14 @@ public class Firewall : MonoBehaviour, ISkill, IStatProvider
         if (counter <= 0)
         {
             counter = attackTick;
-            for (int i = 0; i < enemiesInRange.Count; i++)
+            for (int i = enemiesInRange.Count - 1; i >= 0; i--)
             {
+                if (enemiesInRange[i] == null)
+                {
+                    enemiesInRange.RemoveAt(i);
+                    continue;
+                }
+
                 enemiesInRange[i].TakeDamage(damage);
             }
         }

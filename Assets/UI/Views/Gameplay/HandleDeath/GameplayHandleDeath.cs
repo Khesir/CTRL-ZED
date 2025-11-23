@@ -12,20 +12,25 @@ public class GameplayHandleDeath : MonoBehaviour
     [SerializeField] private Button giveupButton;
     [SerializeField] private TMP_Text driveCounter;
     [SerializeField] private PanelAnimator panelAnimator;
+
+    private IGameplayManager gameplayManager;
+
     public async void SetDisplay(bool flag = true)
     {
         gameObject.SetActive(flag);
+        gameplayManager = ServiceLocator.Get<IGameplayManager>();
+
         if (flag)
         {
             await panelAnimator.Show();
-            GameplayManager.Instance.OnDeadTeamUpdated += UpdateDeployedTeam;
+            gameplayManager.OnDeadTeamUpdated += UpdateDeployedTeam;
             Setup();
         }
         else
         {
             // Disconnect external dependencies
             await panelAnimator.Hide();
-            GameplayManager.Instance.OnDeadTeamUpdated -= UpdateDeployedTeam;
+            gameplayManager.OnDeadTeamUpdated -= UpdateDeployedTeam;
         }
     }
     private void Setup()
@@ -60,16 +65,17 @@ public class GameplayHandleDeath : MonoBehaviour
         giveupButton.onClick.RemoveAllListeners();
         giveupButton.onClick.AddListener(async () =>
         {
-            await GameplayManager.Instance.SetState(GameplayState.End);
+            await gameplayManager.SetState(GameplayState.End);
         });
     }
+
     private async void OnDeploySelected(GamplayTeamCompCard card)
     {
         // Hide the death panel
         SetDisplay(false);
 
         // Start the round
-        await GameplayManager.Instance.SetState(GameplayState.Playing);
+        await gameplayManager.SetState(GameplayState.Playing);
     }
     private void Clear()
     {

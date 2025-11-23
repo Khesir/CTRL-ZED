@@ -25,7 +25,7 @@ public class Stealth : MonoBehaviour, ISkill, IStatProvider
     {
         if (!CanActivate()) return;
         lastUsedTime = Time.time;
-        GameplayManager.Instance.EnemyManager.SetStealth(true);
+        ServiceLocator.Get<IEnemyManager>().SetStealth(true);
 
         if (config.vfxPrefab != null)
         {
@@ -45,7 +45,7 @@ public class Stealth : MonoBehaviour, ISkill, IStatProvider
     private IEnumerator RemoveAfterLifetime()
     {
         yield return new WaitForSeconds(config.skillLifetime);
-        GameplayManager.Instance.EnemyManager.SetStealth(false);
+        ServiceLocator.Get<IEnemyManager>().SetStealth(false);
         var sr = user.GetComponent<SpriteRenderer>();
         if (sr != null)
         {

@@ -37,7 +37,7 @@ public class WaveUIController : MonoBehaviour
 
     public void Setup()
     {
-        title.text = $"Wave {GameplayManager.Instance.WaveManager.GetWaveIndex()}";
+        title.text = $"Wave {ServiceLocator.Get<IWaveManager>().GetWaveIndex()}";
     }
 
     public void UpdateSlider(int currentKills, int requiredKills, int index)

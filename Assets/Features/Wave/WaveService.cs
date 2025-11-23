@@ -7,26 +7,31 @@ public class WaveService
 {
     private readonly WaveConfig config;
     private readonly EnemySpawner spawner;
+    private readonly AttackTimer timer;
 
     private float spawnTimer;
     private int killCount;
     private bool isActive;
     private bool isComplete = false;
-    public WaveService(WaveConfig config, EnemySpawner spawner)
+
+    public WaveService(WaveConfig config, EnemySpawner spawner, AttackTimer timer)
     {
         this.config = config;
         this.spawner = spawner;
+        this.timer = timer;
     }
+
     public void StartWave()
     {
         isActive = true;
         killCount = 0;
         spawnTimer = 0;
 
-        GameplayManager.Instance.GameplayUI.timer.SetupTimer(config.attackTimer);
-        GameplayManager.Instance.GameplayUI.timer.SetupAttackTimerDmaage(config.minAttackTimerDamage, config.maxAttackTimerDamage);
+        timer.SetupTimer(config.attackTimer);
+        timer.SetupAttackTimerDmaage(config.minAttackTimerDamage, config.maxAttackTimerDamage);
         Debug.Log($"[WaveService] Wave started");
     }
+
     public void Update()
     {
         if (!isActive) return;
@@ -37,7 +42,7 @@ public class WaveService
             spawnTimer = 0;
             SpawnEnemy();
         }
-        GameplayManager.Instance.GameplayUI.timer.TriggerTimer();
+        timer.TriggerTimer();
     }
     private void SpawnEnemy()
     {

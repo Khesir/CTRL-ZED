@@ -26,7 +26,8 @@ public class SceneEventBus : MonoBehaviour
     {
         if (Instance == null)
         {
-            Debug.LogWarning("[SceneEventBus] Instance is null. Cannot subscribe.");
+            Debug.LogWarning($"[SceneEventBus] Instance is null. Cannot subscribe to {typeof(T).Name}. " +
+                $"Caller: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.DeclaringType?.Name}");
             return;
         }
         Instance._eventBus.Subscribe(handler);

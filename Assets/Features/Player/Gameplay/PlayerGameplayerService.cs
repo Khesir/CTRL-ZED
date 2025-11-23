@@ -13,10 +13,18 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
     [SerializeField] private bool inputEnabled = false;
     public bool isControlled = false;
 
+    // Cached DI references
+    private IGameplayManager gameplayManager;
+    private IFollowerManager followerManager;
+
     public bool isDead => characterData.isDead;
 
     public void Initialize()
     {
+        // Cache DI references
+        gameplayManager = ServiceLocator.Get<IGameplayManager>();
+        followerManager = ServiceLocator.Get<IFollowerManager>();
+
         // For now Its we'll pass the characterGameState rather than passing just the needed value.
         // Just for convinience
         rb = GetComponent<Rigidbody2D>();
@@ -42,7 +50,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
     }
     void Update()
     {
-        if (!GameplayManager.Instance.IsGameActive || !inputEnabled || inputService == null || isDead) return;
+        if (gameplayManager == null || !gameplayManager.IsGameActive || !inputEnabled || inputService == null || isDead) return;
 
         Vector2 moveInput = inputService.MoveInput;
         bool dashPressed = inputService.DashPressed;
@@ -83,7 +91,6 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         // Character Switching Logic
-        var followerManager = GameplayManager.Instance.FollowerManager;
         int nextIndex = followerManager.GetAvailableFollower();
 
         if (nextIndex != -1)
@@ -94,7 +101,7 @@ public class PlayerGameplayService : MonoBehaviour, IStatHandler, IDamageable
         {
             // No available characters, trigger game over or team defeat
             followerManager.ResetTarget();
-            GameplayManager.Instance.GameplayUI.HandleGameOver();
+            ServiceLocator.Get<GameplayUIController>().HandleGameOver();
         }
     }
     public bool IsDead() => isDead;

@@ -15408,6 +15408,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1641910465}
     - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
+      propertyPath: damageNumberService
+      value: 
+      objectReference: {fileID: 1167635886}
+    - target: {fileID: 3891308729030426309, guid: 3612e28100e16554e8225a7aab2af35c, type: 3}
       propertyPath: damageNumberController
       value: 
       objectReference: {fileID: 1167635886}

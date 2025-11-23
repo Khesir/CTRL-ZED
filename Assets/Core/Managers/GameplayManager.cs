@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 public enum GameplayState { None, Start, Playing, Revive, End }
 public enum GameplayEndGameState { DeathOnTimer, LevelComplete }
 
-public class GameplayManager : MonoBehaviour
+public class GameplayManager : MonoBehaviour, IGameplayManager
 {
     public static GameplayManager Instance { get; private set; }
 
@@ -29,11 +29,11 @@ public class GameplayManager : MonoBehaviour
     [Header("Tutorial")]
     [SerializeField] private LevelData tutorialLevel;
 
-    // Public accessors for systems that still need direct access
-    public GameplayUIController GameplayUI => gameplayUI;
-    public IFollowerManager FollowerManager => followerManager;
-    public IEnemyManager EnemyManager => enemyManager;
-    public IWaveManager WaveManager => waveManager;
+    // IGameplayManager implementation
+    public bool IsGameActive { get; private set; }
+    public GameplayEndGameState EndGameState { get; set; }
+    public GameplayState CurrentState { get; private set; } = GameplayState.None;
+
     public string ActiveTeamID
     {
         get => activeTeamID;
@@ -43,11 +43,6 @@ public class GameplayManager : MonoBehaviour
             HandleTeamChange();
         }
     }
-
-    // State
-    public bool IsGameActive { get; private set; }
-    public GameplayEndGameState EndGameState { get; set; }
-    public GameplayState CurrentState { get; private set; } = GameplayState.None;
 
     // Team tracking
     private string activeTeamID;
@@ -78,6 +73,18 @@ public class GameplayManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // Create SceneEventBus EARLY so other scripts can subscribe in OnEnable()
+        EnsureSceneEventBus();
+    }
+
+    private void EnsureSceneEventBus()
+    {
+        if (FindAnyObjectByType<SceneEventBus>() == null)
+        {
+            var sceneEventBusGO = new GameObject("SceneEventBus");
+            sceneEventBusGO.AddComponent<SceneEventBus>();
+        }
     }
 
     private async void Start()
@@ -91,13 +98,6 @@ public class GameplayManager : MonoBehaviour
     private void Initialize()
     {
         if (isInitialized) return;
-
-        // Create SceneEventBus for this scene if it doesn't exist
-        if (FindAnyObjectByType<SceneEventBus>() == null)
-        {
-            var sceneEventBusGO = new GameObject("SceneEventBus");
-            sceneEventBusGO.AddComponent<SceneEventBus>();
-        }
 
         // Cache references
         gameManager = GameInitiator.Instance.GameManager;
@@ -140,6 +140,7 @@ public class GameplayManager : MonoBehaviour
         // Use DI composition root for gameplay services
         GameplayCompositionRoot.Configure(
             GameServices.Container,
+            this,
             enemyManager,
             waveManager,
             lootManager,

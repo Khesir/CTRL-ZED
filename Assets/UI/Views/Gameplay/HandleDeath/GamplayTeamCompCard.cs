@@ -28,16 +28,19 @@ public class GamplayTeamCompCard : MonoBehaviour
         // Prepare dead color (#FF4C4C)
         ColorUtility.TryParseHtmlString("#FF4C4C", out deadColor);
     }
+    private IGameplayManager gameplayManager;
+
     private void OnEnable()
     {
-        if (GameplayManager.Instance != null)
-            GameplayManager.Instance.OnDeadTeamUpdated += Refresh;
+        gameplayManager = ServiceLocator.TryGet<IGameplayManager>();
+        if (gameplayManager != null)
+            gameplayManager.OnDeadTeamUpdated += Refresh;
     }
 
     private void OnDisable()
     {
-        if (GameplayManager.Instance != null)
-            GameplayManager.Instance.OnDeadTeamUpdated -= Refresh;
+        if (gameplayManager != null)
+            gameplayManager.OnDeadTeamUpdated -= Refresh;
     }
     public void Setup(TeamService service)
     {
@@ -56,10 +59,10 @@ public class GamplayTeamCompCard : MonoBehaviour
     }
     private void Refresh()
     {
-        if (service == null) return;
+        if (service == null || gameplayManager == null) return;
 
-        bool isDead = GameplayManager.Instance.IsTeamDead(service.GetData().teamID);
-        bool isDeployed = service.GetData().teamID == GameplayManager.Instance.ActiveTeamID;
+        bool isDead = gameplayManager.IsTeamDead(service.GetData().teamID);
+        bool isDeployed = service.GetData().teamID == gameplayManager.ActiveTeamID;
 
         // --- Background color ---
         backgroundImage.color = isDead ? deadColor : defaultBackgroundColor;
@@ -82,8 +85,8 @@ public class GamplayTeamCompCard : MonoBehaviour
     private void DeployAction()
     {
         // End current battle and switch team
-        GameplayManager.Instance.EnemyManager.KillAllEnemies(true);
-        GameplayManager.Instance.ActiveTeamID = service.GetData().teamID;
+        ServiceLocator.Get<IEnemyManager>().KillAllEnemies(true);
+        gameplayManager.ActiveTeamID = service.GetData().teamID;
 
         onDeploySelected?.Invoke(this);
     }
@@ -92,6 +95,6 @@ public class GamplayTeamCompCard : MonoBehaviour
     {
         ServiceLocator.Get<IPlayerManager>().playerService.SpendChargeDrives(1);
 
-        GameplayManager.Instance.SetDeadTeam(service.GetData().teamID, false);
+        gameplayManager.SetDeadTeam(service.GetData().teamID, false);
     }
 }

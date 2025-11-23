@@ -46,7 +46,6 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
     {
         soundService.Play(SoundCategory.Gameplay, SoundType.Gameplay_Damage);
 
-        // TODO: Move to IDamageNumberService when created
         if (damage != -1) ServiceLocator.Get<IDamageNumberService>().CreateNumber(damage, transform.position);
 
         currentHP -= damage;

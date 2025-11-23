@@ -14,6 +14,7 @@ public class CharacterListUI : MonoBehaviour
     public GameObject hotbar4;
 
     private List<GameObject> hotbars;
+    private IFollowerManager followerManager;
 
     private void Awake()
     {
@@ -24,14 +25,16 @@ public class CharacterListUI : MonoBehaviour
             hotbar3,
             hotbar4
         };
-
     }
+
     public void OnClose()
     {
         CharacterIcons.SetActive(true);
     }
+
     public void Initialize(List<CharacterBattleState> characters)
     {
+        followerManager = ServiceLocator.Get<IFollowerManager>();
 
         for (int i = 0; i < hotbars.Count; i++)
         {
@@ -47,7 +50,7 @@ public class CharacterListUI : MonoBehaviour
                 hotbar.SetActive(false);
             }
         }
-        GameplayManager.Instance.FollowerManager.OnSwitch += UpdateHotbar1;
+        followerManager.OnSwitch += UpdateHotbar1;
     }
     public async UniTask AnimateHotbarsInAndOut()
     {
@@ -115,7 +118,7 @@ public class CharacterListUI : MonoBehaviour
     }
     public void UpdateHotbar1()
     {
-        var activePlayer = GameplayManager.Instance.FollowerManager.GetCurrentTargetBattleState();
+        var activePlayer = followerManager.GetCurrentTargetBattleState();
         hotbar1.GetComponent<CharacterDetails>().Initialize(activePlayer);
     }
 }

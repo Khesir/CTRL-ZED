@@ -17,6 +17,7 @@ public class WaveManager : MonoBehaviour, IWaveManager
     // Cached service references
     private ISoundService soundService;
     private IEnemyManager enemyManager;
+    private AttackTimer attackTimer;
 
     private void OnEnable()
     {
@@ -41,7 +42,7 @@ public class WaveManager : MonoBehaviour, IWaveManager
         currentWave = null;
 
         enemyManager = ServiceLocator.Get<IEnemyManager>();
-        // Add controls if its a campaign or endless here
+        attackTimer = ServiceLocator.Get<GameplayUIController>().timer;
         Debug.Log("[WaveManager] Initialized");
     }
     public void SetWaveConfig(List<WaveConfig> waveConfigs)
@@ -72,7 +73,7 @@ public class WaveManager : MonoBehaviour, IWaveManager
         }
 
         var config = waveConfigs[waveIndex];
-        currentWave = new WaveService(config, spawner);
+        currentWave = new WaveService(config, spawner, attackTimer);
 
         currentWave.StartWave();
 

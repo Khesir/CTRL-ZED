@@ -8,6 +8,7 @@ public static class GameplayCompositionRoot
 {
     public static void Configure(
         DIContainer container,
+        GameplayManager gameplayManager,
         EnemyManager enemyManager,
         WaveManager waveManager,
         LootManager lootManager,
@@ -15,6 +16,9 @@ public static class GameplayCompositionRoot
         DamageNumberService damageNumberService,
         GameplayUIController gameplayUI)
     {
+        // Register GameplayManager
+        container.RegisterSingleton<IGameplayManager>(gameplayManager);
+
         // Register gameplay services
         container.RegisterSingleton<IEnemyManager>(enemyManager);
         container.RegisterSingleton<IWaveManager>(waveManager);

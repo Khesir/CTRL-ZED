@@ -12,11 +12,21 @@ public class AttackTimer : MonoBehaviour
     public float maxAttackTimerDamage = 10;
     private PlayerService playerInstance;
     public float timeElapse;
+
+    // Cached DI references
+    private IGameplayManager gameplayManager;
+    private IFollowerManager followerManager;
+
     public void Setup(PlayerService playerInstance)
     {
         this.playerInstance = playerInstance;
         timer = timeLimit;
+
+        // Cache DI references
+        gameplayManager = ServiceLocator.Get<IGameplayManager>();
+        followerManager = ServiceLocator.Get<IFollowerManager>();
     }
+
     public async void TriggerTimer()
     {
         timer -= Time.deltaTime;
@@ -28,9 +38,9 @@ public class AttackTimer : MonoBehaviour
             if (playerInstance.IsDead())
             {
                 Debug.Log("Game Over");
-                GameplayManager.Instance.FollowerManager.ResetTarget();
-                GameplayManager.Instance.EndGameState = GameplayEndGameState.DeathOnTimer;
-                await GameplayManager.Instance.SetState(GameplayState.End);
+                followerManager.ResetTarget();
+                gameplayManager.EndGameState = GameplayEndGameState.DeathOnTimer;
+                await gameplayManager.SetState(GameplayState.End);
             }
             timer = timeLimit;
         }

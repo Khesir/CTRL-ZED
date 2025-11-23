@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UIElementController : MonoBehaviour
@@ -12,8 +13,10 @@ public class UIElementController : MonoBehaviour
 
     private ISoundService soundService;
 
-    private void Awake()
+    private async void Start()
     {
+        // Temp solution 
+        await UniTask.WaitUntil(() => GameInitiator.Instance != null && GameInitiator.Instance.isFinished);
         soundService = ServiceLocator.Get<ISoundService>();
     }
 

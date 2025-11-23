@@ -28,6 +28,9 @@ public class EnemyFollow : MonoBehaviour
 
     private EnemyService service;
     private bool isStunned = false;
+    private IFollowerManager followerManager;
+    private IEnemyManager enemyManager;
+
     public void Initialize(EnemyService service)
     {
         this.service = service;
@@ -36,17 +39,22 @@ public class EnemyFollow : MonoBehaviour
         m_StopDistance = config.stopDistance;
         m_DetectionDistance = config.detectionRange;
 
+        // Cache DI references
+        followerManager = ServiceLocator.Get<IFollowerManager>();
+        enemyManager = ServiceLocator.Get<IEnemyManager>();
+
         Refresh();
 
-        GameplayManager.Instance.FollowerManager.OnSwitch += Refresh;
+        followerManager.OnSwitch += Refresh;
     }
+
     public void Refresh()
     {
-        var inStealth = GameplayManager.Instance.EnemyManager.InStealth;
+        var inStealth = enemyManager.InStealth;
 
         if (!inStealth)
         {
-            target = GameplayManager.Instance.FollowerManager.GetCurrentTarget();
+            target = followerManager.GetCurrentTarget();
         }
         else
         {
