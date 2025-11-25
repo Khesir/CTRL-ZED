@@ -71,7 +71,14 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
                 PreviousLevel = expService.GetLevel() - 1
             });
         };
-        expService.OnExpGained += () => OnExpGained?.Invoke();
+        expService.OnExpGained += () =>
+        {
+            OnExpGained?.Invoke();
+            CoreEventBus.Publish(new PlayerExpGainEvent
+            {
+                newTotalExp = expService.GetCurrentExp(),
+            });
+        };
 
         // Drives Events
         drivesService.OnSpendDrives += () =>
@@ -132,12 +139,13 @@ public class PlayerService : IResourceService, IEconomyService, IExpService, IHe
     public void GainExp(int amount) => expService.GainExp(amount);
     public int GetCurrentExp() => expService.GetCurrentExp();
     public int GetRequiredExp() => expService.GetRequiredExp();
-    public int GetLevel() => expService.GetLevel();
+    public int GetLevel() => expService.GetLevel(); // Abit ambiguous with name should have curr
     public int GetMaxLevel() => expService.GetLevel();
     #endregion
 
     #region HealthService
     public void Heal() => healthService.Heal();
+    public void HealAmount(float amount) => healthService.HealAmount(amount);
     public void TakeDamage(float damage) => healthService.TakeDamage(damage);
     public void HandleLevelUp(int level) => healthService.HandleLevelUp(data.level);
     public float GetMaxHealth() => healthService.GetMaxHealth();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Core.Shared.Events;
 
 public class UIRepairSection : MonoBehaviour
 {
@@ -45,9 +46,32 @@ public class UIRepairSection : MonoBehaviour
     }
     private void Repair()
     {
+        float currentHealth = instance.GetCurrentHealth();
+        float maxHealth = instance.GetMaxHealth();
+
+        if (currentHealth >= maxHealth)
+        {
+            TooltipEventBus.PublishWarning("OS Health is already at maximum!");
+            return;
+        }
+
+        int currentCoins = instance.GetCoins();
+
+        if (currentCoins < coinsNeeded)
+        {
+            int shortage = coinsNeeded - currentCoins;
+            TooltipEventBus.PublishError($"Not enough coins to repair! Need {shortage} more coins");
+            return;
+        }
+
         if (ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(coinsNeeded))
         {
             instance.Heal();
+            TooltipEventBus.PublishSuccess($"OS repaired to full health! Spent {coinsNeeded} coins");
+        }
+        else
+        {
+            TooltipEventBus.PublishError("Failed to repair!");
         }
     }
 }

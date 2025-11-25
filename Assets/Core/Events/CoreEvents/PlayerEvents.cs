@@ -20,6 +20,10 @@ public struct PlayerLevelUpEvent
     public int NewLevel;
     public int PreviousLevel;
 }
+public struct PlayerExpGainEvent
+{
+    public float newTotalExp;
+}
 
 public struct PlayerResourceChangedEvent
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Core.Shared.Events;
 
 public class UILevelUpSection : MonoBehaviour
 {
@@ -48,9 +49,23 @@ public class UILevelUpSection : MonoBehaviour
     {
         float coinsPerExp = instance.GetCoinsPerExpRate();
         int remainingExp = (int)(costCoins / coinsPerExp);
+        int currentCoins = instance.GetCoins();
+
+        if (currentCoins < costCoins)
+        {
+            int shortage = costCoins - currentCoins;
+            TooltipEventBus.PublishError($"Not enough coins to level up! Need {shortage} more coins");
+            return;
+        }
+
         if (instance.SpendCoins(costCoins))
         {
             instance.GainExp(remainingExp);
+            TooltipEventBus.PublishSuccess($"Level up successful! Spent {costCoins} coins");
+        }
+        else
+        {
+            TooltipEventBus.PublishError("Failed to level up!");
         }
     }
 }

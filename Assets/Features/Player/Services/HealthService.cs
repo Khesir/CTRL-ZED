@@ -21,7 +21,15 @@ public class HealthService : IHealthService
     public void Heal()
     {
         data.currentHealth = GetMaxHealth();
+        OnHealthChanged?.Invoke();
     }
+
+    public void HealAmount(float amount)
+    {
+        data.currentHealth = Mathf.Min(data.currentHealth + amount, GetMaxHealth());
+        OnHealthChanged?.Invoke();
+    }
+
     public void TakeDamage(float amount)
     {
         data.currentHealth -= amount;
