@@ -232,6 +232,9 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         playerGameplayManager.Initialize(followerObjects, inputService);
         gameplayUI.SetupCharacterUI(battleStates);
         followerManager.SwitchTo(0);
+
+        // Apply any purchased antivirus buffs to all characters in the scene
+        ServiceLocator.Get<IStatusEffectManager>()?.ApplyAllStoredBuffsToScene();
     }
     public void StartWaveInternal()
     {
@@ -254,6 +257,10 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     {
         gameplayUI.HandleEndGamePanel(EndGameState);
         MarkTutorialComplete();
+
+        // Clear all antivirus buffs when gameplay ends
+        ServiceLocator.Get<IStatusEffectManager>()?.ClearAllBuffs();
+        Debug.Log("[GameplayManager] Cleared all antivirus buffs after gameplay ended");
     }
 
 

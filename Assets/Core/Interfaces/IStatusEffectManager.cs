@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public interface IStatusEffectManager
 {
@@ -9,6 +10,8 @@ public interface IStatusEffectManager
 
     UniTask Initialize();
     void AddBuff(StatusEffectData data);
+    void ApplyAllStoredBuffsToScene();
+    void ApplyActiveBuffsToEntity(GameObject entity);
     void ClearAllBuffs();
     List<StatusEffectInstance> GetAllStatusInstances();
     bool IsStatusEffectAdded(StatusEffectData data);

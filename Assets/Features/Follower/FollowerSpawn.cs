@@ -48,6 +48,10 @@ public class FollowerSpawn : MonoBehaviour
             img.sprite = data.data.GetInstance().ship;
             // Injects character data to player service
             instance.GetComponent<PlayerGameplayService>().SetCharacterData(data);
+
+            // Apply any active antivirus buffs to the newly spawned character
+            ServiceLocator.Get<IStatusEffectManager>()?.ApplyActiveBuffsToEntity(instance);
+
             followers.Add(follower);
             follower.Initialize();
         }

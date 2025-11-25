@@ -16,6 +16,9 @@ public class EnemySpawner : MonoBehaviour
         Vector2 spawnPoint = GetRandomSpawnPoint();
         var go = Instantiate(prefab, spawnPoint, Quaternion.identity);
         go.GetComponent<EnemyService>().Initialize(enemyConfig);
+
+        // Apply any active antivirus debuffs to the newly spawned enemy
+        ServiceLocator.Get<IStatusEffectManager>()?.ApplyActiveBuffsToEntity(go);
     }
 
     public Vector2 GetRandomSpawnPoint()

@@ -41,9 +41,9 @@ public class UILevelUpSection : MonoBehaviour
 
         // Update UI
         requirements.text = $"{currentExp}/{requiredExp}";
-        level.text = "Level " + instance.GetLevel();
-        coins.text = currentCoins + " Coins";
-        cost.text = costCoins + " Coins";
+        level.text = instance.GetLevel().ToString();
+        coins.text = currentCoins.ToString();
+        cost.text = costCoins.ToString();
     }
     public void Levelup()
     {
