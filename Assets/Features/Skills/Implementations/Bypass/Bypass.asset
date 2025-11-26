@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3960aa2da8b50478fb6f0982175401, type: 3}
+  m_Name: Bypass
+  m_EditorClassIdentifier: 
+  skillName: Bypass
+  description: 
+  icon: {fileID: -1443955201, guid: 85ffe08aa556008478076d3d0ace428e, type: 3}
+  cooldown: 0
+  skillLifetime: 2
+  skillPrefab: {fileID: 3504468008112984809, guid: afc03416de0062a4f8247f38f68a12ad, type: 3}
+  vfxPrefab: {fileID: 2039224339467302482, guid: b2e5f5bfbb3eff74bb8b34648b743cd0, type: 3}

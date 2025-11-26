@@ -34,4 +34,4 @@ MonoBehaviour:
   intelligence: 100
   weapon: {fileID: 11400000, guid: 867839c98a294e14fac9fb8713149842, type: 2}
   skill1: {fileID: 11400000, guid: ddd7601671826944d96d6924f542114a, type: 2}
-  skill2: {fileID: 11400000, guid: 072a3f35d8ea6784191af66167640c7d, type: 2}
+  skill2: {fileID: 11400000, guid: ce3495452948b51468652e597125fb81, type: 2}

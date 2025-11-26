@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Enemies;
 
 public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
 {
@@ -50,6 +51,13 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         follow = gameObject.GetComponent<EnemyFollow>();
         follow.Initialize(this);
         enemyManager.RegisterEnemy(this);
+
+        // Register with minimap manager for visibility control
+        if (MinimapManager.Instance != null)
+        {
+            MinimapManager.Instance.RegisterEnemy(gameObject);
+        }
+
         isInitialized = true;
 
         Debug.Log($"[EnemyService] {config.enemyName} spawned - Player Lv.{playerLevel}, Multiplier: {levelMultiplier:F2}x");
@@ -88,6 +96,12 @@ public class EnemyService : MonoBehaviour, IStatHandler, IDamageable
         // Still need direct call for silent kills (no wave report)
         if (!notifyWaveSystem)
             enemyManager.UnregisterEnemy(this);
+
+        // Unregister from minimap manager
+        if (MinimapManager.Instance != null)
+        {
+            MinimapManager.Instance.UnregisterEnemy(gameObject);
+        }
 
         if (!isSilent) InstantiateLoot(transform.position);
 
