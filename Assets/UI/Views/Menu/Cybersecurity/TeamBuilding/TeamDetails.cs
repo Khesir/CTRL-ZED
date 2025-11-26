@@ -30,6 +30,7 @@ public class TeamDetails : MonoBehaviour
             {
                 go[i].SetToState(true); // This changes the go to true / visible
                 go[i].Initialize(team[i]);
+                go[i].index = instance.GetData().teamID;
                 float multiplier = Mathf.Pow(1.2f, team[i].currentLevel - 1);
 
                 var cost = new Dictionary<string, float>{

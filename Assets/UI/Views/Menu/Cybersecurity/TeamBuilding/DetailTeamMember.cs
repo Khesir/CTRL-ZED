@@ -9,19 +9,16 @@ public class DetailTeamMember : MonoBehaviour
     public TMP_Text className;
     public TMP_Text characterName;
     public TMP_Text level;
-    public Button actionButton;
     public Button removeInstanceFromTeam;
     public DetailsController detailsController;
-    public int index;
+    public string index;
     private CharacterData instance;
     public void Initialize(CharacterData instance)
     {
         this.instance = instance;
         UpdateData();
-        actionButton.onClick.RemoveAllListeners();
-        actionButton.onClick.AddListener(OnActionButtonClicked);
-        // removeInstanceFromTeam.onClick.RemoveAllListeners();
-        // removeInstanceFromTeam.onClick.AddListener(RemoveMember);
+        removeInstanceFromTeam.onClick.RemoveAllListeners();
+        removeInstanceFromTeam.onClick.AddListener(RemoveMember);
     }
     public void SetToState(bool flag)
     {
@@ -29,7 +26,6 @@ public class DetailTeamMember : MonoBehaviour
         className.gameObject.SetActive(flag);
         characterName.gameObject.SetActive(flag);
         level.gameObject.SetActive(flag);
-        actionButton.gameObject.SetActive(flag);
         removeInstanceFromTeam.gameObject.SetActive(flag);
     }
     public void UpdateData()
@@ -47,18 +43,18 @@ public class DetailTeamMember : MonoBehaviour
     {
         detailsController.Intialize(instance);
     }
-    // private void RemoveMember()
-    // {
-    //     var res = GameManager.Instance.TeamManager.RemoveCharacterFromTeamByReference(index, instance);
-    //     if (res)
-    //         ResetUI();
-    // }
-    // private void ResetUI()
-    // {
-    //     icon.sprite = null;
-    //     icon.color = new Color32(255, 255, 255, 0);
-    //     className.text = "";
-    //     characterName.text = "";
-    //     level.text = "";
-    // }
+    private void RemoveMember()
+    {
+        var res = ServiceLocator.Get<ITeamManager>().RemoveCharacterFromTeamByReference(index, instance);
+        if (res)
+            ResetUI();
+    }
+    private void ResetUI()
+    {
+        icon.sprite = null;
+        icon.color = new Color32(255, 255, 255, 0);
+        className.text = "";
+        characterName.text = "";
+        level.text = "";
+    }
 }
