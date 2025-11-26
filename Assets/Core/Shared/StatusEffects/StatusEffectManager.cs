@@ -119,24 +119,35 @@ public class StatusEffectManager : MonoBehaviour, IStatusEffectManager
     {
         if (!isInitialized) return;
         float dt = Time.deltaTime;
+        bool buffChanged = false;
         for (int i = activeBuffs.Count - 1; i >= 0; i--)
         {
             bool isExpired = activeBuffs[i].Tick(dt);
             if (isExpired)
             {
                 activeBuffs.RemoveAt(i);
+                buffChanged = true;
             }
         }
-        onBuffChange?.Invoke();
+        // Only invoke event when buffs actually change to prevent unnecessary calls
+        if (buffChanged)
+        {
+            onBuffChange?.Invoke();
+        }
     }
-    public void ClearAllBuffs()
+    public void ClearAllBuffs(bool invokeEvent = true)
     {
         foreach (var buff in activeBuffs)
         {
             buff.RemoveFromAll();
         }
         activeBuffs.Clear();
-        onBuffChange.Invoke();
+
+        // Only invoke event if requested (avoid during scene teardown)
+        if (invokeEvent)
+        {
+            onBuffChange?.Invoke();
+        }
     }
     public List<StatusEffectInstance> GetAllStatusInstances()
     {

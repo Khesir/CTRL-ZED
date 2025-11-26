@@ -17,6 +17,8 @@ public class GameplayUIController : MonoBehaviour
     public StartButton startButton;
     public RevivePanel revivePanel;
     public DialogSystem dialogUI;
+    public GameplayActiveStatusEffect statusEffectPanel;
+
     [Header("Gameplay Services")]
     private PlayerService playerService;
     public AttackTimer timer;
@@ -89,6 +91,7 @@ public class GameplayUIController : MonoBehaviour
         // Only happen on start state once, since we look start to next
         if (!_isInitializeSetup)
         {
+            statusEffectPanel.Setup();
             baseOSHP.Setup(playerService);
             waveUI.Setup();
             timer.Setup(playerService);

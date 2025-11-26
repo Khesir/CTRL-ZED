@@ -12,7 +12,7 @@ public interface IStatusEffectManager
     void AddBuff(StatusEffectData data);
     void ApplyAllStoredBuffsToScene();
     void ApplyActiveBuffsToEntity(GameObject entity);
-    void ClearAllBuffs();
+    void ClearAllBuffs(bool invokeEvent = true);
     List<StatusEffectInstance> GetAllStatusInstances();
     bool IsStatusEffectAdded(StatusEffectData data);
     bool IsThereExisitingBuffType(StatusEffectData data);

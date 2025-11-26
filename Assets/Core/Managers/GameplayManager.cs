@@ -257,10 +257,9 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     {
         gameplayUI.HandleEndGamePanel(EndGameState);
         MarkTutorialComplete();
-
-        // Clear all antivirus buffs when gameplay ends
-        ServiceLocator.Get<IStatusEffectManager>()?.ClearAllBuffs();
-        Debug.Log("[GameplayManager] Cleared all antivirus buffs after gameplay ended");
+        // Clear all antivirus buffs when gameplay ends (silently to avoid destroyed object exceptions)
+        ServiceLocator.Get<IStatusEffectManager>()?.ClearAllBuffs(invokeEvent: false);
+        Debug.Log("[GameplayManager] Cleared all antivirus buffs silently after gameplay ended");
     }
 
 

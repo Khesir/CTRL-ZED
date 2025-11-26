@@ -28,7 +28,6 @@ public static class SaveSystem
         {
             File.Delete(path);
             Debug.Log($"Deleted save slot {slot} at {path}");
-            CoreEventBus.Publish(new SaveSystemDeleteActionEvent());
         }
         else
         {

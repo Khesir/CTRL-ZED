@@ -14,6 +14,9 @@ public class GameplayActiveStatusEffect : MonoBehaviour
     }
     private void UpdateUI()
     {
+        // Safety check: don't update if object is being destroyed
+        if (this == null || gameObject == null) return;
+
         Clear();
         var activeBuffs = ServiceLocator.Get<IStatusEffectManager>().activeBuffs;
         foreach (var buff in activeBuffs)
@@ -29,9 +32,15 @@ public class GameplayActiveStatusEffect : MonoBehaviour
     }
     private void Clear()
     {
+        // Safety check: don't clear if object is being destroyed
+        if (this == null || gameObject == null) return;
+
         foreach (Transform child in gameObject.transform)
         {
-            Destroy(child.gameObject);
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

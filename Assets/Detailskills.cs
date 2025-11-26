@@ -9,6 +9,9 @@ public class Detailskills : MonoBehaviour
     [SerializeField] private Transform parentSlot;
     public void Initialize(List<SkillConfig> skillConfigs)
     {
+        // Safety check: don't initialize if object is being destroyed
+        if (this == null || parentSlot == null) return;
+
         Clear();
         foreach (var skill in skillConfigs)
         {
@@ -19,9 +22,15 @@ public class Detailskills : MonoBehaviour
     }
     public void Clear()
     {
+        // Safety check: don't clear if object is being destroyed
+        if (parentSlot == null) return;
+
         foreach (Transform child in parentSlot)
         {
-            Destroy(child.gameObject);
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

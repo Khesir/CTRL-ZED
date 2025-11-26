@@ -18,6 +18,7 @@ public class SaveLoader : MonoBehaviour
     private void Refresh(SaveSystemDeleteActionEvent evt) => Refresh();
     private void Refresh()
     {
+        Debug.Log("Referesh");
         ClearContainer();
 
         var saves = ServiceLocator.Get<IPlayerDataManager>().loadedSlots;

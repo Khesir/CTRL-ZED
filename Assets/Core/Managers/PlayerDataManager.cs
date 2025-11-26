@@ -52,6 +52,7 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
         SaveSystem.DeleteSlot(slot + 1);
         // Reload slot data so UI reflects the change
         LoadSlotData();
+        CoreEventBus.Publish(new SaveSystemDeleteActionEvent());
     }
     public void AutoSaveTrigger()
     {

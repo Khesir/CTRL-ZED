@@ -27,8 +27,32 @@ public class DetailsController : MonoBehaviour
         Populate();
         ServiceLocator.Get<IPlayerManager>().playerService.OnSpendDrives += Populate;
     }
+
+    private void OnDisable()
+    {
+        // Unsubscribe to prevent accessing destroyed transforms
+        UnsubscribeFromEvents();
+    }
+
+    private void OnDestroy()
+    {
+        // Backup unsubscribe in case OnDisable wasn't called
+        UnsubscribeFromEvents();
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        var playerManager = ServiceLocator.Get<IPlayerManager>();
+        if (playerManager != null && playerManager.playerService != null)
+        {
+            playerManager.playerService.OnSpendDrives -= Populate;
+        }
+    }
     public void Populate()
     {
+        // Safety check: don't populate if object is being destroyed or inactive
+        if (this == null || !gameObject.activeInHierarchy || content == null) return;
+
         characterName.text = character.name;
         className.text = $"{character.baseData.className} - Lvl {character.currentLevel}";
         characterIcon.sprite = character.baseData.icon;
@@ -72,9 +96,14 @@ public class DetailsController : MonoBehaviour
 
     public void Clear()
     {
+        if (content == null) return; // Safety check for destroyed transforms
+
         foreach (Transform child in content)
         {
-            Destroy(child.gameObject);
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
     private void Upgrade()

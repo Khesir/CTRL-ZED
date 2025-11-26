@@ -18,13 +18,13 @@ public static class SceneLoader
 
         if (isInTutorial && canvas.HasTutorialVideo && !GameInitiator.Instance.introViewed)
         {
+            canvas.ShowLoading(true);
+
             // Tutorial flow: Video first, then load scene
             Debug.Log("[SceneLoader] Playing tutorial video...");
 
             await canvas.PlayTutorialVideo();
 
-            // After video ends/skipped, show loading and load scene
-            canvas.ShowLoading(true);
             float loadingStartTime = Time.unscaledTime;
 
             var loadOperation = SceneManager.LoadSceneAsync(sceneName);

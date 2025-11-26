@@ -63,6 +63,13 @@ public class GameStateManager : MonoBehaviour
             return;
         }
 
+        // Clear buffs when leaving Gameplay to prevent MissingReferenceException
+        if (Currentstate == GameState.Gameplay && newState != GameState.Gameplay)
+        {
+            ServiceLocator.Get<IStatusEffectManager>()?.ClearAllBuffs(invokeEvent: false);
+            Debug.Log("[GameStateManager] Cleared all buffs silently before leaving Gameplay scene");
+        }
+
         Currentstate = newState;
         Debug.Log($"[GameStateManager] State changed to: {newState}");
         OnStateChanged?.Invoke(newState);
