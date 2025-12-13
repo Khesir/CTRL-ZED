@@ -19,5 +19,6 @@ public class LevelData : ScriptableObject
     [Header("Level Setup")]
     public WaveSet waveSet;
     public List<Material> background;
-
+    [Header("Extra Unlock Conditions")]
+    public int OsLevelRequirement;
 }

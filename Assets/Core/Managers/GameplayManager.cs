@@ -324,4 +324,17 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         teamManager.SetActiveTeam(teamID);
     }
     #endregion
+
+    [ContextMenu("Wave Complete")]
+    private void SkipWave()
+    {
+
+        SceneEventBus.Publish(new WaveCompletedEvent
+        {
+            WaveNumber = waveManager.waveIndex,
+            Rewards = waveManager.currentWave.GetConfig().waveRewards,
+            IsLastWave = true,
+        });
+
+    }
 }

@@ -9,6 +9,7 @@ public class TeamDetails : MonoBehaviour
     public TeamList teamList;
     public Button setActive;
     public TMP_Text resourceCost;
+    public TMP_InputField teamNameInput;
     public TeamService instance;
     public GameObject emptyCbaracter;
     public void Initialize(TeamService instance)
@@ -70,6 +71,14 @@ public class TeamDetails : MonoBehaviour
         resourceCost.text = output;
         setActive.onClick.RemoveAllListeners();
         setActive.onClick.AddListener(ActionButton);
+
+        // Initialize team name input field
+        if (teamNameInput != null)
+        {
+            teamNameInput.text = instance.GetTeamName();
+            teamNameInput.onEndEdit.RemoveAllListeners();
+            teamNameInput.onEndEdit.AddListener(OnTeamNameChanged);
+        }
     }
     public void ActionButton()
     {
@@ -79,5 +88,18 @@ public class TeamDetails : MonoBehaviour
     public void SetButton()
     {
         setActive.interactable = !ServiceLocator.Get<ITeamManager>().isTeamActive(instance.GetData().teamID);
+    }
+
+    private void OnTeamNameChanged(string newName)
+    {
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            instance.SetTeamName(newName);
+        }
+        else
+        {
+            // If the user enters an empty name, revert to the previous name
+            teamNameInput.text = instance.GetTeamName();
+        }
     }
 }

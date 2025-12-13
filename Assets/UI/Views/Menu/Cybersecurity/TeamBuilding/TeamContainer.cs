@@ -58,6 +58,12 @@ public class TeamContainer : MonoBehaviour
         var activeBtn = activeAction.GetComponent<Button>();
         activeBtn.onClick.RemoveAllListeners();
         activeBtn.onClick.AddListener(UnDeployAction);
+
+        CoreEventBus.Subscribe<TeamNameOnChange>(UpdateText);
+    }
+    private void UpdateText(TeamNameOnChange evt)
+    {
+        teamName.text = evt.Name;
     }
     public void ShowTeam()
     {

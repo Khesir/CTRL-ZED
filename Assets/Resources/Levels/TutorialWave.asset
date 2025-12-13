@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5aa5a1f0654c14380d70744d750274, type: 3}
   m_Name: TutorialWave
   m_EditorClassIdentifier: 
-  levelIcon: {fileID: 21300000, guid: 443151ce682ba2b42945d72ea07513e7, type: 3}
+  levelBanner: {fileID: 0}
+  hoverLevelBanner: {fileID: 0}
+  levelInformation: {fileID: 0}
   levelID: 0
   levelName: Tutorial
   objective: Just try Things out
@@ -26,3 +28,4 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b4a7bb79d77c46e43a46f97c2f5aafb0, type: 2}
   - {fileID: 2100000, guid: 6c87a56e32b3ce0429cc252509536b38, type: 2}
   - {fileID: 2100000, guid: d8dff77a8a92ead4e93005a1ebf4870a, type: 2}
+  OsLevelRequirement: 20

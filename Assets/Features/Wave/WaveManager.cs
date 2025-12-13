@@ -8,7 +8,7 @@ public class WaveManager : MonoBehaviour, IWaveManager
     [Header("Debug Log : Don't touch")]
     [SerializeField] private EnemySpawner spawner;
 
-    private int waveIndex = 0;
+    public int waveIndex = 0;
     public WaveService currentWave;
     public WaveService CurrentWave => currentWave;
 
@@ -154,4 +154,5 @@ public class WaveManager : MonoBehaviour, IWaveManager
             currentWave.ResumeWave();
         }
     }
+    public List<WaveConfig> GetWaveConfig() => waveConfigs;
 }

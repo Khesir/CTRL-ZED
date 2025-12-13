@@ -23,6 +23,7 @@ public class TeamService
     public void SetTeamName(string name)
     {
         data.teamName = name;
+        CoreEventBus.Publish(new TeamNameOnChange { Name = name });
     }
     public string GetTeamName()
     {

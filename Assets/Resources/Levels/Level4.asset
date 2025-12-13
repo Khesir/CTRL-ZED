@@ -29,3 +29,4 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1cf783623ec75044eb286e2d8f5c615f, type: 2}
   - {fileID: 2100000, guid: 369f65cc1a3cd3b448e08ec7639f7c01, type: 2}
   - {fileID: 2100000, guid: 48839935b7f0ef14e809b6ec54ddceea, type: 2}
+  OsLevelRequirement: 15

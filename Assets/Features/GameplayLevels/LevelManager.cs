@@ -110,6 +110,10 @@ public class LevelManager : MonoBehaviour, ILevelManager
         int levelIndex = allLevels.IndexOf(level);
         if (levelIndex <= 0) return false; // Not found or is first level
 
+        // Lock if os level is still 
+        int currentLevel = ServiceLocator.Get<IPlayerManager>().playerService.GetLevel();
+        if (level.OsLevelRequirement > currentLevel) return false;
+
         // Check if previous level is complete (linear progression)
         LevelData previousLevel = allLevels[levelIndex - 1];
         return IsLevelComplete(previousLevel.levelID);

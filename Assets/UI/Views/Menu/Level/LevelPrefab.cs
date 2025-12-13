@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [Header("Display")]
     [SerializeField] private Image bannerImage;
-
+    [SerializeField] private TMP_Text requiredLevel;
     [Header("Modal")]
     [SerializeField] public LevelInformationModal modalComponent;
 
@@ -19,7 +20,6 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.data = data;
         normalBanner = data.levelBanner;
         hoverBanner = data.hoverLevelBanner;
-
         // Set initial banner
         if (bannerImage != null)
             bannerImage.sprite = normalBanner;
@@ -40,11 +40,13 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 // set to white with a = 1 
                 bannerImage.color = Color.white;
                 button.onClick.AddListener(OpenModal);
+                requiredLevel.text = "";
             }
             else
             {
                 // set with this 727272 hex color
                 bannerImage.color = new Color32(0x72, 0x72, 0x72, 255);
+                requiredLevel.text = "OS Level Req. " + data.OsLevelRequirement;
             }
         }
     }
