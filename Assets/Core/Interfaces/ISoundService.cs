@@ -7,6 +7,8 @@ public interface ISoundService
     void PlayLoop(SoundCategory category, SoundType type, float volume = 1f);
     void Stop(SoundCategory category);
     void StopAll();
+    void Pause(SoundCategory category);
+    void Resume(SoundCategory category);
 
     // Volume control
     void SetCategoryVolume(SoundCategory category, float volume);

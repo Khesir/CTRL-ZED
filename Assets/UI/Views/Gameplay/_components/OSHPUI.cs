@@ -1,51 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Shared.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OSHPUI : MonoBehaviour
 {
-    public TMP_Text textLabel;
-    public Slider hpSlider;
-    public PlayerService instance;
-
-    private void OnEnable()
-    {
-        // Subscribe to CoreEventBus for cross-scene health updates
-        CoreEventBus.Subscribe<PlayerHealthChangedEvent>(OnPlayerHealthChanged);
-    }
-
+    [SerializeField] private TMP_Text textLabel;
+    [SerializeField] private FillBarAnimator fillBar;
+    [SerializeField] private PlayerService instance;
     private void OnDisable()
     {
-        CoreEventBus.Unsubscribe<PlayerHealthChangedEvent>(OnPlayerHealthChanged);
-
-        // Keep backward compatibility with direct subscription
-        if (instance != null)
-            instance.OnHealthChanged -= UpdateSlider;
-    }
-
-    private void OnPlayerHealthChanged(PlayerHealthChangedEvent evt)
-    {
-        hpSlider.maxValue = evt.MaxHealth;
-        hpSlider.value = evt.CurrentHealth;
-        textLabel.text = evt.CurrentHealth.ToString();
+        CoreEventBus.Unsubscribe<PlayerHealthChangedEvent>(OnHealthChanged);
     }
 
     public void Setup(PlayerService player)
     {
         instance = player;
-        textLabel.text = player.GetCurrentHealth().ToString();
-        UpdateSlider();
-        // Keep direct subscription for initial setup compatibility
-        instance.OnHealthChanged += UpdateSlider;
-    }
 
-    public void UpdateSlider()
+        float currentHealth = player.GetCurrentHealth();
+        float maxHealth = player.GetMaxHealth();
+
+        fillBar.Initialize(maxHealth, currentHealth);
+        UpdateLabel(currentHealth, maxHealth);
+        CoreEventBus.Subscribe<PlayerHealthChangedEvent>(OnHealthChanged);
+    }
+    private void UpdateLabel(float current, float max)
     {
-        if (instance == null) return;
-        hpSlider.maxValue = instance.GetMaxHealth();
-        hpSlider.value = instance.GetCurrentHealth();
-        textLabel.text = instance.GetCurrentHealth().ToString();
+        if (textLabel != null)
+        {
+            textLabel.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)} HP";
+        }
+    }
+    private void OnHealthChanged(PlayerHealthChangedEvent evt)
+    {
+        float currentHealth = evt.CurrentHealth;
+        float maxHealth = evt.MaxHealth;
+
+        fillBar.UpdateValue(currentHealth);
+        UpdateLabel(currentHealth, maxHealth);
     }
 }

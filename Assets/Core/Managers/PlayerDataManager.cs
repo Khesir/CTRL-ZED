@@ -62,6 +62,17 @@ public class PlayerDataManager : MonoBehaviour, IPlayerDataManager
             return;
         }
 
+        // Sync cleared levels from LevelManager to SaveData
+        var levelManager = ServiceLocator.Get<ILevelManager>();
+        loadedData.clearedLevelIDs = new List<string>();
+        foreach (var level in levelManager.GetAllLevels())
+        {
+            if (levelManager.IsLevelComplete(level.levelID))
+            {
+                loadedData.clearedLevelIDs.Add(level.levelID);
+            }
+        }
+
         SaveSystem.SaveToSlot(loadedSlotIndex, loadedData);
         Debug.Log("[PlayerDataManager] Auto save triggered");
     }

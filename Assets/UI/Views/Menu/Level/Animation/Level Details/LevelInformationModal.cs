@@ -81,6 +81,14 @@ public class LevelInformationModal : MonoBehaviour
     }
     async UniTask StartGame()
     {
+        // Check if level is unlocked
+        var levelManager = ServiceLocator.Get<ILevelManager>();
+        if (!levelManager.IsLevelUnlocked(data))
+        {
+            Debug.LogWarning($"Cannot start level {data.levelName} - it is locked!");
+            return;
+        }
+
         var activeTeam = ServiceLocator.Get<ITeamManager>().GetActiveTeam();
 
         PlayerService playerService = ServiceLocator.Get<IPlayerManager>().playerService;
@@ -122,7 +130,6 @@ public class LevelInformationModal : MonoBehaviour
         resourceService.SpendEnergy((int)totalDeploymentCost["Energy"]);
         resourceService.SpendIntelligence((int)totalDeploymentCost["Intelligence"]);
 
-        var levelManager = ServiceLocator.Get<ILevelManager>();
         levelManager.activeLevel = data;
         ServiceLocator.Get<ISoundService>().Play(SoundCategory.UI, SoundType.UI_Activate);
         await levelManager.LoadScene(GameState.Gameplay);

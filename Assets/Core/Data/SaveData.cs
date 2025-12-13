@@ -10,6 +10,7 @@ public class SaveData
     public List<CharacterData> ownedCharacters;
     public List<Team> teams;
     public int antiVirusLevel;
+    public List<string> clearedLevelIDs;
     public SaveData()
     {
         playerData = new PlayerData { };
@@ -17,5 +18,6 @@ public class SaveData
         teams = new List<Team>();
         // resourceData = new ResourceData(coins: 100000);
         antiVirusLevel = 0;
+        clearedLevelIDs = new List<string>();
     }
 }

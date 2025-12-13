@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   icon: {fileID: 21300000, guid: 45fd7eeb8f206e9438aeecf30d491d55, type: 3}
-  title: Advance
-  description: -15% enemy speed, +15 HP/sec, +6 Dex
+  title: Advanced
+  description: -15% enemy speed, +15 HP/sec, +6 Dexterity
   price: 20
   sourceType: 0
   durationType: 2

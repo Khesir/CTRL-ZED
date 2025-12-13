@@ -54,6 +54,15 @@ public class CompleteScreenUI : MonoBehaviour
                     title.text = "Wave Cleared!";
                     message.text = $"{team} has succesfully! Stopped the wave";
                     // GameManager.Instance.LevelManager.currentLevelIndex++;
+
+                    // Mark level as complete
+                    var activeLevel = LevelManager.Instance.GetActiveLevel();
+                    if (activeLevel != null)
+                    {
+                        LevelManager.Instance.MarkLevelComplete(activeLevel.levelID);
+                        // Auto-save the completion
+                        ServiceLocator.Get<IPlayerDataManager>().AutoSaveTrigger();
+                    }
                 }
                 else
                 {

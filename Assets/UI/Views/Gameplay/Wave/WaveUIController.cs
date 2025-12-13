@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Shared.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class WaveUIController : MonoBehaviour
 {
     public TMP_Text textLabel;
     public TMP_Text title;
-    public Slider progressSlider;
+    public FillBarAnimator progressSlider;
 
     private void OnDisable()
     {
@@ -19,8 +20,7 @@ public class WaveUIController : MonoBehaviour
     private void OnWaveStarted(WaveStartedEvent evt)
     {
         title.text = $"Wave {evt.WaveNumber}";
-        progressSlider.maxValue = evt.EnemyCount;
-        progressSlider.value = 0;
+        progressSlider.UpdateValues(0, evt.EnemyCount);
         textLabel.text = "0%";
     }
 
@@ -39,8 +39,7 @@ public class WaveUIController : MonoBehaviour
 
     public void UpdateSlider(int currentKills, int requiredKills, int index)
     {
-        progressSlider.maxValue = requiredKills;
-        progressSlider.value = currentKills;
+        progressSlider.UpdateValue(currentKills);
 
         float percent = (float)currentKills / requiredKills * 100f;
         textLabel.text = Mathf.FloorToInt(percent) + "%";

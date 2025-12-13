@@ -170,6 +170,7 @@ public class GameInitiator : MonoBehaviour
         await ServiceLocator.Get<ITeamManager>().Initialize(saveData.teams);
         await ServiceLocator.Get<IAntiVirusManager>().Initialize();
         await ServiceLocator.Get<ILevelManager>().Initialize();
+        ServiceLocator.Get<ILevelManager>().LoadClearedLevels(saveData.clearedLevelIDs);
         await ServiceLocator.Get<IStatusEffectManager>().Initialize();
 
         await UniTask.Yield();
@@ -206,6 +207,7 @@ public class GameInitiator : MonoBehaviour
         await ServiceLocator.Get<ITeamManager>().Initialize(saveData.teams);
         await ServiceLocator.Get<IAntiVirusManager>().Initialize();
         await ServiceLocator.Get<ILevelManager>().Initialize();
+        ServiceLocator.Get<ILevelManager>().LoadClearedLevels(saveData.clearedLevelIDs);
         await ServiceLocator.Get<IStatusEffectManager>().Initialize();
 
         await UniTask.Yield();

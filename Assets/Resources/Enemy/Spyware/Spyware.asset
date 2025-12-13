@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spyware
   m_EditorClassIdentifier: 
   enemyName: Spyware
-  maxHealth: 50
+  maxHealth: 100
   baseDamage: 10
   defense: 10
   dex: 10

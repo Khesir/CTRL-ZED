@@ -6,7 +6,6 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [Header("Display")]
     [SerializeField] private Image bannerImage;
-    [SerializeField] private Image disabled;
 
     [Header("Modal")]
     [SerializeField] public LevelInformationModal modalComponent;
@@ -25,24 +24,42 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (bannerImage != null)
             bannerImage.sprite = normalBanner;
 
-        // Setup button click
+        // Check if level is unlocked
+        bool isUnlocked = ServiceLocator.Get<ILevelManager>().IsLevelUnlocked(data);
+
+        // Setup button click and interactability
         var button = GetComponent<Button>();
         if (button != null)
         {
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(OpenModal);
+            button.interactable = isUnlocked;
+
+            // Only add click listener if unlocked
+            if (isUnlocked)
+            {
+                // set to white with a = 1 
+                bannerImage.color = Color.white;
+                button.onClick.AddListener(OpenModal);
+            }
+            else
+            {
+                // set with this 727272 hex color
+                bannerImage.color = new Color32(0x72, 0x72, 0x72, 255);
+            }
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (bannerImage != null && hoverBanner != null)
+        var button = GetComponent<Button>();
+        if (button != null && button.interactable && bannerImage != null && hoverBanner != null)
             bannerImage.sprite = hoverBanner;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (bannerImage != null && normalBanner != null)
+        var button = GetComponent<Button>();
+        if (button != null && button.interactable && bannerImage != null && normalBanner != null)
             bannerImage.sprite = normalBanner;
     }
 

@@ -44,7 +44,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalPos = rect.anchoredPosition;
 
         gameObject.SetActive(true);
-        rect.anchoredPosition = originalPos - new Vector2(0, slideDistance);
+        rect.anchoredPosition = originalPos + new Vector2(0, slideDistance);
         rect.localScale = originalScale;
 
         // Animate slide-in
@@ -77,7 +77,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         StopWobble();
 
         // Animate out
-        var posTween = rect.DOAnchorPosY(originalPos.y - slideDistance, duration)
+        var posTween = rect.DOAnchorPosY(originalPos.y + slideDistance, duration)
             .SetEase(Ease.InBack)
             .SetUpdate(true)
             .AsyncWaitForCompletion()

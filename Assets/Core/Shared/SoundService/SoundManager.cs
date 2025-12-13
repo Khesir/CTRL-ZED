@@ -125,6 +125,25 @@ public class SoundManager : MonoBehaviour, ISoundService
         }
     }
 
+    public void Pause(SoundCategory category)
+    {
+        var source = GetSource(category);
+        if (source == null) return;
+
+        if (source.isPlaying)
+        {
+            source.Pause();
+        }
+    }
+
+    public void Resume(SoundCategory category)
+    {
+        var source = GetSource(category);
+        if (source == null) return;
+
+        source.UnPause();
+    }
+
     public void SetCategoryVolume(SoundCategory category, float volume)
     {
         categoryVolumes[category] = Mathf.Clamp01(volume);

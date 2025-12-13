@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fded2f317a014e545b673626fe3435cc, type: 3}
   m_Name: Ransomeware
   m_EditorClassIdentifier: 
-  enemyName: 
-  maxHealth: 50
+  enemyName: Ransomware
+  maxHealth: 200
   baseDamage: 10
   defense: 1
   dex: 1
