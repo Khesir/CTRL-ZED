@@ -37,6 +37,10 @@ public class TeamManager : MonoBehaviour, ITeamManager
         Debug.Log("[TeamManager] Player Manager Initialized");
         await UniTask.CompletedTask;
     }
+    public int GetIncreaseSizePrice()
+    {
+        return increaseSizePrice * maxSize;
+    }
     public bool isTeamActive(string teadID)
     {
         if (activeTeam.Count < 1)

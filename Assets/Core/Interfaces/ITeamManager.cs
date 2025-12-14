@@ -9,6 +9,7 @@ public interface ITeamManager
     int increaseSizePrice { get; }
 
     UniTask Initialize(List<Team> teams, int maxSize = 1, int increaseSizePrice = 10000);
+    int GetIncreaseSizePrice();
     bool isTeamActive(string teamId);
     string CreateTeam();
     void IncreaseMaxTeam();

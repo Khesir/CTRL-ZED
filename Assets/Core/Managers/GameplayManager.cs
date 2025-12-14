@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 
 public enum GameplayState { None, Start, Playing, Revive, End }
 public enum GameplayEndGameState { DeathOnTimer, LevelComplete }
@@ -29,6 +30,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     [Header("Tutorial")]
     [SerializeField] private LevelData tutorialLevel;
 
+    [SerializeField] private Button SkipButton;
     // IGameplayManager implementation
     [SerializeField] public bool IsGameActive { get; set; } = false;
     public GameplayEndGameState EndGameState { get; set; }
@@ -122,6 +124,9 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
         if (!playerManager.playerService.GetPlayerData().completedTutorial)
         {
             GenerateTutorialCharacters();
+            SkipButton.gameObject.SetActive(true);
+            SkipButton.onClick.RemoveAllListeners();
+            SkipButton.onClick.AddListener(SkipWave);
         }
 
         // Initialize subsystems
@@ -328,13 +333,6 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     [ContextMenu("Wave Complete")]
     private void SkipWave()
     {
-
-        SceneEventBus.Publish(new WaveCompletedEvent
-        {
-            WaveNumber = waveManager.waveIndex,
-            Rewards = waveManager.currentWave.GetConfig().waveRewards,
-            IsLastWave = true,
-        });
-
+        EndGameplayInternal();
     }
 }

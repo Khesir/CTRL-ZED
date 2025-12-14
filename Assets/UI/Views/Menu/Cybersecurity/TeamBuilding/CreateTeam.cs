@@ -9,12 +9,12 @@ public class CreateTeam : MonoBehaviour
     public void Initialize()
     {
         _teamManager = ServiceLocator.Get<ITeamManager>();
-        priceText.text = $"Buy for {_teamManager.increaseSizePrice} coins";
+        priceText.text = $"Buy for {_teamManager.GetIncreaseSizePrice()} coins";
     }
 
     public void CreateTeamGroup()
     {
-        var res = ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(_teamManager.increaseSizePrice);
+        var res = ServiceLocator.Get<IPlayerManager>().playerService.SpendCoins(_teamManager.GetIncreaseSizePrice());
         if (res)
         {
             _teamManager.IncreaseMaxTeam();

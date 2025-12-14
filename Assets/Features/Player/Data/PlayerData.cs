@@ -30,5 +30,5 @@ public class PlayerData
     public int usableDrives = 50;
     // Economy
     [Header("Economy")]
-    public int coins = 50000;
+    public int coins = 20000;
 }
