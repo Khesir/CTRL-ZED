@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,7 +15,10 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private LevelData data;
     private Sprite normalBanner;
     private Sprite hoverBanner;
-
+    [Header("Level Requirements")]
+    [SerializeField] private GameObject requirementContainer;
+    [SerializeField] private GameObject textObject;
+    [SerializeField] private GameObject clearCondition;
     public void Setup(LevelData data)
     {
         this.data = data;
@@ -26,7 +30,7 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Check if level is unlocked
         bool isUnlocked = ServiceLocator.Get<ILevelManager>().IsLevelUnlocked(data);
-
+        Debug.Log($"level {isUnlocked}");
         // Setup button click and interactability
         var button = GetComponent<Button>();
         if (button != null)
@@ -40,7 +44,7 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 // set to white with a = 1 
                 bannerImage.color = Color.white;
                 button.onClick.AddListener(OpenModal);
-                requiredLevel.text = "";
+                requiredLevel.text = "No Requirement";
             }
             else
             {
@@ -49,8 +53,33 @@ public class LevelPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 requiredLevel.text = "OS Level Req. " + data.OsLevelRequirement;
             }
         }
+        ClearRequirements(); // Clear game requirments gameobject
+        InstantiateObjectLevelRequirement();
+        clearCondition.GetComponent<TMP_Text>().text = data.clearCondition;
     }
+    public void InstantiateObjectLevelRequirement()
+    {
+        List<CharacterRequirement> requirements = data.characterRequirements;
+        Transform transform = requirementContainer.transform;
 
+        if (requirements.Count < 1)
+        {
+            var obj = Instantiate(textObject, transform);
+            obj.GetComponent<TMP_Text>().text = "No Specific Requirement";
+        }
+        foreach (CharacterRequirement requirement in requirements)
+        {
+            var obj = Instantiate(textObject, transform);
+            obj.GetComponent<TMP_Text>().text = $"Req. {requirement.character.className} - LvL {requirement.levelRequirement}";
+        }
+    }
+    public void ClearRequirements()
+    {
+        foreach (Transform child in requirementContainer.transform)
+        {
+            Destroy(child.gameObject); // destroys child of transform game object
+        }
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         var button = GetComponent<Button>();

@@ -30,3 +30,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6c87a56e32b3ce0429cc252509536b38, type: 2}
   - {fileID: 2100000, guid: d8dff77a8a92ead4e93005a1ebf4870a, type: 2}
   OsLevelRequirement: 5
+  characterRequirements:
+  - character: {fileID: 11400000, guid: 7552680d80bab2741b688d15ab3a8e9a, type: 2}
+    levelRequirement: 5
+  clearCondition: Clear Food Sector

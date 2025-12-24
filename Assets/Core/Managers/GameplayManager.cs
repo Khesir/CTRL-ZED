@@ -318,10 +318,12 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
     private void CreateTutorialTeam(ITeamManager teamManager, List<CharacterData> characters)
     {
         var teamID = teamManager.CreateTeam();
+        List<CharacterConfig> possibleConfigs = ServiceLocator.Get<ICharacterManager>().characterTemplates;
+        var config = possibleConfigs[UnityEngine.Random.Range(0, possibleConfigs.Count)];
 
         for (int i = 0; i < 4; i++)
         {
-            var character = CharacterFactory.CreateTestCharacter();
+            var character = CharacterFactory.CreateFromShop(config);
             characters.Add(character);
             teamManager.AssignedCharacterToSlot(teamID, i, character);
         }

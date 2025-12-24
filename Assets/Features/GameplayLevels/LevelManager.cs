@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,58 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Lock if os level is still 
         int currentLevel = ServiceLocator.Get<IPlayerManager>().playerService.GetLevel();
         if (level.OsLevelRequirement > currentLevel) return false;
+        // Check active team and check if active team match the required level;
+        var teamManger = ServiceLocator.Get<ITeamManager>();
+        bool found = false;
+
+        foreach (var team in teamManger.GetActiveTeam())
+        {
+            Debug.Log($"Checking team: {team.GetData().teamID}");
+
+            foreach (var member in team.GetMembers())
+            {
+                Debug.Log($"Checking member: {member.baseData.className} - Level {member.currentLevel}");
+
+                foreach (var levelData in level.characterRequirements)
+                {
+                    Debug.Log($"Comparing against requirement: {levelData.character.className} - Required Level {levelData.levelRequirement}");
+
+                    if (!string.Equals(member.baseData.className, levelData.character.className, StringComparison.Ordinal))
+                    {
+                        Debug.Log($"Class mismatch: {member.baseData.className} != {levelData.character.className}");
+                        continue;
+                    }
+
+                    if (member.currentLevel != levelData.levelRequirement)
+                    {
+                        Debug.Log($"Level mismatch: {member.currentLevel} != {levelData.levelRequirement}");
+                        continue;
+                    }
+
+                    Debug.Log($"Requirement matched for member: {member.baseData.className} - Level {member.currentLevel}");
+                    found = true;
+                    break; // Requirement matched, break inner loop
+                }
+
+                if (found)
+                {
+                    Debug.Log("Found matching member, stopping further checks.");
+                    break; // Exit member loop
+                }
+            }
+
+            if (found)
+            {
+                Debug.Log("Found matching team, stopping further team checks.");
+                break; // Exit team loop
+            }
+        }
+
+        if (!found)
+        {
+            Debug.Log("No matching member found in any active team. Level cannot be unlocked.");
+            return false;
+        }
 
         // Check if previous level is complete (linear progression)
         LevelData previousLevel = allLevels[levelIndex - 1];

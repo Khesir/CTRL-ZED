@@ -30,3 +30,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 369f65cc1a3cd3b448e08ec7639f7c01, type: 2}
   - {fileID: 2100000, guid: 48839935b7f0ef14e809b6ec54ddceea, type: 2}
   OsLevelRequirement: 15
+  characterRequirements:
+  - character: {fileID: 11400000, guid: c738731cbd346824692884f168c2f935, type: 2}
+    levelRequirement: 15
+  clearCondition: Clear Energy Sector

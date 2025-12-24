@@ -21,4 +21,12 @@ public class LevelData : ScriptableObject
     public List<Material> background;
     [Header("Extra Unlock Conditions")]
     public int OsLevelRequirement;
+    public List<CharacterRequirement> characterRequirements;
+    public string clearCondition;
+}
+[System.Serializable]
+public class CharacterRequirement
+{
+    public CharacterConfig character;
+    public int levelRequirement;
 }
